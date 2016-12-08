@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.util.JSONPObject;
 
-/** 接口参数校验
- * @author:	fh qq313596790[青苔]
- * 修改日期：2015/11/2
- */
+import com.fh.util.security.AESCoder;
+
+
 public class AppUtil  {
 	
 	protected static Logger logger = Logger.getLogger(AppUtil.class);
@@ -118,4 +118,22 @@ public class AppUtil  {
 			return map;
 		}
 	}
+	
+	/**
+	 * <p>
+	 * app端判断请求是否合法
+	 * </p>
+	 * @return
+	 */
+	public static boolean getUserAccount(String userAccount,String token){
+		
+		if(StringUtils.isBlank(userAccount)){
+			return false;
+		}
+		if(StringUtils.isBlank(token)){
+			return false;
+		}
+		return token.equals(AESCoder.aesCbcEncrypt(userAccount, Const.APP_TOKEN_KEY));
+	}
+
 }

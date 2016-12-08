@@ -10,7 +10,6 @@ import com.fh.service.${packageName}.${objectNameLower}.${objectName}Manager;
 
 /** 
  * 说明： ${TITLE}
- * 创建人：FH Q313596790
  * 创建时间：${nowDate?string("yyyy-MM-dd")}
  * @version
  */

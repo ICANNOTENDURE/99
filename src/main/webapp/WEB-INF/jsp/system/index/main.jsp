@@ -199,6 +199,8 @@
 		<!--引入弹窗组件start-->
 		<script type="text/javascript" src="plugins/attention/zDialog/zDrag.js"></script>
 		<script type="text/javascript" src="plugins/attention/zDialog/zDialog.js"></script>
+		
+		<script type="text/javascript" src="plugins/layer/layer.js"></script>
 		<!--引入弹窗组件end-->
 		<!--提示框-->
 		<script type="text/javascript" src="static/js/jquery.tips.js"></script>

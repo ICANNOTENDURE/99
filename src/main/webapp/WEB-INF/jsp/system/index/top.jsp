@@ -1,4 +1,4 @@
-﻿		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
 		<title>${pd.SYSNAME}</title>
 		<meta name="description" content="" />
@@ -25,3 +25,29 @@
 		<script src="static/ace/js/html5shiv.js"></script>
 		<script src="static/ace/js/respond.js"></script>
 		<![endif]-->
+		
+		
+		<!--[if !IE]> -->
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='static/ace/js/jquery.js'>"+"<"+"/script>");
+		</script>
+		<!-- <![endif]-->
+		<!--[if IE]>
+		<script type="text/javascript">
+		 window.jQuery || document.write("<script src='static/ace/js/jquery1x.js'>"+"<"+"/script>");
+		</script>
+		<![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='static/ace/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
+		<script src="static/ace/js/bootstrap.js"></script>
+		
+		<!-- basic scripts -->
+	<!-- ace scripts -->
+	<script src="static/ace/js/ace/ace.js"></script>
+	<!-- 下拉框 -->
+	<script src="static/ace/js/chosen.jquery.js"></script>
+	<!--提示框-->
+	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
+		
+		<script type="text/javascript" src="static/js/myjs/common.js"></script>

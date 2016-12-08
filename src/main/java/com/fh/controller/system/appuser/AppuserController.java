@@ -66,7 +66,6 @@ public class AppuserController extends BaseController {
 			List<Role> roleList = roleService.listAllRolesByPId(pd);			//列出会员组角色
 			mv.setViewName("system/appuser/appuser_list");
 			mv.addObject("userList", userList);
-			mv.addObject("roleList", roleList);
 			mv.addObject("pd", pd);
 			mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		} catch(Exception e){

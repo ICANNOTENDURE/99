@@ -1,11 +1,7 @@
 package com.fh.util;
 
 import org.springframework.context.ApplicationContext;
-/**
- * 项目名称：
- * @author:fh qq313596790[青苔]
- * 修改日期：2015/11/2
-*/
+
 public class Const {
 	public static final String SESSION_SECURITY_CODE = "sessionSecCode";//验证码
 	public static final String SESSION_USER = "sessionUser";			//session用的用户
@@ -45,6 +41,9 @@ public class Const {
 	//app根据用户名获取会员信息接口_请求协议中的参数
 	public static final String[] APP_GETAPPUSER_PARAM_ARRAY = new String[]{"USERNAME"};
 	public static final String[] APP_GETAPPUSER_VALUE_ARRAY = new String[]{"用户名"};
+	
+	//app 加密账号的秘要
+	public static final String APP_TOKEN_KEY="908067886@qq.com";
 	
 	
 }

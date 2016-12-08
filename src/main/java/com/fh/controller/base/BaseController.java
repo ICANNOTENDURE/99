@@ -12,15 +12,12 @@ import com.fh.util.Logger;
 import com.fh.util.PageData;
 import com.fh.util.UuidUtil;
 
-/**
- * @author FH Q313596790
- * 修改时间：2015、12、11
- */
+
 public class BaseController {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 
-	private static final long serialVersionUID = 6357869213649815390L;
+
 	
 	/** new PageData对象
 	 * @return
@@ -33,7 +30,7 @@ public class BaseController {
 	 * @return
 	 */
 	public ModelAndView getModelAndView(){
-		return new ModelAndView();
+		return new ModelAndView().addObject("msg", "success");
 	}
 	
 	/**得到request对象
@@ -68,5 +65,4 @@ public class BaseController {
 		logger.info("end");
 		logger.info("");
 	}
-	
 }
