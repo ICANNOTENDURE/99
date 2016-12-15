@@ -1,13 +1,22 @@
 package com.fh.controller.base;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.entity.Page;
+import com.fh.util.Const;
+import com.fh.util.Jurisdiction;
 import com.fh.util.Logger;
 import com.fh.util.PageData;
 import com.fh.util.UuidUtil;
@@ -30,7 +39,11 @@ public class BaseController {
 	 * @return
 	 */
 	public ModelAndView getModelAndView(){
-		return new ModelAndView().addObject("msg", "success");
+		ModelAndView mv=new ModelAndView().addObject("msg", "success");
+		if(Jurisdiction.getSession().getAttribute(Const.SESSION_USERNAME)!=null){
+			mv.addObject("QX",Jurisdiction.getHC());
+		}
+		return mv;
 	}
 	
 	/**得到request对象
@@ -65,4 +78,10 @@ public class BaseController {
 		logger.info("end");
 		logger.info("");
 	}
+	@InitBinder   
+    public void initBinder(WebDataBinder binder) {   
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");   
+        dateFormat.setLenient(true);   
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   
+    } 
 }

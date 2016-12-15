@@ -1,7 +1,5 @@
 package com.fh.controller.system.appuser;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,8 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.Page;
+import com.fh.entity.system.PatUser;
+import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.appuser.impl.PatUserService;
-import com.fh.util.Jurisdiction;
 import com.fh.util.PageData;
 
 @Controller
@@ -23,22 +22,22 @@ public class PatUserController extends BaseController{
 	@Autowired
 	private PatUserService patUserService;
 	
+	@Autowired
+	private CommonService commonService;
+	
 	/**显示病人列表
 	 * @param page
 	 * @return
 	 */
 	@RequestMapping(value="/listUsers")
 	public ModelAndView listUsers(Page page){
-		ModelAndView mv = this.getModelAndView();
-		PageData pd = new PageData();
+		ModelAndView mv = getModelAndView();
+		PageData pd = getPageData();
 		try{
-			pd = this.getPageData();
-			page.setPd(pd);
-			List<PageData>	userList = patUserService.listPdPageUser(page);		
+			page.setPd(pd);	
 			mv.setViewName("system/appuser/patuser_list");
-			mv.addObject("userList", userList);
+			mv.addObject("userList", patUserService.listPdPageUser(page));
 			mv.addObject("pd", pd);
-			mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		} catch(Exception e){
 			logger.error(e.toString(), e);
 		}
@@ -66,12 +65,14 @@ public class PatUserController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/saveOrUpdate")
-	public ModelAndView saveOrUpdate() throws Exception{
+	public ModelAndView saveOrUpdate(PatUser patUser) throws Exception{
+		
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = this.getPageData();
 		if(StringUtils.isBlank(pd.getString("USER_ID"))){
 			pd.put("USER_ID", this.get32UUID());
-			patUserService.save(pd);
+			//patUserService.save(patUser);
+			commonService.insert(patUser);
 		}else{
 			patUserService.edit(pd);
 		}

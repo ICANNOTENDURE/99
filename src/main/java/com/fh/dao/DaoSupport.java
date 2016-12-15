@@ -19,6 +19,7 @@ public class DaoSupport implements DAO {
 	@Resource(name = "sqlSessionTemplate")
 	private SqlSessionTemplate sqlSessionTemplate;
 	
+
 	/**
 	 * 保存对象
 	 * @param str
@@ -125,6 +126,7 @@ public class DaoSupport implements DAO {
 		return sqlSessionTemplate.selectMap(str, obj, key);
 	}
 	
+
 }
 
 

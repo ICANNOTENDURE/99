@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="PatUserMapper">
-	
+	   
 	<!--表名 -->
 	<sql id="tableName">
 		PAT_USER
@@ -66,7 +66,7 @@
 	</delete>
 	
 	<!-- 新增 -->
-	<insert id="save" parameterType="pd">
+	<insert id="save" parameterType="com.fh.entity.system.PatUser">
 		insert into <include refid="tableName"></include> (
 			<include refid="Field"></include>
 		) values (

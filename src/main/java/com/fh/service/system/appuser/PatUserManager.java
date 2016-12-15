@@ -3,6 +3,7 @@ package com.fh.service.system.appuser;
 import java.util.List;
 
 import com.fh.entity.Page;
+import com.fh.entity.system.PatUser;
 import com.fh.util.PageData;
 
 
@@ -23,7 +24,7 @@ public interface PatUserManager {
 	 * @param pd
 	 * @throws Exception
 	 */
-	public void save(PageData pd)throws Exception;
+	public void save(PatUser pd)throws Exception;
 	
 	/**删除用户
 	 * @param pd
