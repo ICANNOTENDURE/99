@@ -3,9 +3,7 @@ package com.fh.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
 
-@Repository("commonDao")
 public interface CommonDao {
 
 	Map<String,Object> selectByPrimaryKey(Map<String,Object> param);

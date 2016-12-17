@@ -34,7 +34,7 @@
             </list>  
         </property>  
 	</bean> 
-	
+
 	<!-- 阿里 druid数据库连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">  
          <!-- 数据库基本信息配置 -->
@@ -100,7 +100,11 @@
     <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
-
+	
+	<bean id="commonDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  		<property name="mapperInterface" value="com.fh.dao.CommonDao" />
+  		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />  
+	</bean>
 	<!-- ================ Shiro start ================ -->
 		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 			<property name="realm" ref="ShiroRealm" />

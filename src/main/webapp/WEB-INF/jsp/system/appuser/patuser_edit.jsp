@@ -29,26 +29,26 @@
 					<div class="row">
 						<div class="col-xs-12">
 						<form action="patuser/saveOrUpdate.do" name="userForm" id="userForm" method="post">
-							<input type="hidden" name="USER_ID" id="user_id" value="${pd.USER_ID }"/>
+							<input type="hidden" name="userId" id="user_id" value="${pd.USER_ID }"/>
 							<div id="zhongxin" style="padding-top: 13px;">
 							<table id="table_report" class="table table-striped table-bordered table-hover">
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">账号:</td>
-									<td><input type="text" name="USER_ACCOUNT" id="loginname" value="${pd.USER_ACCOUNT}" placeholder="这里输入账号" title="账号" style="width:98%;" /></td>
+									<td><input type="text" name="userAccount" id="loginname" value="${pd.USER_ACCOUNT}" placeholder="这里输入账号" title="账号" style="width:98%;" /></td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
-									<td><input type="text" name="USER_NAME" id="USER_NAME" value="${pd.USER_NAME}" placeholder="姓名" title="姓名" style="width:98%;" /></td>
+									<td><input type="text" name="userName" id="USER_NAME" value="${pd.USER_NAME}" placeholder="姓名" title="姓名" style="width:98%;" /></td>
 								</tr>
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">性别:</td>
 									<td>
-										<select name="USER_SEX" title="性别">
+										<select name="userSex" title="性别">
 										<option value="男" <c:if test="${pd.USER_SEX == '男' }">selected</c:if> >男</option>
 										<option value="女" <c:if test="${pd.USER_SEX == '女' }">selected</c:if> >女</option>
 										</select>
 									</td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">状态:</td>
 									<td>
-										<select name="STATUS" title="状态">
+										<select name="status" title="状态">
 										<option value="Y" <c:if test="${pd.STATUS == 'Y' }">selected</c:if> >正常</option>
 										<option value="N" <c:if test="${pd.STATUS == 'N' }">selected</c:if> >冻结</option>
 										</select>
@@ -56,11 +56,11 @@
 								</tr>
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">出生日期:</td>
-									<td><input class="span10 date-picker" name="USER_BIRTH" id="USER_BIRTH" value="${pd.USER_BIRTH}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="出生日期" title="出生日期" style="width:98%;" /></td>
+									<td><input class="span10 date-picker" name="userBirth" id="USER_BIRTH" value="${pd.USER_BIRTH}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="出生日期" title="出生日期" style="width:98%;" /></td>
 								
 									<td style="width:79px;text-align: right;padding-top: 13px;">婚姻状态:</td>
 									<td>
-										<select name="USER_MARRY" title="婚姻状态">
+										<select name="userMarry" title="婚姻状态">
 										<option value="1" <c:if test="${pd.USER_MARRY == 'Y' }">selected</c:if> >已婚</option>
 										<option value="0" <c:if test="${pd.USER_MARRY == 'N' }">selected</c:if> >未婚</option>
 										</select>

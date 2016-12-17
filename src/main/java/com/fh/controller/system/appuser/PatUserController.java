@@ -3,6 +3,7 @@ package com.fh.controller.system.appuser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,23 +69,15 @@ public class PatUserController extends BaseController{
 	public ModelAndView saveOrUpdate(PatUser patUser) throws Exception{
 		
 		ModelAndView mv = this.getModelAndView();
-		PageData pd = this.getPageData();
-		if(StringUtils.isBlank(pd.getString("USER_ID"))){
-			pd.put("USER_ID", this.get32UUID());
-			//patUserService.save(patUser);
-			commonService.insert(patUser);
-		}else{
-			patUserService.edit(pd);
-		}
+		commonService.saveOrUpdate(patUser);
 		mv.setViewName("save_result");
 		return mv;
 	}
-	@RequestMapping(value="/delete")
-	@ResponseBody
-	public Object delete() throws Exception{
-		PageData pd = this.getPageData();
-		patUserService.delete(pd);
-		return pd;
+	@RequestMapping(value="/delete/{id}")
+	public ModelAndView delete(@PathVariable(value="id") String id) throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		commonService.deleteByPrimaryKey(PatUser.class, id);
+		return mv;
 	}
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody

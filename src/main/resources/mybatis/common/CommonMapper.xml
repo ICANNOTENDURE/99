@@ -5,8 +5,7 @@
 
 	<select id="selectByPrimaryKey" parameterType="map" resultType="hashmap">
 		select
-		<foreach item="columnName" index="index" collection="queryColumn"
-			separator=",">
+		<foreach item="columnName" index="index" collection="queryColumn" separator=",">
 			${columnName}
 		</foreach>
 		from ${tableName}
@@ -15,9 +14,9 @@
 	
 	<insert id="insertSelective" parameterType="map">
 		insert into ${tableName}
-		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+		<foreach item="key"  collection="columnValueMapping.keys"
 			open="(" separator="," close=")">
-			${columnName}
+				${key} 
 		</foreach>
 		values
 		<foreach item="columnValue" index="columnName" collection="columnValueMapping"
@@ -59,9 +58,9 @@
 	<update id="updateByPrimaryKey">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="key" collection="columnValueMapping.keys"
 				separator=",">
-				${columnName} = #{columnValue}
+				${key} = #{columnValueMapping[${key}]}
 			</foreach>
 		</set>
 		where ${primaryKey} = #{primaryValue}
@@ -70,9 +69,9 @@
 	<update id="updateByPrimaryKeySelective">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="key"  collection="columnValueMapping.keys"
 				separator=",">
-				${columnName} = #{columnValue}
+				${key} = #{columnValueMapping[${key}]}
 			</foreach>
 		</set>
 		where ${primaryKey} = #{primaryValue}
@@ -81,9 +80,9 @@
 	<update id="updateByConditionSelective">
 		update ${tableName}
 		<set>
-			<foreach item="columnValue" index="columnName" collection="columnValueMapping"
+			<foreach item="key"  collection="columnValueMapping.keys"
 				separator=",">
-				${columnName} = #{columnValue}
+				${key} = #{columnValueMapping[${key}]}
 			</foreach>
 		</set>
 		<where>

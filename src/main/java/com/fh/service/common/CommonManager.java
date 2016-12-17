@@ -17,13 +17,12 @@ public interface CommonManager {
 	<T> T selectByPrimaryKey(Class<T> clazz, Integer primaryValue) throws Exception;
 
 	/**
-	 * 插入数据
-	 * <p>实际调用insertSelective</p>
+	 * 插入或保存数据
 	 * @param <T> pojo类
 	 * @param t  pojo对象
 	 * @return 数据条数
 	 */
-	<T> int insert(T t) throws Exception;
+	<T> int saveOrUpdate(T t) throws Exception;
 
 	/**
 	 * 插入数据

@@ -236,8 +236,9 @@
 			top.layer.confirm("确定要删除["+msg+"]吗?", function(index) {
 					top.layer.close(index)
 					top.jzts();
-					var url = "<%=basePath%>patuser/delete.do?USER_ID="+userId;
+					var url = "<%=basePath%>patuser/delete/"+userId;
 					$.get(url,function(data){
+						alert(data)
 						nextPage(1);
 					});
 				
