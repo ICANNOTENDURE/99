@@ -5,9 +5,11 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fh.entity.BaseEntity;
+
 
 @Table(name="pat_user")
-public class PatUser {
+public class PatUser extends BaseEntity{
 	
 	@Id
 	private String userId;

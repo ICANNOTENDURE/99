@@ -53,11 +53,7 @@
 									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">账号</th>
-									<th class="center">姓名</th>
 									<th class="center">状态</th>
-									<th class="center">性别</th>
-									<th class="center">结婚</th>
-									<th class="center">出生日期</th>
 									<th class="center">登陆日期</th>
 									<th class="center">操作</th>
 								</tr>
@@ -70,44 +66,33 @@
 									<c:forEach items="${userList}" var="user" varStatus="vs">
 										<tr>
 											<td class='center' style="width: 30px;">
-												<label><input type='checkbox' name='ids' value="${user.USER_ID }" id="ids"  class="ace" data-phone="${user.USER_ACCOUNT}" /><span class="lbl"></span></label>
+												<label><input type='checkbox' name='ids' value="${user.userId }" id="ids"  class="ace" data-phone="${user.userAccount}" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class="center">${user.USER_ACCOUNT}</td>
-											<td class="center">${user.USER_NAME }</td>
+											<td class="center">${user.userAccount}</td>
 											<td class="center" >
-												<c:if test="${user.STATUS == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
-												<c:if test="${user.STATUS == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
+												<c:if test="${user.status == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
+												<c:if test="${user.status == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
 											</td>
-											<td class="center">${user.USER_SEX} </td>
-											<td class="center" style="width: 60px">
-												<c:if test="${user.USER_MARRY == '1' }">已婚</c:if>
-												<c:if test="${user.USER_MARRY == '0' }">未婚</c:if>
-											</td>
-											<td class="center">${user.USER_BIRTH}</td>
-											<td class="center">${user.USER_LOGINDATE}</td>
+		
+											<td class="center">${user.userLogindate}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.email == 1 }">
-													<a class="btn btn-xs btn-info" title='发送电子邮件' onclick="sendEmail('${user.EMAIL }');">
-														<i class="ace-icon fa fa-envelope-o bigger-120" title="发送电子邮件"></i>
-													</a>
-													</c:if>
 													<c:if test="${QX.sms == 1 }">
-													<a class="btn btn-xs btn-warning" title='发送短信' onclick="sendSms('${user.PHONE }');">
+													<a class="btn btn-xs btn-warning" title='发送短信' onclick="sendSms('${user.userAccount }');">
 														<i class="ace-icon fa fa-envelope-o bigger-120" title="发送短信"></i>
 													</a>
 													</c:if>
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="popUser('${user.USER_ID}');">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="popUser('${user.userId}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
 													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="delUser('${user.USER_ID }','${user.USERNAME }');">
+													<a class="btn btn-xs btn-danger" onclick="delUser('${user.userId }','${user.userAccount }');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
@@ -118,36 +103,19 @@
 															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
 														</button>
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-															<c:if test="${QX.email == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="sendEmail('${user.EMAIL }');" class="tooltip-info" data-rel="tooltip" title="发送电子邮件">
-																	<span class="blue">
-																		<i class="ace-icon fa fa-envelope bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
+			
 															<c:if test="${QX.sms == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="sendSms('${user.PHONE }');" class="tooltip-success" data-rel="tooltip" title="发送短信">
+																<a style="cursor:pointer;" onclick="sendSms('${user.userAccount }');" class="tooltip-success" data-rel="tooltip" title="发送短信">
 																	<span class="blue">
 																		<i class="ace-icon fa fa-envelope-o bigger-120"></i>
 																	</span>
 																</a>
 															</li>
 															</c:if>
-															<c:if test="${QX.edit == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="editUser('${user.USER_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
-																	<span class="green">
-																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
 															<c:if test="${QX.del == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="delUser('${user.USER_ID }','${user.USERNAME }');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="delUser('${user.userId }','${user.userAccount }');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
@@ -227,7 +195,7 @@
 			commonLayer({ 
 					title: '病人信息',
 					area: ['600px', '280px'],
-					content: '<%=basePath%>patuser/goSaveOrUpdate.do?USER_ID='+user_id
+					content: '<%=basePath%>patuser/goSaveOrUpdate.do?id='+user_id
 			})
 		}
 		
@@ -238,7 +206,6 @@
 					top.jzts();
 					var url = "<%=basePath%>patuser/delete/"+userId;
 					$.get(url,function(data){
-						alert(data)
 						nextPage(1);
 					});
 				

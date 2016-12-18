@@ -1,5 +1,8 @@
 package com.fh.entity;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fh.util.Const;
 import com.fh.util.PageData;
 import com.fh.util.Tools;
@@ -20,8 +23,65 @@ public class Page {
 	private String pageStr;		//最终页面显示的底部翻页导航，详细见：getPageStr();
 	private PageData pd = new PageData();
 	
-
+	private List<String> queryColumn;
+	private String tableName;
+	private String orderExp;
 	
+	/**
+	 * 查询条件 where 表达式 
+	 * <p>不要写where</p>
+	 * <p>传入的参数格式为:#{conditionParam.paramName}</p>
+	 */
+	private String conditionExp;
+	
+	/**
+	 * 查询条件 where 表达式中的参数集
+	 * <p>key:paramName</p>
+	 */
+	private Map<String, Object> conditionParam; 
+	
+	
+	
+	public Map<String, Object> getConditionParam() {
+		return conditionParam;
+	}
+
+	public void setConditionParam(Map<String, Object> conditionParam) {
+		this.conditionParam = conditionParam;
+	}
+
+	public String getConditionExp() {
+		return conditionExp;
+	}
+
+	public void setConditionExp(String conditionExp) {
+		this.conditionExp = conditionExp;
+	}
+
+	public String getOrderExp() {
+		return orderExp;
+	}
+
+	public void setOrderExp(String orderExp) {
+		this.orderExp = orderExp;
+	}
+
+	public List<String> getQueryColumn() {
+		return queryColumn;
+	}
+
+	public void setQueryColumn(List<String> queryColumn) {
+		this.queryColumn = queryColumn;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
 	public Page(){
 		try {
 			this.showCount = Integer.parseInt(Tools.readTxtFile(Const.PAGE));

@@ -48,6 +48,17 @@ public class GeneralQueryParam {
 
 	public GeneralQueryParam() {
 	}
+	
+	
+	
+	public GeneralQueryParam(String conditionExp,
+			Map<String, Object> conditionParam) {
+		super();
+		this.conditionExp = conditionExp;
+		this.conditionParam = conditionParam;
+	}
+
+
 
 	public Class<?> getQueryClazz() {
 		return queryClazz;

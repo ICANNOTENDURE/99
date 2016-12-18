@@ -113,5 +113,25 @@
 			limit #{page.startRowNo},#{page.pageSize}
 		</if>
 	</select>
+	
+	<select id="listPage" parameterType="page" resultType="hashmap">
+		select
+		<foreach item="columnName" index="index" collection="queryColumn"
+			separator=",">
+			${columnName}
+		</foreach>
+		from ${tableName}
+		<where>
+			<if test="conditionExp != null">
+				${conditionExp}
+			</if>
+		</where>
+
+		<if test="orderExp != null">
+			order by ${orderExp}
+		</if>
+
+
+	</select>
 
 </mapper>

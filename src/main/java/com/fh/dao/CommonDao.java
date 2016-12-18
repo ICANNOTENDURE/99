@@ -3,6 +3,8 @@ package com.fh.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.fh.entity.Page;
+
 
 public interface CommonDao {
 
@@ -23,4 +25,6 @@ public interface CommonDao {
     int updateByConditionSelective(Map<String,Object> param);
 	
 	List<Map<String,Object>> selectAdvanced(Map<String,Object> param);
+	
+	List<Map<String,Object>> listPage(Page page);
 }

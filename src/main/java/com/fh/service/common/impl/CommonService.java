@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.fh.dao.CommonDao;
+import com.fh.entity.Page;
 import com.fh.plugin.GeneralMapperReflectUtil;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.CommonManager;
@@ -23,7 +24,7 @@ public class CommonService implements CommonManager{
 	@Resource(name ="commonDao")
 	private CommonDao commonDao;
 	
-	public <T> T selectByPrimaryKey(Class<T> clazz, Integer primaryValue)
+	public <T> T selectByPrimaryKey(Class<T> clazz, String primaryValue)
 			throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
@@ -210,5 +211,20 @@ public class CommonService implements CommonManager{
 			return updateByPrimaryKey(t);
 		}
 	}
-
+	
+	public <T> List<T> listPage(Class<T> clazz,
+			Page page) throws Exception {
+		
+		List<T> result = new ArrayList<T>();
+		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		page.setTableName(tableName);
+		page.setQueryColumn(GeneralMapperReflectUtil.getAllColumns(clazz));
+		List<Map<String, Object>> list =commonDao.listPage(page);
+		if (list != null && list.size() != 0) {
+			for (Map<String, Object> mapping : list) {
+				result.add(GeneralMapperReflectUtil.parseToBean(mapping, clazz));
+			}
+		}
+		return result;
+	}
 }

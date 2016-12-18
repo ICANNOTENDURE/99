@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
-import com.fh.entity.system.PatUser;
 import com.fh.service.system.appuser.PatUserManager;
 import com.fh.util.PageData;
 
@@ -27,29 +26,6 @@ public class PatUserService  implements PatUserManager {
 		return (List<PageData>) dao.findForList("PatUserMapper.userlistPage", page);
 	}
 	
-
-	public void save(PatUser pd){
-		
-	}
-
-	public void delete(PageData pd) throws Exception {
-		dao.delete("PatUserMapper.delete", pd);
-		
-	}
-
-	public void edit(PageData pd) throws Exception {
-		// TODO Auto-generated method stub
-		dao.update("PatUserMapper.edit", pd);
-	}
-
-	public PageData findById(PageData pd) throws Exception {
-		return (PageData)dao.findForObject("PatUserMapper.findById", pd);
-	}
-
-
-	public void deleteAll(String[] USER_IDS)throws Exception{
-		dao.delete("PatUserMapper.deleteAll", USER_IDS);
-	}
 	
 	
 }

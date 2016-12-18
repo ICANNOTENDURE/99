@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.entity.Page;
+import com.fh.plugin.GeneralQueryParam;
 import com.fh.util.Const;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Logger;
@@ -35,6 +36,14 @@ public class BaseController {
 		return new PageData(this.getRequest());
 	}
 	
+	public GeneralQueryParam getQueryParam(Page page){
+		
+		GeneralQueryParam generalQueryParam=new GeneralQueryParam();
+		generalQueryParam.setPageNo(page.getCurrentPage()+1);
+		generalQueryParam.setPageSize(page.getShowCount());
+		return generalQueryParam;
+	}
+	
 	/**得到ModelAndView
 	 * @return
 	 */
@@ -43,9 +52,10 @@ public class BaseController {
 		if(Jurisdiction.getSession().getAttribute(Const.SESSION_USERNAME)!=null){
 			mv.addObject("QX",Jurisdiction.getHC());
 		}
+		mv.addObject("SYSNAME", "百姓药房");
 		return mv;
 	}
-	
+
 	/**得到request对象
 	 * @return
 	 */

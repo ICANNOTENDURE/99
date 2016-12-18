@@ -14,7 +14,7 @@ public interface CommonManager {
 	 * @param primaryValue  主键值
 	 * @return pojo对象
 	 */
-	<T> T selectByPrimaryKey(Class<T> clazz, Integer primaryValue) throws Exception;
+	<T> T selectByPrimaryKey(Class<T> clazz, String primaryValue) throws Exception;
 
 	/**
 	 * 插入或保存数据

@@ -27,7 +27,7 @@
 			}
 			top.Dialog.close();
 			commonClose()
-		}catch(e){}
+		}catch(e){alert(e.message)}
 		
 		
 	</script>
