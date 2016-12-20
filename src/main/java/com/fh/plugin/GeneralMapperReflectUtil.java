@@ -115,6 +115,9 @@ public class GeneralMapperReflectUtil {
 		List<String> columns = new ArrayList<String>();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
+			if (field.isAnnotationPresent(javax.persistence.Transient.class)) {
+				continue;
+			}
 			columns.add(StringUtil.camelToUnderline(field.getName()));
 		}
 		return columns;
@@ -166,6 +169,9 @@ public class GeneralMapperReflectUtil {
 
 		for (Field field : fields) {
 			String fieldValue = FieldReflectUtil.getFieldStringValue(t, field);
+			if (field.isAnnotationPresent(javax.persistence.Transient.class)) {
+				continue;
+			}
 			if (fieldValue != null) {
 				mapping.put(StringUtil.camelToUnderline(field.getName()), fieldValue);
 			}
@@ -198,6 +204,9 @@ public class GeneralMapperReflectUtil {
 		Field[] fields = t.getClass().getDeclaredFields();
 
 		for (Field field : fields) {
+			if (field.isAnnotationPresent(javax.persistence.Transient.class)) {
+				continue;
+			}
 			String fieldValue = FieldReflectUtil.getFieldStringValue(t, field);
 			mapping.put(StringUtil.camelToUnderline(field.getName()), fieldValue);
 		}

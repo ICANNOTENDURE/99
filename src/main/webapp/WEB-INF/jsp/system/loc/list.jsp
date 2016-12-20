@@ -27,17 +27,9 @@
 					<div class="row">
 						<div class="col-xs-12">
 						<!-- 检索  -->
-						<form action="patuser/listUsers.do" method="post" name="userForm" id="userForm">
+						<form action="loc/list.do" method="post" name="userForm" id="userForm">
 						<table style="margin-top:5px;">
 							<tr>
-								<td>
-									<div class="nav-search">
-									<span class="input-icon">
-										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="keywords" value="${pd.keywords }" placeholder="这里输入关键词" />
-										<i class="ace-icon fa fa-search nav-search-icon"></i>
-									</span>
-									</div>
-								</td>
 								<c:if test="${QX.cha == 1 }">
 									<td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="searchs();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
 									<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
@@ -52,48 +44,35 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-									<th class="center">账号</th>
+									<th class="center">科室名称</th>
 									<th class="center">状态</th>
-									<th class="center">登陆日期</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 							<!-- 开始循环 -->	
 							<c:choose>
-								<c:when test="${not empty userList}">
+								<c:when test="${not empty list}">
 									<c:if test="${QX.cha == 1 }">
-									<c:forEach items="${userList}" var="user" varStatus="vs">
+									<c:forEach items="${list}" var="rd" varStatus="vs">
 										<tr>
 											<td class='center' style="width: 30px;">
-												<label><input type='checkbox' name='ids' value="${user.userId }" id="ids"  class="ace" data-phone="${user.userAccount}" /><span class="lbl"></span></label>
+												<label><input type='checkbox' name='ids' value="${rd.locId }" id="ids"  class="ace"/><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class="center">${user.userAccount}</td>
+											<td class="center"><a href="javascript:goSub('${rd.locId }')">${rd.locName}</a></td>
 											<td class="center" >
-												<c:if test="${user.status == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
-												<c:if test="${user.status == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
+												<c:if test="${rd.locStatus == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
+												<c:if test="${rd.locStatus == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
 											</td>
-		
-											<td class="center">${user.userLogindate}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.sms == 1 }">
-													<a class="btn btn-xs btn-warning" title='发送短信' onclick="sendSms('${user.userAccount }');">
-														<i class="ace-icon fa fa-envelope-o bigger-120" title="发送短信"></i>
-													</a>
-													</c:if>
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="popUser('${user.userId}');">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${rd.locId}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
-													</a>
-													</c:if>
-													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="delUser('${user.userId }','${user.userAccount }');">
-														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
 												</div>
@@ -103,21 +82,11 @@
 															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
 														</button>
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-			
-															<c:if test="${QX.sms == 1 }">
+															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="sendSms('${user.userAccount }');" class="tooltip-success" data-rel="tooltip" title="发送短信">
-																	<span class="blue">
-																		<i class="ace-icon fa fa-envelope-o bigger-120"></i>
-																	</span>
-																</a>
-															</li>
-															</c:if>
-															<c:if test="${QX.del == 1 }">
-															<li>
-																<a style="cursor:pointer;" onclick="delUser('${user.userId }','${user.userAccount }');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="edit('${rd.locId }','${rd.locName }');" class="tooltip-error" data-rel="tooltip" title="修改">
 																	<span class="red">
-																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
 																</a>
 															</li>
@@ -148,12 +117,10 @@
 							<tr>
 								<td style="vertical-align:top;">
 									<c:if test="${QX.add == 1 }">
-									<a class="btn btn-mini btn-success" onclick="popUser();">新增</a>
+									<a class="btn btn-mini btn-success" onclick="edit();">新增</a>
 									</c:if>
-									<c:if test="${QX.email == 1 }"><a title="批量发送电子邮件" class="btn btn-mini btn-info" onclick="commonBath('确定要给选中的用户发送邮件吗?');"><i class="ace-icon fa fa-envelope bigger-120"></i></a></c:if>
-									<c:if test="${QX.sms == 1 }"><a title="批量发送短信" class="btn btn-mini btn-warning" onclick="commonBath('确定要给选中的用户发送短信吗?');"><i class="ace-icon fa fa-envelope-o bigger-120"></i></a></c:if>
-									<c:if test="${QX.del == 1 }">
-									<a title="批量删除" class="btn btn-mini btn-danger" onclick="commonBath('确定要删除选中的数据吗?','patuser');" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
+									<c:if test="${null != pd.locId && pd.locId != ''}">
+									<a class="btn btn-mini btn-success" onclick="goSub('${pd.locParent}');">返回</a>
 									</c:if>
 								</td>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
@@ -190,30 +157,19 @@
 		}
 
 		//修改
-		function popUser(user_id){
-			user_id=user_id==undefined?"":user_id
+		function edit(id){
+			id=id==undefined?"":id;
 			commonLayer({ 
-					title: '病人信息',
+					title: '科室信息',
 					area: ['600px', '280px'],
-					content: '<%=basePath%>patuser/goSaveOrUpdate.do?id='+user_id,
+					content: '<%=basePath%>loc/goSaveOrUpdate.do?id='+id+'&parent='+'${pd.locId}',
 					end :function(){
 						searchs();
 					}		
 			})
 		}
 		
-		//删除
-		function delUser(userId,msg){
-			top.layer.confirm("确定要删除["+msg+"]吗?", function(index) {
-					top.layer.close(index)
-					top.jzts();
-					var url = "<%=basePath%>patuser/delete/"+userId;
-					$.get(url,function(data){
-						nextPage(1);
-					});
-				
-			});
-		}
+
 		
 
 		
@@ -226,5 +182,9 @@
 			var STATUS = $("#STATUS").val();
 			window.location.href='<%=basePath%>happuser/excel.do?keywords='+keywords+'&lastLoginStart='+lastLoginStart+'&lastLoginEnd='+lastLoginEnd+'&ROLE_ID='+ROLE_ID+'&STATUS='+STATUS;
 		}
+		//去此ID下子级列表
+		function goSub(parent){
+			window.location.href="<%=basePath%>loc/list.do?parent="+parent;
+		};
 		</script>
 </html>
