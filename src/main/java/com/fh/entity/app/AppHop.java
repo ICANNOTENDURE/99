@@ -4,17 +4,28 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecgframework.poi.excel.annotation.ExcelTarget;
+
 import com.fh.entity.BaseEntity;
 
+@ExcelTarget("appHop")
 @Table(name="APP_HOP")
-public class AppHop extends BaseEntity{
+public class AppHop extends BaseEntity implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	@Transient
+	private static final long serialVersionUID = 1L;
 	@Id
 	private String hopId;
+	@Excel(name = "医院名称", orderNum = "1")
 	private String hopName;
 	private String hopLevel;
 	private String hopStatus;
 	@Transient
+	@Excel(name = "医疗机构级别", orderNum = "2")
 	private String levelDesc;
 	
 	

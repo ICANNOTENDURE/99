@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -10,9 +11,11 @@
 	<mvc:annotation-driven/>	
 	<mvc:default-servlet-handler/>
 	
+
+	
 	<context:component-scan base-package="com.fh.controller" />
 	<context:component-scan base-package="com.json" />
-
+	<context:component-scan base-package="org.jeecgframework.poi.excel.view" />
 	<!-- 对静态资源文件的访问  restful-->     
 	<mvc:resources mapping="/admin/**" location="/,/admin/" />
 	<mvc:resources mapping="/static/**" location="/,/static/" />
@@ -27,12 +30,17 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 	 
+ 
+  	
 	<!-- 配置SpringMVC的视图解析器 -->
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+	p:order="3">
 		<property name="prefix" value="/WEB-INF/jsp/"/>
 		<property name="suffix" value=".jsp"/>
 	</bean>
-	
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" 
+	p:order="0">
+	</bean>
 	<bean id="exceptionResolver" class="com.fh.resolver.MyExceptionResolver"></bean>
 	<!-- 上传拦截，如最大上传值及最小上传值 -->
 	  <bean id="multipartResolver"   class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >   

@@ -72,5 +72,10 @@ public interface DictionariesManager{
 	 */
 	public PageData findFromTbs(PageData pd)throws Exception;
 	
+	/**通过名称查找字典id
+	 * @param pd
+	 * @throws Exception
+	 */
+	public PageData findByName(String name)throws Exception;
 }
 

@@ -14,8 +14,6 @@ import com.fh.service.system.dictionaries.DictionariesManager;
 
 /** 
  * 说明： 数据字典
- * 创建人：FH Q313596790
- * 创建时间：2015-12-16
  * @version
  */
 @Service("dictionariesService")
@@ -106,6 +104,11 @@ public class DictionariesService implements DictionariesManager{
 	 */
 	public PageData findFromTbs(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("DictionariesMapper.findFromTbs", pd);
+	}
+
+	@Override
+	public PageData findByName(String name) throws Exception {
+		return (PageData)dao.findForObject("DictionariesMapper.findByName", name);
 	}
 	
 }

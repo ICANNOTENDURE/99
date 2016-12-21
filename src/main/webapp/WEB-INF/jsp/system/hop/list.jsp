@@ -28,14 +28,7 @@
 						<div class="col-xs-12">
 						<!-- 检索  -->
 						<form action="hop/list.do" method="post" name="userForm" id="userForm">
-						<table style="margin-top:5px;">
-							<tr>
-								<c:if test="${QX.cha == 1 }">
-									<td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="searchs();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
-									<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
-								</c:if>
-							</tr>
-						</table>
+						<%@ include file="../index/commonBTN.jsp"%>
 						<!-- 检索  -->
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
 							<thead>
@@ -174,13 +167,20 @@
 		
 		//导出excel
 		function toExcel(){
-			var keywords = $("#nav-search-input").val();
-			var lastLoginStart = $("#lastLoginStart").val();
-			var lastLoginEnd = $("#lastLoginEnd").val();
-			var ROLE_ID = $("#role_id").val();
-			var STATUS = $("#STATUS").val();
-			window.location.href='<%=basePath%>happuser/excel.do?keywords='+keywords+'&lastLoginStart='+lastLoginStart+'&lastLoginEnd='+lastLoginEnd+'&ROLE_ID='+ROLE_ID+'&STATUS='+STATUS;
-		}
 
+			window.location.href='<%=basePath%>hop/excel.do' //?keywords='+keywords+'&lastLoginStart='+lastLoginStart+'&lastLoginEnd='+lastLoginEnd+'&ROLE_ID='+ROLE_ID+'&STATUS='+STATUS;
+		}
+		
+		//打开上传excel页面
+		function fromExcel(){
+			commonLayer({ 
+				title: 'excel导入',
+				area: ['300px', '180px'],
+				content: '<%=basePath%>hop/goUploadExcel.do?',
+				end :function(){
+					searchs();
+				}		
+			});
+		}	
 		</script>
 </html>

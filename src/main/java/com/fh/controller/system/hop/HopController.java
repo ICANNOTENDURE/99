@@ -5,11 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.controller.base.BaseController;
@@ -21,6 +27,7 @@ import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.HopService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
+import com.fh.util.PageData;
 
 @Controller
 @RequestMapping(value="/hop")
@@ -88,15 +95,77 @@ public class HopController extends BaseController{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/checkName/{name}")
+	@RequestMapping(value="/checkName")
 	@ResponseBody
-	public JsonResult checkName(@PathVariable String name) throws Exception{
-	
+	public JsonResult checkName(String name) throws Exception{
+		
+		name = new String(name.getBytes("ISO-8859-1"),"UTF-8");
+		return new JsonResult(getByName(name).size(),"");
+	}
+	public List<AppHop> getByName(String name) throws Exception{
+		
 		String conditionExp = "hop_Name = #{conditionParam.hop_Name}";
 		Map<String, Object> conditionParam = new HashMap<String, Object>();
 		conditionParam.put("hop_Name", name);
 		GeneralQueryParam queryParam = new GeneralQueryParam(conditionExp,conditionParam);
-		List<AppHop> lists=commonService.selectAdvanced(AppHop.class, queryParam);
-		return new JsonResult(lists.size(),"");
+		return commonService.selectAdvanced(AppHop.class, queryParam);
+	
+	}
+	/**进入上传excel界面
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goUploadExcel")
+	public ModelAndView goUploadExcel() throws Exception{
+		ModelAndView mv =getModelAndView();
+		mv.setViewName("system/hop/uploadexcel");
+		return mv;
+	}
+	
+	/**excel导入数据库
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/readExcel")
+	public ModelAndView readExcel(@RequestParam(value="excel",required=false) MultipartFile file
+			)throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		List<AppHop> list = ExcelImportUtil.importExcel(file.getInputStream(),AppHop.class,new ImportParams());
+		Map<String,String> dicMap=new HashMap<>();
+		for(AppHop hop:list){
+			if(StringUtils.isBlank(hop.getHopName()))continue;
+			if(StringUtils.isBlank(hop.getLevelDesc())) continue;
+			if(dicMap.containsKey(hop.getLevelDesc())){
+				hop.setHopLevel(dicMap.get(hop.getLevelDesc()));
+			}else{
+				PageData data=dictionariesService.findByName(hop.getLevelDesc());
+				if(data.get("DICTIONARIES_ID")!=null){
+					hop.setHopLevel(data.get("DICTIONARIES_ID").toString());
+					dicMap.put(hop.getLevelDesc(), data.get("DICTIONARIES_ID").toString());
+				}
+			}
+			hop.setHopStatus("Y");
+			List<AppHop> appHops=getByName(hop.getHopName());
+			if(appHops.size()>0){
+				hop.setHopId(appHops.get(0).getHopId());
+			}
+			commonService.saveOrUpdate(hop);
+		}
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	@RequestMapping(value="/excel")
+	public String excel(ModelMap map)throws Exception{
+		
+		Page page=new Page();
+		page.setShowCount(100000);
+		List<AppHop> appHops=hopService.listPage(page);
+        map.put(NormalExcelConstants.FILE_NAME,"医院信息");
+        map.put(NormalExcelConstants.CLASS,AppHop.class);
+        map.put(NormalExcelConstants.PARAMS,new ExportParams("医院列表", "导出人:大熊小清新", "导出信息"));
+        map.put(NormalExcelConstants.DATA_LIST,appHops);
+		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 }

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -103,9 +102,7 @@
 		if(($("#id").val()=="")||($("#id").val()=="undefined")){
 			hasU();
 		}else{
-			$("#userForm").submit();
-			$("#zhongxin").hide();
-			$("#zhongxin2").show();
+			$("#form").submit();
 		}
 	}
 	
@@ -114,7 +111,7 @@
 		var name=$("#name").val()
 		$.ajax({
 			type: "POST",
-			url: '<%=basePath%>hop/checkName/'+name,
+			url: '<%=basePath%>hop/checkName.do?name='+name,
 			dataType:'json',
 			cache: false,
 			success: function(data){

@@ -135,5 +135,13 @@
 			BIANMA = #{BIANMA}
 	</select>
 	
-	<!-- fh313596790qq(青苔) -->
+	<!-- 通过名称查找字典id -->
+	<select id="findByName" parameterType="String" resultType="pd">
+		select
+			DICTIONARIES_ID
+		from 
+			<include refid="tableName"></include>
+		where
+			NAME = #{NAME}
+	</select>
 </mapper>
