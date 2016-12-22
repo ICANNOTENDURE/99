@@ -41,12 +41,6 @@ import com.fh.util.PageData;
 import com.fh.util.PathUtil;
 import com.fh.util.Tools;
 
-/** 
- * 类名称：UserController
- * 创建人：FH fh313596790qq(青苔)
- * 更新时间：2015年11月3日
- * @version
- */
 @Controller
 @RequestMapping(value="/user")
 public class UserController extends BaseController {
