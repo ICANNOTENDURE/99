@@ -19,6 +19,7 @@ public class PageData extends HashMap implements Map{
 	
 	Map map = null;
 	HttpServletRequest request;
+	@SuppressWarnings("unchecked")
 	public PageData(HttpServletRequest request){
 		this.request = request;
 		Map properties = request.getParameterMap();
@@ -47,6 +48,7 @@ public class PageData extends HashMap implements Map{
 		map = returnMap;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public PageData() {
 		map = new HashMap();
 	}

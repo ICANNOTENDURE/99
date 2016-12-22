@@ -49,10 +49,14 @@ public class HopController extends BaseController{
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page){
 		ModelAndView mv = getModelAndView();
+		PageData pd=getPageData();
+		page.setPd(pd);
 		try{
-
 			mv.setViewName("system/hop/list");
 			mv.addObject("list", hopService.listPage(page));
+			mv.addObject("pd", pd);
+			List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId("120197ba4bc84d32a0d86191bcdfff56");
+			mv.addObject("levelList", dictionaries);
 
 		} catch(Exception e){
 			logger.error(e.toString(), e);
@@ -118,6 +122,8 @@ public class HopController extends BaseController{
 	@RequestMapping(value="/goUploadExcel")
 	public ModelAndView goUploadExcel() throws Exception{
 		ModelAndView mv =getModelAndView();
+		mv.addObject("path","hop/readExcel.do");
+		mv.addObject("file","hop.xls");
 		mv.setViewName("system/hop/uploadexcel");
 		return mv;
 	}
@@ -161,6 +167,7 @@ public class HopController extends BaseController{
 		
 		Page page=new Page();
 		page.setShowCount(100000);
+		page.setPd(this.getPageData());
 		List<AppHop> appHops=hopService.listPage(page);
         map.put(NormalExcelConstants.FILE_NAME,"医院信息");
         map.put(NormalExcelConstants.CLASS,AppHop.class);

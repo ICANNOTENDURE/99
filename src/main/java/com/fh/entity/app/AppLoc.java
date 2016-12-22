@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.jeecgframework.poi.excel.annotation.Excel;
+
 import com.fh.entity.BaseEntity;
 
 @Table(name="APP_LOC")
@@ -14,6 +16,7 @@ public class AppLoc extends BaseEntity{
 	
 	@Id
 	private String locId;
+	@Excel(name = "名称", orderNum = "1")
 	private String locName;
 	private String locStatus;
 	private String locParent;

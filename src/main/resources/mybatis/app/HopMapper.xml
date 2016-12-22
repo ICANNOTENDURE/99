@@ -13,7 +13,12 @@
 		
 		from APP_HOP t1 left join sys_dictionaries t2 on t1.HOP_LEVEL=t2.DICTIONARIES_ID
 		<where>
-			
+    		<if test="pd.keywords != null and pd.keywords !='' ">
+         		t1.HOP_NAME like CONCAT('%',#{pd.keywords},'%')  
+    		</if>
+    		<if test="pd.HOP_LEVEL != null and pd.HOP_LEVEL !=''">
+         		and t1.HOP_LEVEL = #{pd.HOP_LEVEL}
+    		</if>   
 		</where>
 
 	</select>

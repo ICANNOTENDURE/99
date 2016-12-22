@@ -1,5 +1,6 @@
 package com.fh.entity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +10,6 @@ import com.fh.util.Tools;
 
 /**
  * 分页类
- * @author FH QQ 313596790[青苔]
- * 创建时间：2014年6月28日
  */
 public class Page {
 	
@@ -26,7 +25,8 @@ public class Page {
 	private List<String> queryColumn;
 	private String tableName;
 	private String orderExp;
-	
+	private Map<String, Object> likeExpMap= new HashMap<String, Object>();
+	private Map<String, Object> equalExpMap= new HashMap<String, Object>();
 	/**
 	 * 查询条件 where 表达式 
 	 * <p>不要写where</p>
@@ -279,6 +279,22 @@ public class Page {
 
 	public void setPd(PageData pd) {
 		this.pd = pd;
+	}
+
+	public Map<String, Object> getLikeExpMap() {
+		return likeExpMap;
+	}
+
+	public void setLikeExpMap(Map<String, Object> likeExpMap) {
+		this.likeExpMap = likeExpMap;
+	}
+
+	public Map<String, Object> getEqualExpMap() {
+		return equalExpMap;
+	}
+
+	public void setEqualExpMap(Map<String, Object> equalExpMap) {
+		this.equalExpMap = equalExpMap;
 	}
 	
 }

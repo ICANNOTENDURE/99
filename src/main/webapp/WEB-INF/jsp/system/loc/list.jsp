@@ -30,10 +30,29 @@
 						<form action="loc/list.do" method="post" name="userForm" id="userForm">
 						<table style="margin-top:5px;">
 							<tr>
+								<td>
+									<div class="nav-search">
+									<span class="input-icon">
+										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="keywords" value="${keywords }" placeholder="这里输入关键词" />
+										<i class="ace-icon fa fa-search nav-search-icon"></i>
+									</span>
+									</div>
+								</td>
+								<!-- 按钮 -->
 								<c:if test="${QX.cha == 1 }">
 									<td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="searchs();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
 									<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
+									<c:if test="${QX.FromExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="fromExcel();" title="从EXCEL导入"><i id="nav-search-icon" class="ace-icon fa fa-cloud-upload bigger-110 nav-search-icon blue"></i></a></td></c:if>
 								</c:if>
+								<c:if test="${QX.add == 1 }">
+									<td style="vertical-align:top;padding-left:2px;">
+									<a class="btn btn-xs btn-success" onclick="edit();">新增</a>
+									</td>
+								</c:if>
+								<c:if test="${null != pd.locId && pd.locId != ''}">
+									<a class="btn btn-mini btn-success" onclick="goSub('${pd.locParent}');">返回</a>
+								</c:if>
+								<!-- 按钮 -->
 							</tr>
 						</table>
 						<!-- 检索  -->
@@ -115,14 +134,6 @@
 						<div class="page-header position-relative">
 						<table style="width:100%;">
 							<tr>
-								<td style="vertical-align:top;">
-									<c:if test="${QX.add == 1 }">
-									<a class="btn btn-mini btn-success" onclick="edit();">新增</a>
-									</c:if>
-									<c:if test="${null != pd.locId && pd.locId != ''}">
-									<a class="btn btn-mini btn-success" onclick="goSub('${pd.locParent}');">返回</a>
-									</c:if>
-								</td>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
@@ -175,16 +186,22 @@
 		
 		//导出excel
 		function toExcel(){
-			var keywords = $("#nav-search-input").val();
-			var lastLoginStart = $("#lastLoginStart").val();
-			var lastLoginEnd = $("#lastLoginEnd").val();
-			var ROLE_ID = $("#role_id").val();
-			var STATUS = $("#STATUS").val();
-			window.location.href='<%=basePath%>happuser/excel.do?keywords='+keywords+'&lastLoginStart='+lastLoginStart+'&lastLoginEnd='+lastLoginEnd+'&ROLE_ID='+ROLE_ID+'&STATUS='+STATUS;
+			window.location.href='<%=basePath%>loc/excel.do' //?keywords='+keywords+'&lastLoginStart='+lastLoginStart+'&lastLoginEnd='+lastLoginEnd+'&ROLE_ID='+ROLE_ID+'&STATUS='+STATUS;
 		}
 		//去此ID下子级列表
 		function goSub(parent){
 			window.location.href="<%=basePath%>loc/list.do?parent="+parent;
 		};
+		//打开上传excel页面
+		function fromExcel(){
+			commonLayer({ 
+				title: 'excel导入',
+				area: ['300px', '250px'],
+				content: '<%=basePath%>loc/goUploadExcel.do?',
+				end :function(){
+					searchs();
+				}		
+			});
+		}
 		</script>
 </html>

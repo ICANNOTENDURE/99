@@ -10,11 +10,18 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.StringUtils;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.controller.base.BaseController;
@@ -41,16 +48,23 @@ public class AppLocController extends BaseController{
 	public ModelAndView list(Page page){
 		ModelAndView mv = getModelAndView();
 		try{
-			Map<String, Object> conditionParam = new HashMap<String, Object>();
-			String locid=getPageData().get("parent")==null?"0":getPageData().get("parent").toString();
-			conditionParam.put("loc_parent", locid);
-			page.setConditionExp("loc_parent = #{conditionParam.loc_parent}");
-			page.setConditionParam(conditionParam);
 			mv.setViewName("system/loc/list");
+			String locid=getPageData().get("parent")==null?"0":getPageData().get("parent").toString();
+			page.setConditionExp("LOC_PARENT = #{conditionParam.LOC_PARENT}");
+			Map<String, Object> conditionParam = new HashMap<String, Object>();
+			conditionParam.put("LOC_PARENT", locid);
+			page.setConditionParam(conditionParam);
+			String keywords=getPageData().get("keywords")==null?"":getPageData().get("keywords").toString();
+			if(StringUtils.isNotBlank(keywords)){
+				page.getLikeExpMap().put("loc_name", keywords);			
+			}
+
 			mv.addObject("list", commonService.listPage(AppLoc.class, page));
+			mv.addObject("keywords", keywords);
 			if(!locid.equals("0")){
 				mv.addObject("pd", commonService.selectByPrimaryKey(AppLoc.class, locid));
 			}
+			
 		} catch(Exception e){
 			logger.error(e.toString(), e);
 		}
@@ -137,12 +151,66 @@ public class AppLocController extends BaseController{
 	@RequestMapping(value="/checkAccount/{account}")
 	@ResponseBody
 	public JsonResult checkAccount(@PathVariable String account) throws Exception{
-	
+		account = new String(account.getBytes("ISO-8859-1"),"UTF-8");
+		return new JsonResult(getByName(account).size(),"");
+	}
+	public List<AppLoc> getByName(String name) throws Exception{
+		
 		String conditionExp = "loc_name = #{conditionParam.loc_name}";
 		Map<String, Object> conditionParam = new HashMap<String, Object>();
-		conditionParam.put("loc_name", account);
+		conditionParam.put("loc_name", name);
 		GeneralQueryParam queryParam = new GeneralQueryParam(conditionExp,conditionParam);
-		List<AppLoc> lists=commonService.selectAdvanced(AppLoc.class, queryParam);
-		return new JsonResult(lists.size(),"");
+		return commonService.selectAdvanced(AppLoc.class, queryParam);
+	
+	}
+	
+	//下载
+	@RequestMapping(value="/excel")
+	public String excel(ModelMap map)throws Exception{
+		
+		Page page=new Page();
+		page.setShowCount(100000);
+		page.setPd(this.getPageData());
+		List<AppLoc> appHops=commonService.listPage(AppLoc.class, page);
+        map.put(NormalExcelConstants.FILE_NAME,"科室信息");
+        map.put(NormalExcelConstants.CLASS,AppLoc.class);
+        map.put(NormalExcelConstants.PARAMS,new ExportParams("医院列表", "导出人:大熊小清新", "导出信息"));
+        map.put(NormalExcelConstants.DATA_LIST,appHops);
+		return NormalExcelConstants.JEECG_EXCEL_VIEW;
+	}
+	
+	/**进入上传excel界面
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/goUploadExcel")
+	public ModelAndView goUploadExcel() throws Exception{
+		ModelAndView mv =getModelAndView();
+		mv.addObject("path","loc/readExcel.do");
+		mv.addObject("file","loc.xls");
+		mv.setViewName("system/hop/uploadexcel");
+		return mv;
+	}
+	
+	/**excel导入数据库
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/readExcel")
+	public ModelAndView readExcel(@RequestParam(value="excel",required=false) MultipartFile file )throws Exception{
+		ModelAndView mv = this.getModelAndView();
+		List<AppLoc> list = ExcelImportUtil.importExcel(file.getInputStream(),AppLoc.class,new ImportParams());
+		for(AppLoc loc:list){
+			if(StringUtils.isBlank(loc.getLocName()))continue;
+			loc.setLocStatus("Y");
+			List<AppLoc> appLocs=getByName(loc.getLocName());
+			if(appLocs.size()>0){
+				loc.setLocId(appLocs.get(0).getLocId());
+			}
+			commonService.saveOrUpdate(loc);
+		}
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
 	}
 }

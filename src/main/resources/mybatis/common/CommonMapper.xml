@@ -99,12 +99,20 @@
 			${columnName}
 		</foreach>
 		from ${tableName}
-		<where>
-			<if test="conditionExp != null">
-				${conditionExp}
-			</if>
-		</where>
-
+		where 1=1
+		<if test="conditionExp != null">
+			and	${conditionExp}
+		</if>
+		<if test="equalExpMap != null">
+		 	<foreach item="key"  collection="equalExpMap.keys" >
+		 	   and ${key} = #{equalExpMap[${key}]}
+			</foreach>
+		</if>
+		<if test="likeExpMap != null">
+		 	<foreach item="key"  collection="likeExpMap.keys" >
+		 	   and ${key} like CONCAT('%',#{likeExpMap[${key}]},'%')
+			</foreach>
+		</if>
 		<if test="orderExp != null">
 			order by ${orderExp}
 		</if>
@@ -121,12 +129,22 @@
 			${columnName}
 		</foreach>
 		from ${tableName}
-		<where>
-			<if test="conditionExp != null">
-				${conditionExp}
-			</if>
-		</where>
+		
+		where 1=1
+		<if test="conditionExp != null">
+			and ${conditionExp}
+		</if>
 
+		<if test="likeExpMap != null">
+		 	<foreach item="key"  collection="likeExpMap.keys" >
+		 	   and ${key} like CONCAT('%',#{likeExpMap[${key}]},'%')
+			</foreach>
+		</if>
+		<if test="equalExpMap != null">
+		 	<foreach item="key"  collection="equalExpMap.keys" >
+		 	   and ${key} = #{equalExpMap[${key}]}
+			</foreach>
+		</if>
 		<if test="orderExp != null">
 			order by ${orderExp}
 		</if>
