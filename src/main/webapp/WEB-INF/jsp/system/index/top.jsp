@@ -50,4 +50,14 @@
 	<!--提示框-->
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 		
-		<script type="text/javascript" src="static/js/myjs/common.js"></script>
+	
+	<script type="text/javascript" src="plugins/layer/layer.js"></script>
+
+	<!--bootstrap-select-->
+    <link href="plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+    <script src=plugins/bootstrap-select/bootstrap-select.min.js" ></script>
+    <link href="plugins/bootstrap-select/select2.min.css" rel="stylesheet">
+    <script src="plugins/bootstrap-select/select2.min.js" ></script>
+    <script src="plugins/bootstrap-select/i18n/zh-CN.js" ></script>	
+    
+    <script type="text/javascript" src="static/js/myjs/common.js"></script>

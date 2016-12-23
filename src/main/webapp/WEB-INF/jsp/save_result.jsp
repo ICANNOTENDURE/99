@@ -18,15 +18,12 @@
 
 </head>
 <body>
-	<div id="zhongxin"></div>
+	
 	<script type="text/javascript">
 	try{
-			var msg = "${msg}";
-			if(msg=="success" || msg==""){
-				document.getElementById('zhongxin').style.display = 'none';
-			}
-			top.Dialog.close();
 			commonClose()
+
+			
 		}catch(e){alert(e.message)}
 		
 		

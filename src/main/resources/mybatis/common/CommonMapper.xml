@@ -54,7 +54,16 @@
     where ${conditionExp}
     ]]>
 	</delete>
-
+	
+	<delete id="deleteBatch" parameterType="map">
+		delete from ${tableName}
+		where ${primaryKey} in
+		<foreach item="id"  collection="idList"
+			open="(" separator="," close=")">
+			CONCAT('"',#{id},'"')
+		</foreach>
+	</delete>
+	
 	<update id="updateByPrimaryKey">
 		update ${tableName}
 		<set>

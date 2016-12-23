@@ -227,4 +227,51 @@ public class CommonService implements CommonManager{
 		}
 		return result;
 	}
+
+
+
+	@Override
+	public <T> List<T> selectByEqCon(Class<T> clazz,
+			Map<String, Object> conMapping) throws Exception {
+		
+		List<T> result = new ArrayList<T>();
+		Map<String, Object> param = new HashMap<String, Object>();
+		Map<String, Object> conditionParam = new HashMap<String, Object>();
+		StringBuffer sb=new StringBuffer();
+		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+
+
+		int i=0;
+		for (Map.Entry<String, Object> m :conMapping.entrySet())  {
+		    if(i>0) sb.append(" and "); 
+			sb.append(m.getKey()+ " = #{conditionParam."+m.getKey()+"} ");
+			conditionParam.put(m.getKey(), m.getValue());
+			i++;
+		}
+		param.put("tableName", tableName);
+		param.put("queryColumn", GeneralMapperReflectUtil.getAllColumns(clazz));
+		param.put("conditionExp", sb.toString());
+		param.put("conditionParam", conditionParam);
+		List<Map<String, Object>> list=commonDao.selectAdvanced(param);
+		if (list != null && list.size() != 0) {
+			for (Map<String, Object> mapping : list) {
+				result.add(GeneralMapperReflectUtil.parseToBean(mapping, clazz));
+			}
+		}
+		return result;
+	}
+
+
+
+	@Override
+	public <T> int deleteBatch(Class<T> clazz, List<String> list) {
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
+		param.put("tableName", tableName);
+		param.put("primaryKey", primaryKey);
+		//param.put("idList", list);
+		return commonDao.deleteBatch(param);
+	}
 }

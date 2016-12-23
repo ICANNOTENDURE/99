@@ -23,6 +23,9 @@ function sendSms(phone){
 			content: 'head/goSendSms.do?PHONE='+phone+'&msg=appuser'
 	})
 }
+function commonAlert(msg){
+	top.layer.alert(msg);
+}
 function commonLayer(_options){
 	
 	options={
@@ -31,6 +34,61 @@ function commonLayer(_options){
 	}
 	opts=$.extend(true,options, _options);
 	top.layer.open(opts);
+}
+function commonLoad(){
+	index = top.layer.load(1, {shade: [0.5,'#fff']});
+	return index;
+}
+function commonLoadClose(index){
+	top.layer.close(index)
+}
+function commonDelete(url){
+	top.layer.confirm("确认删除吗？",function(index) {
+		top.layer.close(index);
+		index=commonLoad();
+		$.post(
+			url,
+			function(data){
+				commonLoadClose(index)
+				if(data.code==0){
+					searchs();
+				}else{
+					commonAlert("失败:"+data.message)
+				}
+				
+			},'json'
+		);
+	})
+}
+function commonDeleteAll(url){
+	
+	ids=[];
+	$("[name = ids]:checkbox").each(function () {
+        if ($(this).is(":checked")) {
+        	ids.push($(this).attr("value"));
+        }
+    });
+	if(ids.length==0){
+		top.layer.alert("<span class='bigger-110'>您没有选择任何内容!</span>");
+		$("#zcheckbox").tips({
+			side:3,
+            msg:'点这里全选',
+            bg:'#AE81FF',
+            time:8
+        });
+		return;
+	}
+	top.layer.confirm("确认删除吗？",function(index) {
+		top.layer.close(index);
+		index=commonLoad();
+		$.post(
+			url+ids.join(","),
+			function(data){
+				commonLoadClose(index)
+				searchs();
+			},'json'
+		);
+	})
 }
 //批量操作
 function commonBath(msg,url){
@@ -59,15 +117,16 @@ function commonBath(msg,url){
 	top.layer.confirm(msg,function(index) {
 			   top.layer.close(index)	
 			   if(msg == '确定要删除选中的数据吗?'){
-					top.jzts();
+					index=commonLoad();
 					$.ajax({
 						type: "POST",
 						url: url,
-				    	data: {USER_IDS:ids.join(",")},
+				    	data: {ids:ids.join(",")},
 						dataType:'json',
 						cache: false,
 						success: function(data){
-							nextPage(1)
+							commonLoadClose(index);
+							searchs();
 						}
 					});
 				}else if(msg == '确定要给选中的用户发送邮件吗?'){
@@ -78,36 +137,39 @@ function commonBath(msg,url){
 	});
 }
 
-
-$(top.hangge());
-
 $(function() {
 	
-	//下拉框
-	if(!ace.vars['touch']) {
-		$('.chosen-select').chosen({allow_single_deselect:true}); 
-		$(window)
-		.off('resize.chosen')
-		.on('resize.chosen', function() {
-			$('.chosen-select').each(function() {
-				 var $this = $(this);
-				 $this.next().css({'width': $this.parent().width()});
-			});
-		}).trigger('resize.chosen');
-		$(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-			if(event_name != 'sidebar_collapsed') return;
-			$('.chosen-select').each(function() {
-				 var $this = $(this);
-				 $this.next().css({'width': $this.parent().width()});
-			});
-		});
-		$('#chosen-multiple-style .btn').on('click', function(e){
-			var target = $(this).find('input[type=radio]');
-			var which = parseInt(target.val());
-			if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
-			 else $('#form-field-select-4').removeClass('tag-input-style');
-		});
+	/**bootstrap select2**/
+	$.fn.commonSelect=function(_options){
+		
+		options=
+		{  
+		   language : 'zh-CN',
+  		   placeholder: "请选择",
+  		   allowClear: true
+		}
+		ajaxOption={
+			ajax: {
+			url:_options.url,   
+			dataType: "json",     
+		    processResults: function (data, page) {
+		      return {
+		        results: data
+		      };
+		    },
+		    data: function (params) {
+		      return {
+		        search: params.term
+		      };
+		    },
+		    cache:false
+		  }	
+		}
+		var opts = $.extend({},options, _options);
+		opts=((_options.url==undefined)?opts:$.extend({},opts, ajaxOption))
+		$(this).select2(opts);
 	}
+	
 	
 	//复选框全选控制
 	var active_class = 'active';
@@ -120,4 +182,5 @@ $(function() {
 		});
 	});
 });
+
 

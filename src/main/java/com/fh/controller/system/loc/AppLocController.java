@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.Select;
 import com.fh.entity.app.AppLoc;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
@@ -205,6 +206,35 @@ public class AppLocController extends BaseController{
 		}
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
+		return mv;
+	}
+	
+	
+	/*科室下拉列表使用*/
+	@RequestMapping(value="/locSelect")
+	@ResponseBody
+	public List<Select> locSelect(String search) throws Exception{
+		
+
+		List<Select> mv=new ArrayList<Select>();
+		List<String> colmn=new ArrayList<String>();
+		colmn.add("LOC_ID");
+		colmn.add("LOC_NAME");
+		GeneralQueryParam queryParam=new GeneralQueryParam();
+		queryParam.setPageNo(1);
+		queryParam.setPageSize(10);
+		queryParam.setQueryColumn(colmn);
+		if(StringUtils.isNotBlank(search)){
+			search = new String(search.getBytes("ISO-8859-1"),"UTF-8");
+			queryParam.setConditionExp(" LOC_NAME like #{conditionParam.LOC_NAME} ");
+			Map<String, Object> conditionParam = new HashMap<String, Object>();
+			conditionParam.put("LOC_NAME", "%"+search.trim()+"%");
+			queryParam.setConditionParam(conditionParam);
+		}
+		List<Map<String, Object>> list=commonService.selectAdvancedByColumn(AppLoc.class, queryParam);
+		for (Map<String, Object> mapping : list) {
+			mv.add(new Select(mapping.get("LOC_ID").toString(), mapping.get("LOC_NAME").toString()));
+		}
 		return mv;
 	}
 }

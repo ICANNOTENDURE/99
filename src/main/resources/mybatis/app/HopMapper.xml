@@ -3,7 +3,7 @@
 
 <mapper namespace="HopMapper">
 
-	
+	<!-- 医院查询 -->
 	<select id="listPage" parameterType="page" resultType="com.fh.entity.app.AppHop">
 		select
 			t1.HOP_ID as hopId,
@@ -20,7 +20,5 @@
          		and t1.HOP_LEVEL = #{pd.HOP_LEVEL}
     		</if>   
 		</where>
-
 	</select>
-
 </mapper>

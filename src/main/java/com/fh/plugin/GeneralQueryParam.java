@@ -45,7 +45,7 @@ public class GeneralQueryParam {
 	 * <p>多个排序字段用逗号分隔</p>
 	 */
 	private String orderExp;
-
+	
 	public GeneralQueryParam() {
 	}
 	

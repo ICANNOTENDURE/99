@@ -27,4 +27,6 @@ public interface CommonDao {
 	List<Map<String,Object>> selectAdvanced(Map<String,Object> param);
 	
 	List<Map<String,Object>> listPage(Page page);
+	
+	int deleteBatch(Map<String,Object> param);
 }

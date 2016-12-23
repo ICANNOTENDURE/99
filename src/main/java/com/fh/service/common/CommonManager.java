@@ -111,5 +111,14 @@ public interface CommonManager {
 	<T> List<Map<String, Object>> selectAdvancedByColumn(Class<T> clazz, GeneralQueryParam queryParam) throws Exception;
 	
 	
+   /**
+	 * 多个and条件查询
+	 */
+	<T> List<T> selectByEqCon(Class<T> clazz, Map<String, Object> conMapping) throws Exception;
+
+   /**
+	 * 批量删除
+	 */
+	<T> int deleteBatch(Class<T> clazz, List<String> list)throws Exception;
 }
 

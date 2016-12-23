@@ -1,5 +1,6 @@
 package com.fh.controller.system.disease;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.Select;
 import com.fh.entity.app.AppDisease;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
@@ -154,5 +156,33 @@ public class DiseaseController extends BaseController{
         map.put(NormalExcelConstants.PARAMS,new ExportParams("医院列表", "导出人:大熊小清新", "导出信息"));
         map.put(NormalExcelConstants.DATA_LIST,commonService.listPage(AppDisease.class, page));
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
+	}
+	
+	/*疾病下拉列表使用*/
+	@RequestMapping(value="/diseaseSelect")
+	@ResponseBody
+	public List<Select> diseaseSelect(String search) throws Exception{
+		
+
+		List<Select> mv=new ArrayList<Select>();
+		List<String> colmn=new ArrayList<String>();
+		colmn.add("DISEASE_ID");
+		colmn.add("DISEASE_NAME");
+		GeneralQueryParam queryParam=new GeneralQueryParam();
+		queryParam.setPageNo(1);
+		queryParam.setPageSize(10);
+		queryParam.setQueryColumn(colmn);
+		if(StringUtils.isNotBlank(search)){
+			search = new String(search.getBytes("ISO-8859-1"),"UTF-8");
+			queryParam.setConditionExp(" DISEASE_NAME like #{conditionParam.DISEASE_NAME} ");
+			Map<String, Object> conditionParam = new HashMap<String, Object>();
+			conditionParam.put("DISEASE_NAME", "%"+search.trim()+"%");
+			queryParam.setConditionParam(conditionParam);
+		}
+		List<Map<String, Object>> list=commonService.selectAdvancedByColumn(AppDisease.class, queryParam);
+		for (Map<String, Object> mapping : list) {
+			mv.add(new Select(mapping.get("DISEASE_ID").toString(), mapping.get("DISEASE_NAME").toString()));
+		}
+		return mv;
 	}
 }
