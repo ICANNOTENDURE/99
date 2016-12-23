@@ -118,11 +118,7 @@ public class AppLocController extends BaseController{
 		AppLoc appLoc=new AppLoc();
 		mv.setViewName("system/loc/edit");
 		parent=StringUtils.isBlank(parent)?"0":parent;
-		if("0".equals(parent)){
-			mv.addObject("parentName", "根");
-		}else{
-			mv.addObject("parentName", commonService.selectByPrimaryKey(AppLoc.class, parent).getLocName());
-		}
+		mv.addObject("locList",commonService.selectAdvanced(AppLoc.class, new GeneralQueryParam()));
 		if(StringUtils.isNotBlank(id)){
 			appLoc=commonService.selectByPrimaryKey(AppLoc.class, id);
 		}else{
@@ -201,6 +197,9 @@ public class AppLocController extends BaseController{
 			List<AppLoc> appLocs=locService.getByName(loc.getLocName());
 			if(appLocs.size()>0){
 				loc.setLocId(appLocs.get(0).getLocId());
+				loc.setLocParent(appLocs.get(0).getLocParent());
+			}else{
+				loc.setLocParent("0");
 			}
 			commonService.saveOrUpdate(loc);
 		}

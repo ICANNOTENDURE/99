@@ -30,15 +30,17 @@
 						<div class="col-xs-12">
 						<form action="loc/saveOrUpdate.do" name="userForm" id="userForm" method="post">
 							<input type="hidden" name="locId" id="locId" value="${pd.locId }"/>
-							<input type="hidden" name="locParent"  value="${pd.locParent }"/>
 							<div id="zhongxin" style="padding-top: 13px;">
 							<table id="table_report" class="table table-striped table-bordered table-hover">
 								<tr>
-									<td style="width:79px;text-align: right;padding-top: 13px;">上级:</td>
+									<td style="width:79px;text-align: right;padding-top: 13px;">上级科室:</td>
 									<td>
-										<div class="col-xs-4 label label-lg label-light arrowed-in arrowed-right">
-										<b>${parentName}</b>
-										</div>
+									 	<select class="chosen-select form-control" name="locParent"  data-placeholder="上级科室" style="vertical-align:top;width: 120px;">
+										<option value="0"></option>
+										<c:forEach items="${locList}" var="lev">
+											<option value="${lev.locId }" <c:if test="${pd.locParent==lev.locId}">selected</c:if>>${lev.locName }</option>
+										</c:forEach>
+									  	</select>
 									</td>
 								</tr>
 								<tr>

@@ -50,7 +50,9 @@
 									</td>
 								</c:if>
 								<c:if test="${null != pd.locId && pd.locId != ''}">
-									<a class="btn btn-mini btn-success" onclick="goSub('${pd.locParent}');">返回</a>
+									<td style="vertical-align:top;padding-left:2px;">
+									<a class="btn btn-xs btn-success" onclick="goSub('${pd.locParent}');">返回</a>
+									</td>
 								</c:if>
 								<!-- 按钮 -->
 							</tr>
@@ -196,7 +198,7 @@
 		function fromExcel(){
 			commonLayer({ 
 				title: 'excel导入',
-				area: ['300px', '250px'],
+				area: ['300px', '350px'],
 				content: '<%=basePath%>loc/goUploadExcel.do?',
 				end :function(){
 					searchs();
