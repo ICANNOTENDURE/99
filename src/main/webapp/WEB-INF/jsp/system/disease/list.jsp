@@ -172,7 +172,7 @@
 			id=id==undefined?"":id;
 			commonLayer({ 
 					title: '疾病信息',
-					area: ['600px', '280px'],
+					area: ['600px', '500px'],
 					content: '<%=basePath%>disease/goSaveOrUpdate.do?id='+id,
 					end :function(){
 						searchs();

@@ -26,7 +26,7 @@
 					<div class="row">
 						<div class="col-xs-12">
 						<form action="disease/saveOrUpdate.do" name="form" id="form" method="post">
-							<input type="hidden" name="hopId" id="id" value="${pd.diseaseId }"/>
+							<input type="hidden" name="diseaseId" id="id" value="${pd.diseaseId }"/>
 							<div id="zhongxin" style="padding-top: 13px;">
 							<table id="table_report" class="table table-striped table-bordered table-hover">
 								<tr>
@@ -44,6 +44,14 @@
 										<option value="Y" <c:if test="${pd.diseaseStatus == 'Y' }">selected</c:if> >正常</option>
 										<option value="N" <c:if test="${pd.diseaseStatus == 'N' }">selected</c:if> >冻结</option>
 										</select>
+									</td>
+								</tr>
+								<tr>
+									<td style="width:79px;text-align: right;padding-top: 13px;">临床表现:</td>
+									<td>
+										<textarea rows="10" cols="60" name="diseaseFeatures">
+											${pd.diseaseFeatures}
+										</textarea>
 									</td>
 								</tr>
 								<tr>

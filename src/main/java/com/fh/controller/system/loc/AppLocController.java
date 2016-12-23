@@ -30,6 +30,7 @@ import com.fh.entity.Page;
 import com.fh.entity.app.AppLoc;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.app.impl.LocService;
 
 @Controller
 @RequestMapping(value="/loc")
@@ -39,6 +40,8 @@ public class AppLocController extends BaseController{
 	@Autowired
 	private CommonService commonService;
 	
+	@Autowired
+	private LocService locService;
 	
 	/**显示列表
 	 * @param page
@@ -152,17 +155,9 @@ public class AppLocController extends BaseController{
 	@ResponseBody
 	public JsonResult checkAccount(@PathVariable String account) throws Exception{
 		account = new String(account.getBytes("ISO-8859-1"),"UTF-8");
-		return new JsonResult(getByName(account).size(),"");
+		return new JsonResult(locService.getByName(account).size(),"");
 	}
-	public List<AppLoc> getByName(String name) throws Exception{
-		
-		String conditionExp = "loc_name = #{conditionParam.loc_name}";
-		Map<String, Object> conditionParam = new HashMap<String, Object>();
-		conditionParam.put("loc_name", name);
-		GeneralQueryParam queryParam = new GeneralQueryParam(conditionExp,conditionParam);
-		return commonService.selectAdvanced(AppLoc.class, queryParam);
-	
-	}
+
 	
 	//下载
 	@RequestMapping(value="/excel")
@@ -203,7 +198,7 @@ public class AppLocController extends BaseController{
 		for(AppLoc loc:list){
 			if(StringUtils.isBlank(loc.getLocName()))continue;
 			loc.setLocStatus("Y");
-			List<AppLoc> appLocs=getByName(loc.getLocName());
+			List<AppLoc> appLocs=locService.getByName(loc.getLocName());
 			if(appLocs.size()>0){
 				loc.setLocId(appLocs.get(0).getLocId());
 			}

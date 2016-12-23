@@ -109,5 +109,7 @@ public interface CommonManager {
 	 * @param queryParam 查询参数
 	 */
 	<T> List<Map<String, Object>> selectAdvancedByColumn(Class<T> clazz, GeneralQueryParam queryParam) throws Exception;
+	
+	
 }
 

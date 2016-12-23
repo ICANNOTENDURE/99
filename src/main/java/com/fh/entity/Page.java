@@ -38,7 +38,7 @@ public class Page {
 	 * 查询条件 where 表达式中的参数集
 	 * <p>key:paramName</p>
 	 */
-	private Map<String, Object> conditionParam; 
+	private Map<String, Object> conditionParam= new HashMap<String, Object>(); 
 	
 	
 	

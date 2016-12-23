@@ -29,6 +29,16 @@ public class AppLoc extends BaseEntity{
 	
 	
 	
+	
+	
+	public AppLoc() {
+		super();
+	}
+	public AppLoc(String locName, String locStatus) {
+		super();
+		this.locName = locName;
+		this.locStatus = locStatus;
+	}
 	public String getTarget() {
 		return target;
 	}

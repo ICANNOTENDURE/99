@@ -22,9 +22,9 @@ import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.app.AppDisease;
-import com.fh.entity.app.AppHop;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.app.impl.LocService;
 import com.fh.util.Const;
 import com.fh.util.PageData;
 
@@ -34,7 +34,8 @@ public class DiseaseController extends BaseController{
 
 	@Autowired
 	private CommonService commonService;
-	
+	@Autowired
+	private LocService locService;
 	/**显示列表
 	 * @param page
 	 * @return
@@ -46,6 +47,9 @@ public class DiseaseController extends BaseController{
 		page.setPd(pd);
 		try{
 			mv.setViewName("system/disease/list");
+			page.setConditionExp("DISEASE_NAME  like #{conditionParam.DISEASE_NAME}");
+			String DISEASE_NAME=getPageData().get("keywords")==null?"":getPageData().get("keywords").toString();
+			page.getConditionParam().put("DISEASE_NAME","%"+DISEASE_NAME+"%");
 			mv.addObject("list", commonService.listPage(AppDisease.class, page));
 			mv.addObject("pd", pd);
 		} catch(Exception e){
@@ -127,6 +131,11 @@ public class DiseaseController extends BaseController{
 		List<AppDisease> list = ExcelImportUtil.importExcel(file.getInputStream(),AppDisease.class,new ImportParams());
 		for(AppDisease disease:list){
 			if(StringUtils.isBlank(disease.getDiseaseName()))continue;
+			disease.setDiseaseStatus("Y");
+			List<AppDisease> diseases=getByName(disease.getDiseaseName());
+			if(diseases.size()>0){
+				disease.setDiseaseId(diseases.get(0).getDiseaseId());
+			}
 			commonService.saveOrUpdate(disease);
 		}
 		mv.addObject("msg","success");
@@ -140,10 +149,10 @@ public class DiseaseController extends BaseController{
 		Page page=new Page();
 		page.setShowCount(100000);
 		page.setPd(this.getPageData());
-        map.put(NormalExcelConstants.FILE_NAME,"医院信息");
-        map.put(NormalExcelConstants.CLASS,AppHop.class);
+        map.put(NormalExcelConstants.FILE_NAME,"疾病信息");
+        map.put(NormalExcelConstants.CLASS,AppDisease.class);
         map.put(NormalExcelConstants.PARAMS,new ExportParams("医院列表", "导出人:大熊小清新", "导出信息"));
-        //map.put(NormalExcelConstants.DATA_LIST,appHops);
+        map.put(NormalExcelConstants.DATA_LIST,commonService.listPage(AppDisease.class, page));
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
 	}
 }
