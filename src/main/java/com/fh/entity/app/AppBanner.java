@@ -24,11 +24,19 @@ public class AppBanner extends BaseEntity implements Serializable{
 	//1首页图片
 	//2健康咨询
 	private String bannerType;
+	private String bannerLinkUrl;
 	
 	
 	
 	
 	
+	
+	public String getBannerLinkUrl() {
+		return bannerLinkUrl;
+	}
+	public void setBannerLinkUrl(String bannerLinkUrl) {
+		this.bannerLinkUrl = bannerLinkUrl;
+	}
 	public String getBannerType() {
 		return bannerType;
 	}

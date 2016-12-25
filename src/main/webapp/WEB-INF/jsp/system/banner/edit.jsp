@@ -65,6 +65,12 @@
 									</td>									
 								</tr>
 								<tr>
+									<td style="width:50px;text-align: right;padding-top: 13px;">外网链接:</td>
+									<td style="text-align: center;" colspan="5">
+										<input type="text" name="bannerLinkUrl" id="bannerLinkUrl" value="${pd.bannerLinkUrl}"  style="width:99%;" placeholder="外网链接" title="外网链接"/>
+									</td>
+								</tr>
+								<tr>
 									<td style="width:50px;text-align: right;padding-top: 13px;">内容:</td>
 									<td colspan="5"><script id="editor" name="bannerContent" type="text/plain" style="width:643px;height:259px;">${pd.bannerContent}</script></td>
 								</tr>

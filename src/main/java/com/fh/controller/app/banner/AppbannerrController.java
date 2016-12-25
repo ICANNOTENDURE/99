@@ -33,13 +33,14 @@ public class AppbannerrController extends BaseController {
 	 * 首页图片信息
 	 * @return
 	 * APP_TOKEN=bWnKvSbBZDx+9pnE/XzI1w==
+	 * 			 bWnKvSbBZDx+9pnE/XzI1w==
 	 * APP_USER_CODE=13919007855
 	 */
 	@RequestMapping(value="/getAppBanner")
 	@ResponseBody
-	public Object getAppBanner(){
+	public JsonResult getAppBanner(){
 		
-		if(!checkToken()) return new JsonResult(100,"token错误");
+		//if(!checkToken()) return new JsonResult(100,"token错误");
 		JsonResult jsonResult=new JsonResult();
 		List<BannerVO> list=new ArrayList<BannerVO>();
 		jsonResult.setDatas(list);
@@ -55,13 +56,18 @@ public class AppbannerrController extends BaseController {
 			strings.add("banner_Img");
 			strings.add("banner_Id");
 			strings.add("banner_Title");
+			strings.add("banner_link_url");
 			queryParam.setQueryColumn(strings);
 			List<Map<String, Object>> maps=commonService.selectAdvancedByColumn(AppBanner.class, queryParam);
 			for (Map<String, Object> mapping : maps) {
 				BannerVO bannerVO=new BannerVO();
-				bannerVO.setImg_url(Const.APP_URL+Const.FILEPATHFILE+mapping.get("banner_Img").toString());
-				bannerVO.setTitle(mapping.get("banner_Title").toString());
-				bannerVO.setUrl(Const.APP_URL+"appbanner/listDetail/"+mapping.get("banner_Id").toString());
+				String img=mapping.get("banner_Img")==null?"":mapping.get("banner_Img").toString();
+				bannerVO.setImg_url(Const.APP_URL+Const.FILEPATHIMG+img);
+				String title=mapping.get("banner_Title")==null?"":mapping.get("banner_Title").toString();
+				bannerVO.setTitle(title);
+				//bannerVO.setUrl(Const.APP_URL+"appbanner/listDetail/"+mapping.get("banner_Id").toString());
+				String linkUrl=mapping.get("banner_link_url")==null?"":mapping.get("banner_link_url").toString();
+				bannerVO.setUrl(linkUrl);
 				list.add(bannerVO);
 			}
 			

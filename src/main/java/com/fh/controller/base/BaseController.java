@@ -99,7 +99,7 @@ public class BaseController {
 		if(StringUtils.isBlank(userCode)){
 			return false;
 		}
-		String tmp=AESCoder.aesCbcEncrypt(userCode, Const.APP_TOKEN_KEY).replace("+"," ");
+		String tmp=AESCoder.aesCbcEncrypt(userCode, Const.APP_TOKEN_KEY);  //.replace("+"," ");
 		if(token.equals(tmp)){
 			return true;
 		}

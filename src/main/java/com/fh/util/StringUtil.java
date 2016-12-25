@@ -128,4 +128,5 @@ public class StringUtil {
 		}
 		return result.substring(1, result.length());
 	}
+	
 }
