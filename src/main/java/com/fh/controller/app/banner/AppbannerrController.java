@@ -1,5 +1,10 @@
 package com.fh.controller.app.banner;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,8 +28,9 @@ import com.fh.util.Const;
 
 
 
-@Controller
+@Controller 
 @RequestMapping(value="/appbanner")
+@Api(value = "contacts-api", tags = "获取首页图片的操作") 
 public class AppbannerrController extends BaseController {
     
 	@Autowired
@@ -36,11 +43,16 @@ public class AppbannerrController extends BaseController {
 	 * 			 bWnKvSbBZDx+9pnE/XzI1w==
 	 * APP_USER_CODE=13919007855
 	 */
-	@RequestMapping(value="/getAppBanner")
+	@ApiOperation(notes = "getAppBanner",  value = "获取首页图片列表")
+	
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "APP_TOKEN", value = "登陆用的token", required = false, dataType = "String"),
+		@ApiImplicitParam(name = "APP_USER_CODE", value = "登陆用的用户名", required = false, dataType = "String")
+	})
+	@RequestMapping(value="/getAppBanner",method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResult getAppBanner(){
 		
-		//if(!checkToken()) return new JsonResult(100,"token错误");
 		JsonResult jsonResult=new JsonResult();
 		List<BannerVO> list=new ArrayList<BannerVO>();
 		jsonResult.setDatas(list);
@@ -72,12 +84,16 @@ public class AppbannerrController extends BaseController {
 			}
 			
 		} catch (Exception e) {
+			jsonResult.setCode(11);
+			jsonResult.setMessage(e.getMessage());
 			e.printStackTrace();
 		}
 		return jsonResult;
 	}
 	
-	@RequestMapping(value="/listDetail/{id}")
+	@ApiOperation(notes = "listDetail",  value = "显示健康明细")
+	@ApiImplicitParam(name = "id", value = "文章明显id", required = true, dataType = "String")
+	@RequestMapping(value="/listDetail/{id}",method = RequestMethod.GET)
 	public ModelAndView listDetail(@PathVariable String id) throws Exception{
 		ModelAndView mv = getModelAndView();
 		mv.setViewName("app/banner/detail");
@@ -86,6 +102,7 @@ public class AppbannerrController extends BaseController {
 		return mv;
 	}
 	
+
 }
 	
  

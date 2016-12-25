@@ -20,8 +20,8 @@
 	<mvc:resources mapping="/admin/**" location="/,/admin/" />
 	<mvc:resources mapping="/static/**" location="/,/static/" />
 	<mvc:resources mapping="/plugins/**" location="/,/plugins/" />
-	<mvc:resources mapping="/uploadFiles/**" location="/,/uploadFiles/" /> 
-
+	<mvc:resources mapping="/uploadFiles/**" location="/,/uploadFiles/" />
+	<mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/"/> 
 	<!-- 访问拦截  -->  
   	<mvc:interceptors>
 		<mvc:interceptor>
@@ -54,5 +54,6 @@
 	            <value>utf-8</value>    
 	        </property> 
     </bean>  
+	
 	
 </beans>
