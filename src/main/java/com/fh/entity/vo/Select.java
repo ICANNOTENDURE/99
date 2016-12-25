@@ -1,4 +1,4 @@
-package com.fh.entity;
+package com.fh.entity.vo;
 
 public class Select {
 

@@ -25,6 +25,7 @@ public class Const {
 	public static final String IWATERM = "admin/config/IWATERM.txt";	//图片水印配置路径
 	public static final String WEIXIN	= "admin/config/WEIXIN.txt";	//微信配置路径
 	public static final String WEBSOCKET = "admin/config/WEBSOCKET.txt";//WEBSOCKET配置路径
+	public static final String PICPATH = "admin/config/PICPATH.txt";	//图片配置路径
 	public static final String FILEPATHIMG = "uploadFiles/uploadImgs/";	//图片上传路径
 	public static final String FILEPATHFILE = "uploadFiles/file/";		//文件上传路径
 	public static final String UPLOADEXCEL = "system/hop/uploadexcel";		//上传excel公共页面
@@ -46,5 +47,6 @@ public class Const {
 	//app 加密账号的秘要
 	public static final String APP_TOKEN_KEY="908067886@qq.com";
 	
+	public static final String APP_URL="http://59.110.66.9/MVNFHM/";
 	
 }

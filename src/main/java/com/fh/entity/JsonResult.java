@@ -1,12 +1,26 @@
 package com.fh.entity;
 
+import java.util.List;
+
+
+
 public class JsonResult {
 
 	private int code=0;
 	private String message;
 	
-
+	private List<?> datas;
 	
+	
+	
+	
+	
+	public List<?> getDatas() {
+		return datas;
+	}
+	public void setDatas(List<?> datas) {
+		this.datas = datas;
+	}
 	public JsonResult() {
 		super();
 	}

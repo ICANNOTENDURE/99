@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -21,6 +22,7 @@ import com.fh.util.Jurisdiction;
 import com.fh.util.Logger;
 import com.fh.util.PageData;
 import com.fh.util.UuidUtil;
+import com.fh.util.security.AESCoder;
 
 
 public class BaseController {
@@ -87,6 +89,21 @@ public class BaseController {
 	public static void logAfter(Logger logger){
 		logger.info("end");
 		logger.info("");
+	}
+	public  boolean checkToken(){
+		String token=getRequest().getParameter("APP_TOKEN")==null?"":getRequest().getParameter("APP_TOKEN").toString();
+		if(StringUtils.isBlank(token)){
+			return false;
+		}
+		String userCode=getRequest().getParameter("APP_USER_CODE")==null?"":getRequest().getParameter("APP_USER_CODE").toString();
+		if(StringUtils.isBlank(userCode)){
+			return false;
+		}
+		String tmp=AESCoder.aesCbcEncrypt(userCode, Const.APP_TOKEN_KEY).replace("+"," ");
+		if(token.equals(tmp)){
+			return true;
+		}
+		return false;
 	}
 	@InitBinder   
     public void initBinder(WebDataBinder binder) {   

@@ -94,4 +94,9 @@ public class PathUtil {
 		return strResult;
 	}
 	
+	public static String PicPath(){
+		String path=getClasspath()+Const.FILEPATHIMG;
+		return path;
+	}
+	
 }
