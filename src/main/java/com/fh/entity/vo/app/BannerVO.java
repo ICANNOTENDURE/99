@@ -1,10 +1,16 @@
 package com.fh.entity.vo.app;
 
-public class BannerVO {
+import io.swagger.annotations.ApiModelProperty;
 
+public class BannerVO {
+	
+	@ApiModelProperty(value = "新闻首页图片url")
 	private String img_url;
+	@ApiModelProperty(value = "新闻链接页面url")
 	private String url;
+	@ApiModelProperty(value = "新闻图片id")
 	private String id;
+	@ApiModelProperty(value = "新闻图片标题")
 	private String title;
 	
 	

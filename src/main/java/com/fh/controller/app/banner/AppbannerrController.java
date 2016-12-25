@@ -30,7 +30,7 @@ import com.fh.util.Const;
 
 @Controller 
 @RequestMapping(value="/appbanner")
-@Api(value = "contacts-api", tags = "获取首页图片的操作") 
+@Api(value = "首页baner操作", tags = "首页baner操作") 
 public class AppbannerrController extends BaseController {
     
 	@Autowired
@@ -43,7 +43,7 @@ public class AppbannerrController extends BaseController {
 	 * 			 bWnKvSbBZDx+9pnE/XzI1w==
 	 * APP_USER_CODE=13919007855
 	 */
-	@ApiOperation(notes = "getAppBanner",  value = "获取首页图片列表")
+	@ApiOperation(notes = "获取首页图片列表",  value = "获取首页图片列表")
 	
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "APP_TOKEN", value = "登陆用的token", required = false, dataType = "String"),
@@ -51,9 +51,9 @@ public class AppbannerrController extends BaseController {
 	})
 	@RequestMapping(value="/getAppBanner",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResult getAppBanner(){
+	public JsonResult<BannerVO> getAppBanner(){
 		
-		JsonResult jsonResult=new JsonResult();
+		JsonResult<BannerVO> jsonResult=new JsonResult<BannerVO>();
 		List<BannerVO> list=new ArrayList<BannerVO>();
 		jsonResult.setDatas(list);
 		try {
@@ -91,7 +91,7 @@ public class AppbannerrController extends BaseController {
 		return jsonResult;
 	}
 	
-	@ApiOperation(notes = "listDetail",  value = "显示健康明细")
+	@ApiOperation(notes = "显示健康资讯明细",  value = "显示健康资讯明细")
 	@ApiImplicitParam(name = "id", value = "文章明显id", required = true, dataType = "String")
 	@RequestMapping(value="/listDetail/{id}",method = RequestMethod.GET)
 	public ModelAndView listDetail(@PathVariable String id) throws Exception{
