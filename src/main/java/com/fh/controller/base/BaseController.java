@@ -79,7 +79,20 @@ public class BaseController {
 	public Page getPage(){
 		return new Page();
 	}
-	
+	/**
+	 * 
+	* @Title: getPar 
+	* @Description: TODO(获取前台参数) 
+	* @param @param parName
+	* @param @return    设定文件 
+	* @return String    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年12月28日 上午10:32:02
+	 */
+	public String getPar(String parName){
+		return getRequest().getParameter(parName)==null?"":getRequest().getParameter(parName).toString();
+	}
 	public static void logBefore(Logger logger, String interfaceName){
 		logger.info("");
 		logger.info("start");
@@ -91,11 +104,11 @@ public class BaseController {
 		logger.info("");
 	}
 	public  boolean checkToken(){
-		String token=getRequest().getParameter("APP_TOKEN")==null?"":getRequest().getParameter("APP_TOKEN").toString();
+		String token=getPar("APP_TOKEN");
 		if(StringUtils.isBlank(token)){
 			return false;
 		}
-		String userCode=getRequest().getParameter("APP_USER_CODE")==null?"":getRequest().getParameter("APP_USER_CODE").toString();
+		String userCode=getPar("APP_USER_CODE");
 		if(StringUtils.isBlank(userCode)){
 			return false;
 		}

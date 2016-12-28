@@ -60,7 +60,7 @@
 		where ${primaryKey} in
 		<foreach item="id"  collection="idList"
 			open="(" separator="," close=")">
-			CONCAT('"',#{id},'"')
+			#{id}
 		</foreach>
 	</delete>
 	
@@ -131,29 +131,19 @@
 		</if>
 	</select>
 	
-	<select id="listPage" parameterType="page" resultType="hashmap">
+	<select id="listPage" parameterType="page" resultType="hashmap" >
 		select
 		<foreach item="columnName" index="index" collection="queryColumn"
 			separator=",">
 			${columnName}
 		</foreach>
 		from ${tableName}
-		
 		where 1=1
-		<if test="conditionExp != null">
-			and ${conditionExp}
-		</if>
 
-		<if test="likeExpMap != null">
-		 	<foreach item="key"  collection="likeExpMap.keys" >
-		 	   and ${key} like CONCAT('%',#{likeExpMap[${key}]},'%')
-			</foreach>
+		<if test="conditionExp != null">
+			${conditionExp}
 		</if>
-		<if test="equalExpMap != null">
-		 	<foreach item="key"  collection="equalExpMap.keys" >
-		 	   and ${key} = #{equalExpMap[${key}]}
-			</foreach>
-		</if>
+	
 		<if test="orderExp != null">
 			order by ${orderExp}
 		</if>

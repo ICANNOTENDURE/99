@@ -25,24 +25,41 @@ public class Page {
 	private List<String> queryColumn;
 	private String tableName;
 	private String orderExp;
-	private Map<String, Object> likeExpMap= new HashMap<String, Object>();
-	private Map<String, Object> equalExpMap= new HashMap<String, Object>();
-	/**
-	 * 查询条件 where 表达式 
-	 * <p>不要写where</p>
-	 * <p>传入的参数格式为:#{conditionParam.paramName}</p>
-	 */
+	
+
 	private String conditionExp;
-	
-	/**
-	 * 查询条件 where 表达式中的参数集
-	 * <p>key:paramName</p>
-	 */
-	private Map<String, Object> conditionParam= new HashMap<String, Object>(); 
+	private Map<String, Object> conditionParam; 
+	private Map<String, Object> eqParam;
+	private Map<String, Object> lkParam;
 	
 	
 	
+	public Map<String, Object> getEqParam() {
+		if(eqParam==null){
+			eqParam=new HashMap<String, Object>();
+		}
+		return eqParam;
+	}
+
+	public void setEqParam(Map<String, Object> eqParam) {
+		this.eqParam = eqParam;
+	}
+
+	public Map<String, Object> getLkParam() {
+		if(lkParam==null){
+			lkParam=new HashMap<String, Object>();
+		}
+		return lkParam;
+	}
+
+	public void setLkParam(Map<String, Object> lkParam) {
+		this.lkParam = lkParam;
+	}
+
 	public Map<String, Object> getConditionParam() {
+		if(conditionParam==null){
+			conditionParam=new HashMap<String, Object>();
+		}
 		return conditionParam;
 	}
 
@@ -81,7 +98,8 @@ public class Page {
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
-
+	
+	
 	public Page(){
 		try {
 			this.showCount = Integer.parseInt(Tools.readTxtFile(Const.PAGE));
@@ -279,22 +297,6 @@ public class Page {
 
 	public void setPd(PageData pd) {
 		this.pd = pd;
-	}
-
-	public Map<String, Object> getLikeExpMap() {
-		return likeExpMap;
-	}
-
-	public void setLikeExpMap(Map<String, Object> likeExpMap) {
-		this.likeExpMap = likeExpMap;
-	}
-
-	public Map<String, Object> getEqualExpMap() {
-		return equalExpMap;
-	}
-
-	public void setEqualExpMap(Map<String, Object> equalExpMap) {
-		this.equalExpMap = equalExpMap;
 	}
 	
 }

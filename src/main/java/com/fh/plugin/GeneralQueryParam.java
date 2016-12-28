@@ -2,7 +2,6 @@ package com.fh.plugin;
 
 import java.util.List;
 import java.util.Map;
-
 public class GeneralQueryParam {
 	/**
 	 * 表对应的pojo类
@@ -115,4 +114,6 @@ public class GeneralQueryParam {
 	public void setOrderExp(String orderExp) {
 		this.orderExp = orderExp;
 	}
+	
+
 }

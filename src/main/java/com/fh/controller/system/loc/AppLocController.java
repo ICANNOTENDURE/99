@@ -53,16 +53,12 @@ public class AppLocController extends BaseController{
 		ModelAndView mv = getModelAndView();
 		try{
 			mv.setViewName("system/loc/list");
-			String locid=getPageData().get("parent")==null?"0":getPageData().get("parent").toString();
-			page.setConditionExp("LOC_PARENT = #{conditionParam.LOC_PARENT}");
-			Map<String, Object> conditionParam = new HashMap<String, Object>();
-			conditionParam.put("LOC_PARENT", locid);
-			page.setConditionParam(conditionParam);
-			String keywords=getPageData().get("keywords")==null?"":getPageData().get("keywords").toString();
+			String locid=getPar("parent").equals("")?"0":getPar("parent");
+			String keywords=getPar("keywords");
 			if(StringUtils.isNotBlank(keywords)){
-				page.getLikeExpMap().put("loc_name", keywords);			
+				page.getLkParam().put("LOC_NAME", "%"+keywords+"%");
 			}
-
+			page.getEqParam().put("LOC_PARENT", locid);
 			mv.addObject("list", commonService.listPage(AppLoc.class, page));
 			mv.addObject("keywords", keywords);
 			if(!locid.equals("0")){
@@ -150,9 +146,9 @@ public class AppLocController extends BaseController{
 	 */
 	@RequestMapping(value="/checkAccount/{account}")
 	@ResponseBody
-	public JsonResult checkAccount(@PathVariable String account) throws Exception{
+	public Object checkAccount(@PathVariable String account) throws Exception{
 		account = new String(account.getBytes("ISO-8859-1"),"UTF-8");
-		return new JsonResult(locService.getByName(account).size(),"");
+		return new JsonResult<Object>(locService.getByName(account).size(),"");
 	}
 
 	

@@ -212,13 +212,26 @@ public class CommonService implements CommonManager{
 		}
 	}
 	
-	public <T> List<T> listPage(Class<T> clazz,
-			Page page) throws Exception {
+	public <T> List<T> listPage(Class<T> clazz,Page page) throws Exception {
 		
 		List<T> result = new ArrayList<T>();
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
 		page.setTableName(tableName);
 		page.setQueryColumn(GeneralMapperReflectUtil.getAllColumns(clazz));
+		StringBuffer sb=new StringBuffer();
+		for (Map.Entry<String, Object> m :page.getEqParam().entrySet())  {
+			sb.append(" and "+m.getKey()+ " = #{conditionParam."+m.getKey()+"} ");
+		}
+		//like情况下where条件
+		for (Map.Entry<String, Object> m :page.getLkParam().entrySet())  {
+			sb.append(" and "+m.getKey()+ " like #{conditionParam."+m.getKey()+"} ");
+		}
+		if(org.apache.commons.lang3.StringUtils.isNoneBlank(sb.toString())){
+			page.setConditionExp(sb.toString());
+			page.getConditionParam().putAll(page.getEqParam());
+			page.getConditionParam().putAll(page.getLkParam());
+		}
+
 		List<Map<String, Object>> list =commonDao.listPage(page);
 		if (list != null && list.size() != 0) {
 			for (Map<String, Object> mapping : list) {
@@ -236,7 +249,6 @@ public class CommonService implements CommonManager{
 		
 		List<T> result = new ArrayList<T>();
 		Map<String, Object> param = new HashMap<String, Object>();
-		Map<String, Object> conditionParam = new HashMap<String, Object>();
 		StringBuffer sb=new StringBuffer();
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
 
@@ -245,13 +257,12 @@ public class CommonService implements CommonManager{
 		for (Map.Entry<String, Object> m :conMapping.entrySet())  {
 		    if(i>0) sb.append(" and "); 
 			sb.append(m.getKey()+ " = #{conditionParam."+m.getKey()+"} ");
-			conditionParam.put(m.getKey(), m.getValue());
 			i++;
 		}
 		param.put("tableName", tableName);
 		param.put("queryColumn", GeneralMapperReflectUtil.getAllColumns(clazz));
 		param.put("conditionExp", sb.toString());
-		param.put("conditionParam", conditionParam);
+		param.put("conditionParam", conMapping);
 		List<Map<String, Object>> list=commonDao.selectAdvanced(param);
 		if (list != null && list.size() != 0) {
 			for (Map<String, Object> mapping : list) {
@@ -271,7 +282,7 @@ public class CommonService implements CommonManager{
 		String primaryKey = GeneralMapperReflectUtil.getPrimaryKey(clazz);
 		param.put("tableName", tableName);
 		param.put("primaryKey", primaryKey);
-		//param.put("idList", list);
+		param.put("idList", list);
 		return commonDao.deleteBatch(param);
 	}
 }
