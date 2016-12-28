@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="DocUserMapper">
+
+	<!-- 医生查询 -->
+	<select id="listPage" parameterType="page" resultType="com.fh.entity.system.doc.DocInfo">
+		select
+			t1.DOC_ID as docId ,
+			t1.DOC_ACCOUNT as docAccount ,
+			t1.STATUS as status ,
+			t2.INFO_ID as infoId ,
+			t2.DOC_NAME as docName ,
+			t2.DOC_PIC as docPic ,
+			t3.HOP_NAME as hopName ,
+			t4.LOC_NAME as locName ,
+			t5.NAME	as docTitle
+		
+		from DOC_USER t1 
+			 left join DOC_INFO t2 on t1.DOC_ID=t2.DOC_ID
+			 left join APP_HOP t3 on t2.DOC_HOPID=t3.HOP_ID
+			 left join APP_LOC t4 on t2.DOC_LOCID=t4.LOC_ID
+			 left join sys_dictionaries t5 on t2.DOC_TITLE=t5.DICTIONARIES_ID
+		<where>
+
+		</where>
+	</select>
+</mapper>
