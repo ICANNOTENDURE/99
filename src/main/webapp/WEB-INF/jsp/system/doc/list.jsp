@@ -226,7 +226,7 @@
 				top.layer.close(index);
 				index=commonLoad();
 				$.post(
-					'docuser/pwd/'+id,
+					'docuser/pwd.do?id='+id,
 					function(data){
 						commonLoadClose(index)
 						if(data.code==0){
