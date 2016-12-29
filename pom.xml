@@ -401,7 +401,7 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc6.jar</systemPath>
 		</dependency>
 			
-		<!-- 汉字转拼音 -->
+		<!-- 汉字转pinyin -->
 		<dependency>
 		    <groupId>com.belerweb</groupId>
 		    <artifactId>pinyin4j</artifactId>
