@@ -243,9 +243,9 @@
 				tags: true,
 				separator: ",", // 分隔符
 				multiple: true,
-				data:'${pd.diseaseSelect}'
+				data:JSON.parse('${pd.diseaseSelect}')
 			});
-			$("#diseaseId").val('${pd.diseaseIds}').trigger("change");
+			$("#diseaseId").val(JSON.parse('${pd.diseaseIds}')).trigger("change");
 		}
 	});
 	var ue = UE.getEditor('editor');

@@ -31,10 +31,34 @@
 								<td>
 									<div class="nav-search">
 									<span class="input-icon">
-										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="keywords" value="${pd.keywords }" placeholder="这里输入关键词" />
+										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="keywords" value="${pd.keywords}" placeholder="这里输入关键词/账号或姓名" />
 										<i class="ace-icon fa fa-search nav-search-icon"></i>
 									</span>
 									</div>
+								</td>
+								<td>
+									科室:
+								</td>
+								<td>
+								  	<select id="locId" name="DOC_LOCID" class="form-control inputBorder" style="width:150px;"></select>
+								</td>
+								<td>
+									医院:
+								</td>
+								<td>
+								  	<select id="hopId" name="DOC_HOPID" class="form-control inputBorder" style="width:150px;"></select>
+								</td>
+								<td>
+									职称:
+								</td>
+								<td>
+								  		<select class="chosen-select form-control" name="DOC_TITLE"  data-placeholder="医生职称" style="vertical-align:top;width: 200px;">
+											<option value=""></option>
+											<option value="">全部</option>
+											<c:forEach items="${doctitle}" var="dic">
+												<option value="${dic.DICTIONARIES_ID }">${dic.NAME }</option>
+											</c:forEach>
+										</select>	
 								</td>
 								<!-- 按钮 -->
 								<c:if test="${QX.cha == 1 }">
@@ -187,6 +211,14 @@
 					}		
 			})
 		}
-
+		
+		$(function() {
+			$('#locId').commonSelect({
+				url:"loc/locSelect.do"
+			})
+			$('#hopId').commonSelect({
+				url:"hop/hopSelect.do"   
+			});
+		});	
 		</script>
 </html>

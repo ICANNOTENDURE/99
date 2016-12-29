@@ -20,7 +20,7 @@
     		</if>
     		<if test="pd.DISEASE_ID != null and pd.DISEASE_ID !=''">
          		and t1.DISEASE_ID = #{pd.DISEASE_ID}
-    		</if>   
+    		</if>
 		</where>
 	</select>
 </mapper>

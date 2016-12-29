@@ -46,12 +46,12 @@ public class DocUserService implements DocUserManager{
 			DocUser docUser=crudSupport.selectByPrimaryKey(DocUser.class, dto.getDocInfo().getDocId());
 			docUser.setStatus(dto.getDocUser().getStatus());
 			dto.setDocUser(docUser);
+			Map<String,Object> map=new HashMap<String, Object>();
+			map.put("docinfo_Id", dto.getDocInfo().getInfoId());
+			crudSupport.deleteByCondition(DocSpecialDisease.class, "docinfo_Id = #{conditionParam.docinfo_Id}", map);
 		}else{
 			dto.getDocUser().setDocPassword(MD5.md5("1"));
 			dto.getDocUser().setDocLogindate(new Date());
-			Map<String,Object> map=new HashMap<String, Object>();
-			map.put("docinfo_Id", dto.getDocInfo().getInfoId());
-			crudSupport.deleteByCondition(DocSpecialDisease.class, "docinfo_Id = ${conditionParam.docinfo_Id}", map);
 		}
 
 		crudSupport.saveOrUpdate(dto.getDocUser());

@@ -22,7 +22,21 @@
 			 left join APP_LOC t4 on t2.DOC_LOCID=t4.LOC_ID
 			 left join sys_dictionaries t5 on t2.DOC_TITLE=t5.DICTIONARIES_ID
 		<where>
-
+			<if test="pd.keywords != null and pd.keywords !='' ">
+         		and (
+         			t2.DOC_NAME like CONCAT('%',#{pd.keywords},'%') 
+         			or t1.DOC_ACCOUNT like CONCAT('%',#{pd.keywords},'%')
+         			)	 
+    		</if>
+    		<if test="pd.DOC_HOPID != null and pd.DOC_HOPID != ''"><!-- 医院检索 -->
+				and t2.DOC_HOPID=#{pd.DOC_HOPID} 
+			</if>
+			<if test="pd.DOC_LOCID != null and pd.DOC_LOCID != ''"><!-- 科室检索 -->
+				and t2.DOC_LOCID=#{pd.DOC_LOCID} 
+			</if>
+			<if test="pd.DOC_TITLE != null and pd.DOC_TITLE != ''"><!-- 职称检索 -->
+				and t2.DOC_TITLE=#{pd.DOC_TITLE} 
+			</if>
 		</where>
 	</select>
 </mapper>

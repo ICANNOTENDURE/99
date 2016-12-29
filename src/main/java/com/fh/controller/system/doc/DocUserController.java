@@ -28,11 +28,11 @@ import com.fh.entity.system.doc.DocUser;
 import com.fh.entity.systemdoc.DocSpecialDisease;
 import com.fh.entity.vo.Select;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocUserService;
 import com.fh.util.DateUtil;
 import com.fh.util.DelAllFile;
 import com.fh.util.FileUpload;
-import com.fh.util.PageData;
 import com.fh.util.PathUtil;
 
 @Controller
@@ -43,6 +43,8 @@ public class DocUserController extends BaseController {
 	private CommonService commonService;
 	@Autowired
 	private DocUserService docUserService;
+	@Autowired
+	private DictionariesService dictionariesService;
 	
 	/**显示列表
 	 * @param page
@@ -51,8 +53,11 @@ public class DocUserController extends BaseController {
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page){
 		ModelAndView mv = getModelAndView();
+		mv.setViewName("system/doc/list");
+		page.setPd(this.getPageData());
 		try{
-			docUserService.listPage(page);
+			mv.addObject("doctitle",dictionariesService.listSubDictByParentId("4aecff660c6a41599e452b888224ef6c"));
+			mv.addObject("list", docUserService.listPage(page));
 		} catch(Exception e){
 		}
 		return mv;
@@ -65,7 +70,6 @@ public class DocUserController extends BaseController {
 	@RequestMapping(value="/goSaveOrUpdate")
 	public ModelAndView goSaveOrUpdate(String id) throws Exception{
 		ModelAndView mv =getModelAndView();
-		PageData pd=this.getPageData();
 		DocInfo docInfo=new DocInfo();
 		DocUser docUser=new DocUser();
 		DocUserDto dto=new DocUserDto();
@@ -94,11 +98,12 @@ public class DocUserController extends BaseController {
 					selects.add(new Select(docSpecialDisease.getDiseaseId(), appDisease.getDiseaseName()));
 					strings.add(docSpecialDisease.getDiseaseId());
 				}
-				pd.put("diseaseSelect", JSON.toJSON(selects));
-				pd.put("diseaseIds", JSON.toJSON(strings));
+				dto.setDiseaseIds(JSON.toJSON(strings).toString());
+				dto.setDiseaseSelect(JSON.toJSON(selects).toString());;
 			}
 
 		}
+		dto.setDoctitle(dictionariesService.listSubDictByParentId("4aecff660c6a41599e452b888224ef6c"));
 		mv.addObject("pd",dto);
 		return mv;
 	}
@@ -112,8 +117,10 @@ public class DocUserController extends BaseController {
 		
 		ModelAndView mv = this.getModelAndView();
 		if(file!=null){
-			String fileName = FileUpload.fileUp(file, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
-			dto.getDocInfo().setDocPic(fileName);
+			if(file.getSize()>0){	
+				String fileName = FileUpload.fileUp(file, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
+				dto.getDocInfo().setDocPic(fileName);
+			}
 		}
 		docUserService.saveDoc(dto);
 		mv.setViewName("save_result");
