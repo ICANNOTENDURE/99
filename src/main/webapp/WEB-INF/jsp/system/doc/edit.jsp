@@ -33,7 +33,11 @@
 							<table id="table_report" class="table table-striped table-bordered table-hover">
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">账号:</td>
-									<td colspan="2"><input type="text" name="docUser.docAccount" id="name"  value="${pd.docUser.docAccount}" placeholder="这里输入账号" title="账号" style="width:98%;" /></td>
+									<td colspan="2"><input type="text" name="docUser.docAccount" id="name"  value="${pd.docUser.docAccount}" placeholder="这里输入账号" title="账号" style="width:98%;" 
+									<c:if test="${pd.docInfo.docId!=null && pd.docInfo.docId !=''}">
+										readonly="true"
+									</c:if>
+									></<input></td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
 									<td colspan="2"><input type="text" name="docInfo.docName" value="${pd.docInfo.docName}" placeholder="这里输入姓名" title="姓名" style="width:98%;" /></td>
 								</tr>

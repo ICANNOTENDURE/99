@@ -33,6 +33,7 @@ import com.fh.service.system.doc.impl.DocUserService;
 import com.fh.util.DateUtil;
 import com.fh.util.DelAllFile;
 import com.fh.util.FileUpload;
+import com.fh.util.MD5;
 import com.fh.util.PathUtil;
 
 @Controller
@@ -140,6 +141,18 @@ public class DocUserController extends BaseController {
 		List<DocUser> docUsers=commonService.selectByEqCon(DocUser.class, map);
 		return new JsonResult<>(docUsers.size(),"");
 	}
+	/**
+	 * 
+	* @Title: deltp 
+	* @Description: TODO(删除照片) 
+	* @param @param id
+	* @param @return
+	* @param @throws Exception    设定文件 
+	* @return JsonResult<Object>    返回类型 
+	* @throws 
+	* @author zhouxin   
+	* @date 2016年12月29日 下午2:36:45
+	 */
 	@RequestMapping(value="/deltp")
 	@ResponseBody
 	public JsonResult<Object> deltp(String id) throws Exception{
@@ -150,4 +163,13 @@ public class DocUserController extends BaseController {
 		commonService.saveOrUpdate(docInfo);
 		return new JsonResult<Object>();
 	}
+	@RequestMapping(value="/pwd")
+	@ResponseBody
+	public JsonResult<Object> pwd(String id) throws Exception{
+		DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, id);
+		docUser.setDocPassword(MD5.md5("1"));
+		commonService.saveOrUpdate(docUser);
+		return new JsonResult<Object>();
+	}
+	
 }

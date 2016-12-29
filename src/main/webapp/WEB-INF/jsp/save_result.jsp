@@ -23,7 +23,7 @@
 	try{
 			commonClose()
 
-			
+			top.Dialog.close();
 		}catch(e){alert(e.message)}
 		
 		

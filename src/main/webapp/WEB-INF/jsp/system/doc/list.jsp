@@ -105,7 +105,7 @@
 											<td class="center">${rd.docAccount}</td>
 											<td class='center' >${rd.docName}</td>
 											<td class="center">
-												<c:if test="${rd.docPic != ''}">
+												<c:if test="${rd.docPic != '' && d.docPic != null}">
 												<a href="<%=basePath%>uploadFiles/uploadImgs/${rd.docPic}" class="bwGal" target="blank"> <img src="<%=basePath%>uploadFiles/uploadImgs/${rd.docPic}"  width="100"></a>
 												</c:if>
 											</td>
@@ -126,6 +126,9 @@
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
+													<a class="btn btn-xs btn-success" title="初始化密码" onclick="pwd('${rd.docId}','${rd.docAccount}');">
+														<i class="ace-icon fa fa-key bigger-120" title="初始化密码"></i>
+													</a>
 												</div>
 												<div class="hidden-md hidden-lg">
 													<div class="inline pos-rel">
@@ -142,6 +145,13 @@
 																</a>
 															</li>
 															</c:if>
+															<li>
+																<a style="cursor:pointer;" onclick="pwd'${rd.docId }','${rd.docAccount}');" class="tooltip-error" data-rel="tooltip" title="修改">
+																	<span class="red">
+																		<i class="ace-icon fa fa-key bigger-120"></i>
+																	</span>
+																</a>
+															</li>
 														</ul>
 													</div>
 												</div>
@@ -211,7 +221,24 @@
 					}		
 			})
 		}
-		
+		function pwd(id,account){
+			top.layer.confirm("确认<<"+account+">>初始化密码为1吗？",function(index) {
+				top.layer.close(index);
+				index=commonLoad();
+				$.post(
+					'docuser/pwd/'+id,
+					function(data){
+						commonLoadClose(index)
+						if(data.code==0){
+							searchs();
+						}else{
+							commonAlert("失败:"+data.message)
+						}
+						
+					},'json'
+				);
+			})
+		}
 		$(function() {
 			$('#locId').commonSelect({
 				url:"loc/locSelect.do"
