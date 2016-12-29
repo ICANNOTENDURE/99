@@ -31,6 +31,7 @@ public class Const {
 	public static final String UPLOADEXCEL = "system/hop/uploadexcel";		//上传excel公共页面
 	public static final String FILEPATHTWODIMENSIONCODE = "uploadFiles/twoDimensionCode/"; //二维码存放路径
 	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(logout)|(code)|(app)|(weixin)|(static)|(uploadFiles)|(main)|(websocket)).*";	//不对匹配该值的访问路径拦截（正则）
+	public static final String APP_PATH=".*/(app).*";
 	public static ApplicationContext WEB_APP_CONTEXT = null; //该值会在web容器启动时由WebAppContextListener初始化
 	
 	/**
