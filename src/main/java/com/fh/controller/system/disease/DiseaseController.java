@@ -49,9 +49,10 @@ public class DiseaseController extends BaseController{
 		page.setPd(pd);
 		try{
 			mv.setViewName("system/disease/list");
-			page.setConditionExp("DISEASE_NAME  like #{conditionParam.DISEASE_NAME}");
-			String DISEASE_NAME=getPageData().get("keywords")==null?"":getPageData().get("keywords").toString();
-			page.getConditionParam().put("DISEASE_NAME","%"+DISEASE_NAME+"%");
+			String keywords=this.getPar("keywords");
+			if(StringUtils.isNotBlank(keywords)){
+				page.getLkParam().put("DISEASE_NAME", "%"+keywords+"%");
+			}
 			mv.addObject("list", commonService.listPage(AppDisease.class, page));
 			mv.addObject("pd", pd);
 		} catch(Exception e){
@@ -95,10 +96,10 @@ public class DiseaseController extends BaseController{
 	 */
 	@RequestMapping(value="/checkName")
 	@ResponseBody
-	public JsonResult checkName(String name) throws Exception{
+	public JsonResult<Object> checkName(String name) throws Exception{
 		
 		name = new String(name.getBytes("ISO-8859-1"),"UTF-8");
-		return new JsonResult(getByName(name).size(),"");
+		return new JsonResult<Object>(getByName(name).size(),"");
 	}
 	public List<AppDisease> getByName(String name) throws Exception{
 		
