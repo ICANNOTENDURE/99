@@ -2,6 +2,7 @@ package com.fh.controller.system.dictionaries;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 
 import net.sf.json.JSONArray;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.Page;
+import com.fh.entity.app.AppHop;
+import com.fh.entity.system.Dictionaries;
+import com.fh.entity.vo.Select;
 import com.fh.util.AppUtil;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
+import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.system.dictionaries.DictionariesManager;
 
 /** 
@@ -230,6 +236,21 @@ public class DictionariesController extends BaseController {
 		map.put("result", errInfo);				//返回结果
 		return AppUtil.returnObject(new PageData(), map);
 	}
+	
+	/*字典下拉列表使用*/
+	@RequestMapping(value="/hopSelect")
+	@ResponseBody
+	public List<Select> hopSelect(String search) throws Exception{
+		
+
+		List<Select> mv=new ArrayList<Select>();
+		List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId("");
+		for (Dictionaries dict : dictionaries) {
+			mv.add(new Select(dict.getDICTIONARIES_ID(), dict.getNAME()));
+		}
+		return mv;
+	}
+	
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder){

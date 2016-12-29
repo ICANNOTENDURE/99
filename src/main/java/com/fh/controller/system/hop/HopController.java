@@ -1,5 +1,6 @@
 package com.fh.controller.system.hop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.app.AppDisease;
 import com.fh.entity.app.AppHop;
 import com.fh.entity.system.Dictionaries;
+import com.fh.entity.vo.Select;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.HopService;
@@ -174,5 +177,33 @@ public class HopController extends BaseController{
         map.put(NormalExcelConstants.PARAMS,new ExportParams("医院列表", "导出人:大熊小清新", "导出信息"));
         map.put(NormalExcelConstants.DATA_LIST,appHops);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
+	}
+	
+	/*医院下拉列表使用*/
+	@RequestMapping(value="/hopSelect")
+	@ResponseBody
+	public List<Select> hopSelect(String search) throws Exception{
+		
+
+		List<Select> mv=new ArrayList<Select>();
+		List<String> colmn=new ArrayList<String>();
+		colmn.add("HOP_ID");
+		colmn.add("HOP_NAME");
+		GeneralQueryParam queryParam=new GeneralQueryParam();
+		queryParam.setPageNo(1);
+		queryParam.setPageSize(10);
+		queryParam.setQueryColumn(colmn);
+		if(StringUtils.isNotBlank(search)){
+			search = new String(search.getBytes("ISO-8859-1"),"UTF-8");
+			queryParam.setConditionExp(" HOP_NAME like #{conditionParam.HOP_NAME} ");
+			Map<String, Object> conditionParam = new HashMap<String, Object>();
+			conditionParam.put("HOP_NAME", "%"+search.trim()+"%");
+			queryParam.setConditionParam(conditionParam);
+		}
+		List<Map<String, Object>> list=commonService.selectAdvancedByColumn(AppHop.class, queryParam);
+		for (Map<String, Object> mapping : list) {
+			mv.add(new Select(mapping.get("HOP_ID").toString(), mapping.get("HOP_NAME").toString()));
+		}
+		return mv;
 	}
 }
