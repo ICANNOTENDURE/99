@@ -6,6 +6,8 @@ package com.fh.controller.app.pat;
 
 
 
+import java.util.Date;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,9 +28,14 @@ public class PatUserControl extends BaseController{
 	@ResponseBody
 	public JsonResult<Object> getToken(){
 		
-
-		String appt=AESCoder.aesCbcEncrypt("13919007855", "c4ca4238a0b923820dcc509a6f75849b");
-		return new JsonResult<Object>(0,appt);
+		Token token=new Token();
+		token.setAccount("13919007855");
+		token.setExpDate(new Date());
+		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), "c4ca4238a0b923820dcc509a6f75849b");
+		
+		String xxString=AESCoder.aesCbcDecrypt(appt, "c4ca4238a0b923820dcc509a6f75849b");
+		Token token2=JSON.parseObject(xxString, Token.class);
+		return new JsonResult<Object>(0,token2.getAccount());
 	}
 	
 	@AppToken
@@ -37,7 +44,8 @@ public class PatUserControl extends BaseController{
 	public JsonResult<Object> checkToken(String APP_TOKEN,String APP_USER_CODE,String APP_USER_TYPE){
 		
 		Token token=new Token();
-		token.setAccount("222");
+		token.setAccount("13919007855");
+	
 		return new JsonResult<Object>(0,JSON.toJSONString(token));
 	}
 }

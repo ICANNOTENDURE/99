@@ -70,7 +70,7 @@
 							<tr>
 								<td class="center" colspan="10">
 									<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
-									<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+									<a class="btn btn-mini btn-danger" onclick="commonClose();">取消</a>
 								</td>
 							</tr>
 						</table>

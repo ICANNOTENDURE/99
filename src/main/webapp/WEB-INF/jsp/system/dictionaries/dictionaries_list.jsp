@@ -198,23 +198,7 @@
 			window.location.href="<%=basePath%>dictionaries/list.do?DICTIONARIES_ID="+DICTIONARIES_ID;
 		};
 		
-		//新增
-		function add(DICTIONARIES_ID){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>dictionaries/goAdd.do?DICTIONARIES_ID='+DICTIONARIES_ID;
-			 diag.Width = 500;
-			 diag.Height = 500;
-			 diag.CancelEvent = function(){ //关闭事件
-				 if('none' == diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display){
-					 parent.location.href="<%=basePath%>dictionaries/listAllDict.do?DICTIONARIES_ID=${DICTIONARIES_ID}&dnowPage=${page.currentPage}";
-				}
-				diag.close();
-			 };
-			 diag.show();
-		}
+
 		
 		//删除
 		function del(Id){
@@ -257,24 +241,29 @@
 				}
 			});
 		}
-		
 		//修改
-		function edit(Id){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>dictionaries/goEdit.do?DICTIONARIES_ID='+Id;
-			 diag.Width = 500;
-			 diag.Height = 500;
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 parent.location.href="<%=basePath%>dictionaries/listAllDict.do?DICTIONARIES_ID=${DICTIONARIES_ID}&dnowPage=${page.currentPage}";
-				}
-				diag.close();
-			 };
-			 diag.show();
+		function edit(id){
+			commonLayer({ 
+					title: '字典信息',
+					area: ['500px', '550px'],
+					content: '<%=basePath%>dictionaries/goEdit.do?DICTIONARIES_ID='+id,
+					end :function(){
+						parent.location.href="<%=basePath%>dictionaries/listAllDict.do?DICTIONARIES_ID=${DICTIONARIES_ID}&dnowPage=${page.currentPage}";
+					}		
+			})
 		}
+		//修改
+		function add(DICTIONARIES_ID){
+			commonLayer({ 
+					title: '字典信息',
+					area: ['500px', '550px'],
+					content: '<%=basePath%>dictionaries/goAdd.do?DICTIONARIES_ID='+DICTIONARIES_ID,
+					end :function(){
+						parent.location.href="<%=basePath%>dictionaries/listAllDict.do?DICTIONARIES_ID=${DICTIONARIES_ID}&dnowPage=${page.currentPage}";
+					}		
+			})
+		}
+
 		
 	</script>
 
