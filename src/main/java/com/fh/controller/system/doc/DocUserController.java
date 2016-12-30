@@ -27,6 +27,7 @@ import com.fh.entity.system.doc.DocInfo;
 import com.fh.entity.system.doc.DocUser;
 import com.fh.entity.systemdoc.DocSpecialDisease;
 import com.fh.entity.vo.Select;
+import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocUserService;
@@ -172,4 +173,31 @@ public class DocUserController extends BaseController {
 		return new JsonResult<Object>();
 	}
 	
+	/*医生下拉列表使用*/
+	@RequestMapping(value="/docSelect")
+	@ResponseBody
+	public List<Select> docSelect(String search) throws Exception{
+		
+
+		List<Select> mv=new ArrayList<Select>();
+		List<String> colmn=new ArrayList<String>();
+		colmn.add("INFO_ID");
+		colmn.add("DOC_NAME");
+		GeneralQueryParam queryParam=new GeneralQueryParam();
+		queryParam.setPageNo(1);
+		queryParam.setPageSize(10);
+		queryParam.setQueryColumn(colmn);
+		if(StringUtils.isNotBlank(search)){
+			search = new String(search.getBytes("ISO-8859-1"),"UTF-8");
+			queryParam.setConditionExp(" DOC_NAME like #{conditionParam.DOC_NAME} ");
+			Map<String, Object> conditionParam = new HashMap<String, Object>();
+			conditionParam.put("DOC_NAME", "%"+search.trim()+"%");
+			queryParam.setConditionParam(conditionParam);
+		}
+		List<Map<String, Object>> list=commonService.selectAdvancedByColumn(DocInfo.class, queryParam);
+		for (Map<String, Object> mapping : list) {
+			mv.add(new Select(mapping.get("INFO_ID").toString(), mapping.get("DOC_NAME").toString()));
+		}
+		return mv;
+	}
 }
