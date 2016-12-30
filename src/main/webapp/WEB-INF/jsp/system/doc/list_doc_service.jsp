@@ -24,7 +24,7 @@
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
-						<!-- 检索  -->
+						<!-- 检索 2 -->
 						<form action="docservice/list.do" method="post" name="userForm" id="userForm">
 						<table style="margin-top:5px;">
 							<tr>
@@ -56,7 +56,7 @@
 									服务类型:
 								</td>
 								<td>
-								  		<select class="chosen-select form-control" name="SERVICE_TYPE" id="serviceType" style="vertical-align:top;width: 150px;">
+								  		<select class="chosen-select form-control" name="SERVICE_TYPE" id="serviceType" style="vertical-align:top;width: 150px" >
 											<c:forEach items="${docService}" var="dic">
 												<option value="${dic.DICTIONARIES_ID }" >${dic.NAME }</option>
 											</c:forEach>
@@ -70,9 +70,7 @@
 								<!-- 按钮 -->
 							</tr>
 						</table>
-						<!-- 检索  -->
-						
-						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px" >
 							<thead>
 								<tr>
 									<th class="center" style="width:35px;">
@@ -115,7 +113,6 @@
 											<td class='center' >${rd.hopName}</td>
 											<td class='center' >${rd.locName}</td>
 											<td class='center' >${rd.docTitle}</td>
->
 										</tr>
 									</c:forEach>
 									</c:if>
@@ -132,6 +129,7 @@
 								</c:otherwise>
 							</c:choose>
 							</tbody>
+							
 						</table>
 						<div class="page-header position-relative">
 						<table style="width:100%;">
