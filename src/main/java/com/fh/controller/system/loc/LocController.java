@@ -35,7 +35,7 @@ import com.fh.service.system.app.impl.LocService;
 
 @Controller
 @RequestMapping(value="/loc")
-public class AppLocController extends BaseController{
+public class LocController extends BaseController{
 	
 	
 	@Autowired
