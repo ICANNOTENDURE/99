@@ -1,19 +1,29 @@
 package com.fh.entity.vo.doc;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fh.entity.system.doc.DocService;
 import com.fh.entity.system.doc.DocUser;
 
 public class DocServiceVO {
-
-	private String infoId;
-	private String hopName;
-	private String locName;
-	private String docTitle;
-	private String docName;
-	private DocUser docUser;
 	
+	@ApiModelProperty(value = "医生id")
+	private String infoId;
+	@ApiModelProperty(value = "医院名称")
+	private String hopName;
+	@ApiModelProperty(value = "科室名称")
+	private String locName;
+	@ApiModelProperty(value = "医生职称")
+	private String docTitle;
+	@ApiModelProperty(value = "医生姓名")
+	private String docName;
+	@ApiModelProperty(hidden=true)
+	@JsonIgnore
+	private DocUser docUser;
+	@ApiModelProperty(value = "医生服务类型")
 	private List<DocService> docServices;
 
 	public String getInfoId() {

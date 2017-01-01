@@ -1,5 +1,7 @@
 package com.fh.entity.system.doc;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -12,11 +14,16 @@ import com.fh.entity.BaseEntity;
 public class DocService extends BaseEntity{
 	
 	@Id
+	@ApiModelProperty(value = "服务id")
 	private String serviceId;
+	@ApiModelProperty(hidden=true)
 	private String docinfoId;
+	@ApiModelProperty(value = "服务类型id")
 	private String serviceType;
+	@ApiModelProperty(value = "服务价格")
 	private BigDecimal servicePrice;
 	@Transient
+	@ApiModelProperty(value = "服务类型")
 	private String serviceTypeName;
 	public String getServiceId() {
 		return serviceId;
