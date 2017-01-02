@@ -51,4 +51,5 @@ public class Const {
 	
 	public static final String APP_URL="http://59.110.66.9/MVNFHM/";
 	
+	public static final String APP_IMG_PATH="http://59.110.66.9/MVNFHM/uploadFiles/uploadImgs/";
 }

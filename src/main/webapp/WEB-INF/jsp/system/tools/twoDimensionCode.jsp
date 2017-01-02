@@ -15,11 +15,7 @@
 
 <!-- jsp文件头和头部 -->
 <%@ include file="../index/top.jsp"%>
-<script type="text/javascript" src="static/ace/js/jquery.js"></script>
-<!-- 上传图片插件 -->
-<link href="plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="plugins/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="plugins/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+
 <!-- 上传图片插件 -->
 <script type="text/javascript">
 var jsessionid = "<%=session.getId()%>";  //勿删，uploadify兼容火狐用到

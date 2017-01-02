@@ -91,7 +91,7 @@ public class DocServiceVO {
 		if(StringUtils.isBlank(docImg)){
 			docImg="empty.png";
 		}
-		docImg=Const.APP_URL+Const.FILEPATHIMG+docImg;
+		docImg=Const.APP_IMG_PATH+docImg;
 		return docImg;
 	}
 
