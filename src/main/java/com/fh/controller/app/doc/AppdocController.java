@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
-import com.fh.entity.Page;
 import com.fh.entity.vo.doc.DocServiceVO;
 import com.fh.service.system.doc.impl.DocService;
 
@@ -35,17 +34,17 @@ public class AppdocController extends BaseController{
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "DOC_HOPID", value = "医院的id", required = false, dataType = "String"),
 		@ApiImplicitParam(name = "DOC_LOCID", value = "科室id", required = false, dataType = "String"),
-		@ApiImplicitParam(name = "DOC_TITLE", value = "医生职称", required = false, dataType = "String")
+		@ApiImplicitParam(name = "DOC_TITLE", value = "医生职称", required = false, dataType = "String"),
+		@ApiImplicitParam(name = "SHOW_COUNT", value = "一页的显示条数,传空默认为10", required = false, dataType = "String"),
+		@ApiImplicitParam(name = "CURRENT_PAGE", value = "当前页数,不传默认为1", required = false, dataType = "String")
 	})
 	@RequestMapping(value="/getAppDoc",method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResult<DocServiceVO> getAppDoc(){
 		
 		JsonResult<DocServiceVO> jsonResult=new JsonResult<DocServiceVO>();
-		Page page=new Page();
 		try {
-			page.setPd(this.getPageData());
-			jsonResult.setDatas(docService.listPage(page));
+			jsonResult.setDatas(docService.listPage(this.getAppPage()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResult.setCode(10);

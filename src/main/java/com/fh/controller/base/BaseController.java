@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -15,7 +16,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.entity.Page;
-import com.fh.plugin.GeneralQueryParam;
 import com.fh.util.Const;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Logger;
@@ -36,12 +36,12 @@ public class BaseController {
 		return new PageData(this.getRequest());
 	}
 	
-	public GeneralQueryParam getQueryParam(Page page){
-		
-		GeneralQueryParam generalQueryParam=new GeneralQueryParam();
-		generalQueryParam.setPageNo(page.getCurrentPage()+1);
-		generalQueryParam.setPageSize(page.getShowCount());
-		return generalQueryParam;
+	public Page getAppPage(){
+		Page page=new Page();
+		page.setPd(getPageData());
+		page.setShowCount(StringUtils.isBlank(getPar("SHOW_COUNT"))?10:Integer.valueOf(getPar("SHOW_COUNT")));
+		page.setCurrentPage(StringUtils.isBlank(getPar("CURRENT_PAGE"))?1:Integer.valueOf(getPar("CURRENT_PAGE")));
+		return page;
 	}
 	
 	/**得到ModelAndView

@@ -9,6 +9,7 @@
 	  <result property="hopName" column="hopName"/>
 	  <result property="locName" column="locName"/>
 	  <result property="docTitle" column="docTitle"/>
+	  <result property="docImg" column="docImg"/>
 	  <association property="docUser" javaType="com.fh.entity.system.doc.DocUser">
 	    <id property="docId" column="docId"/>
 	    <result property="docAccount" column="docAccount"/>
@@ -27,6 +28,7 @@
 			t1.STATUS as status ,
 			t2.INFO_ID as infoId ,
 			t2.DOC_NAME as docName ,
+			t2.DOC_PIC as docImg ,
 			t3.HOP_NAME as hopName ,
 			t4.LOC_NAME as locName ,
 			t5.NAME	as docTitle,

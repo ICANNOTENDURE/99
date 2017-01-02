@@ -4,9 +4,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fh.entity.system.doc.DocService;
 import com.fh.entity.system.doc.DocUser;
+import com.fh.util.Const;
 
 public class DocServiceVO {
 	
@@ -20,6 +23,8 @@ public class DocServiceVO {
 	private String docTitle;
 	@ApiModelProperty(value = "医生姓名")
 	private String docName;
+	@ApiModelProperty(value = "图片路径")
+	private String docImg;
 	@ApiModelProperty(hidden=true)
 	@JsonIgnore
 	private DocUser docUser;
@@ -80,6 +85,18 @@ public class DocServiceVO {
 
 	public void setDocName(String docName) {
 		this.docName = docName;
+	}
+
+	public String getDocImg() {
+		if(StringUtils.isBlank(docImg)){
+			docImg="empty.png";
+		}
+		docImg=Const.APP_URL+Const.FILEPATHIMG+docImg;
+		return docImg;
+	}
+
+	public void setDocImg(String docImg) {
+		this.docImg = docImg;
 	}
 	
 	
