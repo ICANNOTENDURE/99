@@ -12,12 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.Page;
 import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
+import com.fh.util.PageData;
 import com.fh.util.security.AESCoder;
 
 @Controller
@@ -47,5 +50,18 @@ public class PatUserControl extends BaseController{
 		token.setAccount("13919007855");
 	
 		return new JsonResult<Object>(0,JSON.toJSONString(token));
+	}
+	
+	@RequestMapping(value="/test")
+	public ModelAndView list(Page page){
+		ModelAndView mv = getModelAndView();
+		PageData pd=getPageData();
+		page.setPd(pd);
+		try{
+			mv.setViewName("test");
+		} catch(Exception e){
+			logger.error(e.toString(), e);
+		}
+		return mv;
 	}
 }

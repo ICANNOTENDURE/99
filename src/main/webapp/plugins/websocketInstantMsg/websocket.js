@@ -67,10 +67,11 @@ function toUserMsg(toU){
 			//初始话WebSocket
 			function initWebSocket() {
 				if (window.WebSocket) {
-					alert(wimadress)
+					wimadress="127.0.0.1:8080/MVNFHM/websocket"
 					websocket = new WebSocket(encodeURI('ws://'+wimadress));
 					
 					websocket.onopen = function() {
+						alert(2)
 						//连接成功
 						win.setTitle(title + '&nbsp;&nbsp;(已连接)   【现在全局对话】');
 						websocket.send('FHadminqq313596790'+user);

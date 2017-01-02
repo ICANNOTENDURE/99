@@ -18,7 +18,8 @@ import org.java_websocket.server.WebSocketServer;
  * 即时通讯
  */
 public class ChatServer extends WebSocketServer{
-
+	
+	
 	public ChatServer(int port) throws UnknownHostException {
 		super(new InetSocketAddress(port));
 	}
@@ -50,18 +51,22 @@ public class ChatServer extends WebSocketServer{
 	@Override
 	public void onMessage(WebSocket conn, String message){
 		message = message.toString();
-		if(null != message && message.startsWith("FHadminqq313596790")){
-			this.userjoin(message.replaceFirst("FHadminqq313596790", ""),conn);
-		}if(null != message && message.startsWith("LeaveFHadminqq313596790")){
-			this.userLeave(conn);
-		}if(null != message && message.contains("fhadmin886")){
-			String toUser = message.substring(message.indexOf("fhadmin886")+10, message.indexOf("fhfhadmin888"));
-			message = message.substring(0, message.indexOf("fhadmin886")) +"[私信]  "+ message.substring(message.indexOf("fhfhadmin888")+12, message.length());
-			ChatServerPool.sendMessageToUser(ChatServerPool.getWebSocketByUser(toUser),message);//向所某用户发送消息
-			ChatServerPool.sendMessageToUser(conn, message);//同时向本人发送消息
-		}else{
-			ChatServerPool.sendMessage(message.toString());//向所有在线用户发送消息
-		}
+		
+		
+		
+		ChatServerPool.sendMessage("123");
+//		if(null != message && message.startsWith("FHadminqq313596790")){
+//			this.userjoin(message.replaceFirst("FHadminqq313596790", ""),conn);
+//		}if(null != message && message.startsWith("LeaveFHadminqq313596790")){
+//			this.userLeave(conn);
+//		}if(null != message && message.contains("fhadmin886")){
+//			String toUser = message.substring(message.indexOf("fhadmin886")+10, message.indexOf("fhfhadmin888"));
+//			message = message.substring(0, message.indexOf("fhadmin886")) +"[私信]  "+ message.substring(message.indexOf("fhfhadmin888")+12, message.length());
+//			ChatServerPool.sendMessageToUser(ChatServerPool.getWebSocketByUser(toUser),message);//向所某用户发送消息
+//			ChatServerPool.sendMessageToUser(conn, message);//同时向本人发送消息
+//		}else{
+//			ChatServerPool.sendMessage(message.toString());//向所有在线用户发送消息
+//		}
 	}
 
 	public void onFragment( WebSocket conn, Framedata fragment ) {
