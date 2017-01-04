@@ -1,7 +1,7 @@
 package com.fh.plugin.websocket;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
@@ -19,9 +19,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	@Autowired
 	private CommonService commonService;
 	
-	private static final Map<String,WebSocketSession> users;
+	private static final ConcurrentHashMap<String,WebSocketSession> users;
 	static{
-		users = new HashMap<String,WebSocketSession>();
+		users = new ConcurrentHashMap<String,WebSocketSession>();
 	}
 	
 	
