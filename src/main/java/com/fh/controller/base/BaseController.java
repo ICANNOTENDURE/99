@@ -5,14 +5,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fh.entity.Page;
@@ -27,7 +29,20 @@ public class BaseController {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 
+	 protected HttpServletRequest request;
+	 protected HttpServletResponse response;
+	 protected HttpSession session;
 
+	  
+
+	   @ModelAttribute
+	   public void setReqAndRes(HttpServletRequest request, HttpServletResponse response){
+	
+	       this.request = request;
+	       this.response = response;
+	       this.session = request.getSession();
+	
+	   }
 	
 	/** new PageData对象
 	 * @return
@@ -60,7 +75,7 @@ public class BaseController {
 	 * @return
 	 */
 	public HttpServletRequest getRequest() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		//HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		return request;
 	}
 
@@ -107,5 +122,54 @@ public class BaseController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");   
         dateFormat.setLenient(true);   
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   
-    } 
+    }
+	
+	
+	/**
+     * 添加cookie
+     * 
+     * @param response
+     * @param name
+     * @param value
+     * @param maxAge 有效时间
+     */
+    public  void addCookie(String name, String value, int maxAge) {
+    	 if (null == name) {  
+             return;  
+         }  
+         if (null == value) {  
+             value = "";  
+         }  
+         Cookie cookie = new Cookie(name, value);  
+         cookie.setPath("/");  
+         if (maxAge != 0) {  
+             cookie.setMaxAge(maxAge);  
+         } else {  
+             cookie.setMaxAge(Const.COOKIE_Max_Age);  
+         }  
+         response.addCookie(cookie); 
+    }
+
+
+    /**
+     * 通过cookie name 获取 cookie value
+     * 
+     * @param request
+     * @param name
+     * @return
+     */
+    public  String getCookieValueByName(String name) {
+    	Cookie[] cookies = request.getCookies();  
+        if (null == cookies || null == name || name.length() == 0) {  
+            return null;  
+        }  
+        String cookie = null;  
+        for (Cookie c : cookies) {  
+            if (name.equals(c.getName())) {  
+                cookie = c.getValue();  
+                break;  
+            }  
+        }  
+        return cookie; 
+    }
 }

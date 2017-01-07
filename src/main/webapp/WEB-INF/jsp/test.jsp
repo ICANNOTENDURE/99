@@ -1,6 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>
-	<title>Java API for WebSocket (JSR-356)</title>  
+	<title>Java API for WebSocket (JSR-356)</title> 
+	<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script> 
 </head>
 <script type="text/javascript">
 	var websocket = null;
@@ -41,28 +44,46 @@
         	alert("连接失败!");  
         }  
 	}
+	function test(){
+		 $.post("../apppatuser/getVerification.do",
+				 {account:$("#code").val()},
+				 function(result){
+			   
+			  });
+	}
+	function token(){
+		 $.post("../apptest/checkToken.do",
+				 {APP_USER_CODE:$("#code").val(),
+			     APP_USER_TYPE:$("#usertype").val(),
+			 	 APP_TOKEN:$("#token").val()},
+				 function(data){
+			   		alert(data.message)
+			  });
+	}
+	function check(){
+		 $.post("../apppatuser/checkByPwd.do",
+				 {pwd:$("#usertype1").val(),
+			 account:$("#account1").val()},
+				 function(data){
+			   		alert(data.code)
+	});
+	}
 </script>
-请输入：<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>
-<button onclick="doSend();">发送</button>
-</body>
-</html>
-    login.jsp
- 
- 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Java API for WebSocket (JSR-356)</title> 
-</head>
-<body>
-        <!-ship是我的项目名-->
-	<form action="/ship/websocket/login.do">
-		登录名：<input type="text" name="username"/>
-		<input type="submit" value="登录"/>
-	</form>
-
+	<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>
+	<button onclick="doSend();">发送</button>
+	<br>
+	验证码测试<input  id="code" value='13919007855' />
+	<button onclick="test();">发送</button>
+	<br>
+	token测试
+	account<input  id="account" value='13919007855' />
+	usertype<input  id="usertype" value='1' />
+	token<input  id="token" value='V/TDA3TFB7SD19x5ev5B3pLCcwMn2mC2LaDOytcg3mjFEeJnl6UaJCMxZ4hvygEEH3w5zUkAwH2vyroH7fTOOjWtAuLZ/BVtPbSdF0PmAq04s6ljX0efwKSpoVbXoQpI' />
+	<button onclick="token();">发送</button>
+	<br>
+	用户名密码测试
+	account<input  id="account1" value='13919007855' />
+	usertype<input  id="usertype1" value='1' />
+	<button onclick="check();">发送</button>
 </body>
 </html>

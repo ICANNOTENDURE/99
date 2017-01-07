@@ -45,6 +45,7 @@ function sendEm(){
 	$("#zhongxin").hide();
 	$("#zhongxin2").show();
 	
+	
 	var EMAIL = $("#EMAIL").val();
 	var TYPE  = $("#TYPE").val();
 	var TITLE = $("#TITLE").val();

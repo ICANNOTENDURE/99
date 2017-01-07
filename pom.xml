@@ -553,6 +553,23 @@
 		   <artifactId>spring-messaging</artifactId>
 		   <version>${spring.version}</version>
 		</dependency>
+		<!-- http -->
+		<dependency>
+		  	<groupId>org.asynchttpclient</groupId>
+    		<artifactId>async-http-client</artifactId>
+    		<version>2.0.24</version>
+		</dependency>
+		
+           <dependency>
+               <groupId>com.aliyun</groupId>
+               <artifactId>aliyun-java-sdk-core</artifactId>
+               <version>2.4.2</version>
+           </dependency>
+           <dependency>
+               <groupId>com.aliyun</groupId>
+               <artifactId>aliyun-java-sdk-sms</artifactId>
+               <version>3.0.0-rc1</version>
+           </dependency>
 	</dependencies>
 	
 	<!-- ========================================================== -->
