@@ -7,9 +7,8 @@ package com.fh.controller.app.pat;
 
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,11 +47,10 @@ public class AppPatUserController extends BaseController{
 	 * 获取短信验证码
 	 * @return
 	 */
-	@ApiImplicitParam(name = "account", value = "手机号", required = true, dataType = "String")
 	@ApiOperation(notes = "获取短信验证码",  value = "获取短信验证码")
 	@RequestMapping(value="/getVerification",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> getVerification(@RequestParam String account){
+	public JsonResult<Object> getVerification(@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account){
 		
 		JsonResult<Object> result=new JsonResult<Object>();
 		
@@ -72,14 +70,12 @@ public class AppPatUserController extends BaseController{
 	 * @return
 	 * @throws Exception 
 	 */
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "account", value = "手机号", required = true, dataType = "String"),
-		@ApiImplicitParam(name = "verifyCode", value = "验证码", required = true, dataType = "String")
-	})
 	@ApiOperation(notes = "短信验证码登陆",  value = "短信验证码登陆")
 	@RequestMapping(value="/checkVerification",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> checkVerification(@RequestParam String account,@RequestParam String verifyCode) throws Exception{
+	public JsonResult<Object> checkVerification(
+			@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account,
+			@ApiParam(value = "验证",name="verifyCode", required = true)  @RequestParam String verifyCode) throws Exception{
 		
 		
 		if(StringUtils.isBlank(account)||StringUtils.isBlank(verifyCode)){
@@ -114,14 +110,12 @@ public class AppPatUserController extends BaseController{
 	 * @return
 	 * @throws Exception 
 	 */
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "account", value = "手机号", required = true, dataType = "String"),
-		@ApiImplicitParam(name = "pwd", value = "密码", required = true, dataType = "String")
-	})
 	@ApiOperation(notes = "账号密码验证码登陆",  value = "账号密码验证码登陆")
 	@RequestMapping(value="/checkByPwd",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> checkByPwd(@RequestParam String account,@RequestParam String pwd) throws Exception{
+	public JsonResult<Object> checkByPwd(
+			@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account,
+			@ApiParam(value = "密码",name="pwd", required = true)	@RequestParam String pwd) throws Exception{
 		
 		
 		if(StringUtils.isBlank(account)||StringUtils.isBlank(pwd)){
