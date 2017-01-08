@@ -68,6 +68,15 @@
 			   		alert(data.code)
 	});
 	}
+	function add(){
+		 $.post("../apppatuser/addPatUser.do",
+				 {pwd:$("#pwd2").val(),
+			 	  account:$("#account2").val(),
+			 	  verifyCode:$("#verf").val()},
+				 function(data){
+			   		alert(data.code)
+	});
+	}
 </script>
 	<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>
 	<button onclick="doSend();">发送</button>
@@ -85,5 +94,11 @@
 	account<input  id="account1" value='13919007855' />
 	usertype<input  id="usertype1" value='1' />
 	<button onclick="check();">发送</button>
+	<br>
+	病人用户注册测试
+	account<input  id="account2" value='13919007855' />
+	usertype<input  id="pwd2" value='1' />
+	验证码<input  id="verf" />
+	<button onclick="add();">发送</button>
 </body>
 </html>

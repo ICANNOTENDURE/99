@@ -110,4 +110,49 @@ public class AppdocUserController extends BaseController{
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
 		return new JsonResult<Object>(0,tk);
 	}
+	
+	
+	/**
+	 * 增加医生用户
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "增加医生用户",  value = "增加医生用户")
+	@RequestMapping(value="/addDocUser",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> addDocUser(
+			@ApiParam(value = "手机号",name="account", required = true)	@RequestParam String account,
+			@ApiParam(value = "密码",name="pwd", required = true) @RequestParam String pwd,
+			@ApiParam(value = "验证码",name="verifyCode", required = true)	@RequestParam String verifyCode) throws Exception{
+		
+		
+		if(StringUtils.isBlank(account)||StringUtils.isBlank(pwd)||StringUtils.isBlank(verifyCode)){
+			return new JsonResult<>(2, "账号或者密码或验证码不能为空");
+		}
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(3, "无效验证码,请重新获取验证码");
+		}
+		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		Map<String,Object> parMap=new HashMap<String, Object>();
+		parMap.put("doc_Account", account);
+		List<DocUser> docUsers = commonService.selectByEqCon(DocUser.class, parMap);
+		if(docUsers.size()>0){
+			return new JsonResult<>(5, "账号已存在");
+		}
+		DocUser docUser=new DocUser();
+		docUser.setDocAccount(account);
+		docUser.setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		docUser.setStatus("Y");
+		docUser.setDocPassword(MD5.md5(pwd));
+		commonService.saveOrUpdate(docUser);
+		Token token=new Token();
+		token.setAccounttType("1");
+		token.setAccount(docUser.getDocAccount());
+		token.setLogDate(docUser.getDocLogindate());
+		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
+		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
+		return new JsonResult<Object>(0,tk);
+	}
 }

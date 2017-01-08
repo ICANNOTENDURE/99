@@ -139,4 +139,48 @@ public class AppPatUserController extends BaseController{
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
 		return new JsonResult<Object>(0,tk);
 	}
+	
+	/**
+	 * 用户注册
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "病人注册账号",  value = "病人注册账号")
+	@RequestMapping(value="/addPatUser",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> addPatUser(
+			@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account,
+			@ApiParam(value = "密码",name="pwd", required = true)	@RequestParam String pwd,
+			@ApiParam(value = "验证码",name="verifyCode", required = true)	@RequestParam String verifyCode) throws Exception{
+		
+		
+		if(StringUtils.isBlank(account)||StringUtils.isBlank(pwd)||StringUtils.isBlank(verifyCode)){
+			return new JsonResult<>(2, "账号或者密码或验证码不能为空");
+		}
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(3, "无效验证码,请重新获取验证码");
+		}
+		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		Map<String,Object> parMap=new HashMap<String, Object>();
+		parMap.put("user_Account", account);
+		List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);
+		if(patUsers.size()>0){
+			return new JsonResult<>(5, "账号已注册");
+		}
+		PatUser patUser=new PatUser();
+		patUser.setStatus("Y");
+		patUser.setUserAccount(account);
+		patUser.setUserPassword(MD5.md5(pwd));
+		patUser.setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		commonService.saveOrUpdate(patUser);
+		Token token=new Token();
+		token.setAccounttType("2");
+		token.setAccount(patUser.getUserAccount());
+		token.setLogDate(patUser.getUserLogindate());
+		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
+		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
+		return new JsonResult<Object>(0,tk);
+	}
 }
