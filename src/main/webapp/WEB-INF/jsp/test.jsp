@@ -81,7 +81,7 @@
 	function addFamily(){
 		 $.post("../apppatuser/addPatFamily.do",
 				 {famName:"222",
-			      APP_TOKEN:'V/TDA3TFB7SD19x5ev5B3pLCcwMn2mC2LaDOytcg3mgqGYaLqSWzqDH3EeSGQRHCxazV3sZNX21lRxxd9eLDUQ/jh65XITpkN90cH+xEn8zbse+1YqB4LHmaFiQ/vpde',
+			      APP_TOKEN:'V/TDA3TFB7SD19x5ev5B3pLCcwMn2mC2LaDOytcg3mgqGYaLqSWzqDH3EeSGQRHCxazV3sZNX21lRxxd9eLDUQ/jh65XITpkN90cH+xEn8zb3Zf58xeAOGrR93LNsIXb',
 			      famId:"",
 			      famSex:"",
 			      famBrith:"",
@@ -91,6 +91,15 @@
 			   		alert(data.code)
 		});
 		
+	}
+	function listFamily(){
+		
+		 $.get("../apppatuser/listPatFamily.do",
+				 {
+			      APP_TOKEN:'V/TDA3TFB7SD19x5ev5B3pLCcwMn2mC2LaDOytcg3mgqGYaLqSWzqDH3EeSGQRHCxazV3sZNX21lRxxd9eLDUQ/jh65XITpkN90cH+xEn8zb3Zf58xeAOGrR93LNsIXb'},
+				 function(data){
+			   		alert(data.datas.length)
+		});
 	}
 </script>
 	<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>
@@ -116,5 +125,6 @@
 	验证码<input  id="verf" />
 	<button onclick="add();">发送</button>
 	<button onclick="addFamily();">addFamily</button>
+	<button onclick="listFamily();">listFamily</button>
 </body>
 </html>

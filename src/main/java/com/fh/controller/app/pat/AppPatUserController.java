@@ -260,4 +260,23 @@ public class AppPatUserController extends BaseController{
 		commonService.saveOrUpdate(patFamily);
 		return new JsonResult<Object>(0,"success");
 	}
+	
+	/**
+	 * 查询患者家属列表
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "查询患者家属列表",  value = "查询患者家属列表")
+	@RequestMapping(value="/listPatFamily",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<PatFamily> listPatFamily() throws Exception{
+		
+		JsonResult<PatFamily> jsonResult=new JsonResult<PatFamily>();
+		Map<String, Object> conMapping=new HashMap<String, Object>();
+		conMapping.put("parent_Id", session.getAttribute("APP_SESSION_ID").toString());
+		List<PatFamily> families=commonService.selectByEqCon(PatFamily.class, conMapping);
+		jsonResult.setDatas(families);
+		return jsonResult;
+	}
 }
