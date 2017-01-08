@@ -74,6 +74,8 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 										if (docUsers.size() == 0) {
 											jsonResult.setCode(11);
 											jsonResult.setMessage("用户状态异常");
+										}else{
+											request.getSession().setAttribute("APP_SESSION_ID", docUsers.get(0).getDocId());
 										}
 									}
 									// 病人用户
@@ -85,6 +87,8 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 										if (patUsers.size() == 0) {
 											jsonResult.setCode(11);
 											jsonResult.setMessage("用户状态异常");
+										}else{
+											request.getSession().setAttribute("APP_SESSION_ID", patUsers.get(0).getUserId());
 										}
 									}
 								}

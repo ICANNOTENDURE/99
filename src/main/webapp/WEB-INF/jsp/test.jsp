@@ -75,7 +75,22 @@
 			 	  verifyCode:$("#verf").val()},
 				 function(data){
 			   		alert(data.code)
-	});
+		});
+	}
+	
+	function addFamily(){
+		 $.post("../apppatuser/addPatFamily.do",
+				 {famName:"222",
+			      APP_TOKEN:'V/TDA3TFB7SD19x5ev5B3pLCcwMn2mC2LaDOytcg3mgqGYaLqSWzqDH3EeSGQRHCxazV3sZNX21lRxxd9eLDUQ/jh65XITpkN90cH+xEn8zbse+1YqB4LHmaFiQ/vpde',
+			      famId:"",
+			      famSex:"",
+			      famBrith:"",
+			      famMarry:"",
+			      famFlag:""},
+				 function(data){
+			   		alert(data.code)
+		});
+		
 	}
 </script>
 	<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>
@@ -100,5 +115,6 @@
 	usertype<input  id="pwd2" value='1' />
 	验证码<input  id="verf" />
 	<button onclick="add();">发送</button>
+	<button onclick="addFamily();">addFamily</button>
 </body>
 </html>

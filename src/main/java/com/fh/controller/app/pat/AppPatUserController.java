@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,9 @@ import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.system.PatUser;
+import com.fh.entity.system.pat.PatFamily;
 import com.fh.entity.vo.token.Token;
+import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
@@ -53,7 +56,12 @@ public class AppPatUserController extends BaseController{
 	public JsonResult<Object> getVerification(@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account){
 		
 		JsonResult<Object> result=new JsonResult<Object>();
-		
+		if(StringUtils.isBlank(account)){
+			return new JsonResult<Object>(2,"手机号码不能为空"); 
+		}
+		if(!Tools.checkMobileNumber(account)){
+			return new JsonResult<Object>(3,"请输入正确的手机号码"); 
+		}
 		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
 			int code=Tools.getRandomNum();
 			addCookie(Const.COOKIE_Verification_Code, String.valueOf(code), 60);
@@ -87,6 +95,7 @@ public class AppPatUserController extends BaseController{
 		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
 			return new JsonResult<>(4, "验证码错误");
 		}
+		
 		Map<String,Object> parMap=new HashMap<String, Object>();
 		parMap.put("user_Account", account);
 		parMap.put("status", "Y");
@@ -163,6 +172,7 @@ public class AppPatUserController extends BaseController{
 		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
 			return new JsonResult<>(4, "验证码错误");
 		}
+		delCookieValueByName(Const.COOKIE_Verification_Code);
 		Map<String,Object> parMap=new HashMap<String, Object>();
 		parMap.put("user_Account", account);
 		List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);
@@ -182,5 +192,72 @@ public class AppPatUserController extends BaseController{
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
 		return new JsonResult<Object>(0,tk);
+	}
+	/**
+	 * 找回丢失账号
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "找回丢失账号",  value = "找回丢失账号")
+	@RequestMapping(value="/getLostPatUser",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> getLostPatUser(
+			@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account,
+			@ApiParam(value = "密码",name="pwd", required = true)	@RequestParam String pwd,
+			@ApiParam(value = "验证码",name="verifyCode", required = true)	@RequestParam String verifyCode) throws Exception{
+		
+		
+		if(StringUtils.isBlank(account)||StringUtils.isBlank(pwd)||StringUtils.isBlank(verifyCode)){
+			return new JsonResult<>(2, "账号或者密码或验证码不能为空");
+		}
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(3, "无效验证码,请重新获取验证码");
+		}
+		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		delCookieValueByName(Const.COOKIE_Verification_Code);
+		Map<String,Object> parMap=new HashMap<String, Object>();
+		parMap.put("user_Account", account);
+		List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);
+		if(patUsers.size()==0){
+			return new JsonResult<>(5, "账号错误");
+		}
+		if(!"Y".equals(patUsers.get(0).getStatus())){
+			return new JsonResult<>(6, "账号已被冻结");
+		}
+		patUsers.get(0).setUserPassword(MD5.md5(pwd));
+		patUsers.get(0).setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		commonService.saveOrUpdate(patUsers.get(0));
+		return new JsonResult<Object>();
+	}
+	/**
+	 * 保存用户家属信息
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "新增用户家属信息",  value = "新增用户家属信息")
+	@RequestMapping(value="/addPatFamily",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> addPatFamily(
+			@ApiParam(value = "家属记录id",name="famId") @RequestParam String famId,
+			@ApiParam(value = "家属姓名",name="famName",example="张三丰") @RequestParam String famName,
+			@ApiParam(value = "性别",name="famSex",example="男") @RequestParam String famSex,
+			@ApiParam(value = "生日",name="famBrith",example="2016-01-01") @RequestParam Date famBrith,
+			@ApiParam(value = "婚姻状态",name="famMarry",example="字典表 婚姻id") @RequestParam String famMarry,
+			@ApiParam(value = "是否默认",name="famFlag",example="Y") @RequestParam String famFlag) throws Exception{
+		
+		
+		PatFamily patFamily=new PatFamily();
+		patFamily.setParentId(session.getAttribute("APP_SESSION_ID").toString());
+		patFamily.setFamId(famId);
+		patFamily.setFamName(famName);
+		patFamily.setFamBrith(famBrith);
+		patFamily.setFamSex(famSex);
+		patFamily.setFamFlag(famFlag);
+		patFamily.setFamMarry(famMarry);
+		commonService.saveOrUpdate(patFamily);
+		return new JsonResult<Object>(0,"success");
 	}
 }

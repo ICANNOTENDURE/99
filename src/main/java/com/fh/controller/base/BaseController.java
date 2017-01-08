@@ -172,4 +172,27 @@ public class BaseController {
         }  
         return cookie; 
     }
+    /**
+     * 通过cookie name 删除 cookie value
+     * 
+     * @param request
+     * @param name
+     * @return
+     */
+    public  String delCookieValueByName(String name) {
+    	Cookie[] cookies = request.getCookies();  
+        if (null == cookies || null == name || name.length() == 0) {  
+            return null;  
+        }  
+        String cookie = null;  
+        for (Cookie c : cookies) {  
+            if (name.equals(c.getName())) {  
+            	c.setValue(null);
+                c.setMaxAge(0);// 立即销毁cookie
+                c.setPath("/");
+                response.addCookie(c);
+            }  
+        }  
+        return cookie; 
+    }
 }
