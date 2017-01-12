@@ -80,7 +80,14 @@ public class DateUtil {
 			return null;
 		}
 	}
-
+	public static Date fomatTime(String time) {
+		try {
+			return sdfTime.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	/**
 	 * 校验日期是否合法
 	 * @return
@@ -170,6 +177,19 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("E");
         String dateStr = sdf.format(date);
         return dateStr;
+    }
+    
+    /**
+     * 获取失效日期
+     * @param daysInt
+     * @return
+     */
+    public static Date getExpDay(int daysInt) {
+    	
+        Calendar canlendar = Calendar.getInstance(); // java.util包
+        canlendar.add(Calendar.DATE, daysInt); // 日期减 如果不够减会将月变动
+        Date date = canlendar.getTime();
+        return fomatDate(sdfDay.format(date));
     }
     
     public static void main(String[] args) {

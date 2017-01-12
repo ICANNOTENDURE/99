@@ -14,13 +14,19 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
-
-
-
-import org.dom4j.Document;   
+import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;   
-import org.dom4j.Element;   
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
+import com.aliyuncs.sms.model.v20160927.SingleSendSmsRequest;
+import com.aliyuncs.sms.model.v20160927.SingleSendSmsResponse;
 
 /** 
  * 说明：短信接口类
@@ -29,6 +35,7 @@ import org.dom4j.Element;
  * @version
  */
 public class SmsUtil {
+	
 	
 	public static void main(String [] args) {
 		
@@ -207,6 +214,29 @@ public class SmsUtil {
 	// =================================================================================================
 	
 	
+
 	
+	public  static void sendSmsAli(String recNum,String code){
+
+
+       try {
+           IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", Const.ALI_SMS_ACCESS_KEY, Const.ALI_SMS_ACCESS_SECRET);
+      	   DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Sms",  "sms.aliyuncs.com");
+           IAcsClient client = new DefaultAcsClient(profile);
+           SingleSendSmsRequest request = new SingleSendSmsRequest();
+           request.setSignName(Const.ALI_SMS_SignName);
+           request.setTemplateCode(Const.ALI_SMS_TemplateCode);
+           request.setParamString("{'code':'"+code+"'}");
+           request.setRecNum(recNum);
+           SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
+           
+
+       } catch (ServerException e) {
+           e.printStackTrace();
+       }catch (ClientException e) {
+           e.printStackTrace();
+       }
+	}
+
 }
 

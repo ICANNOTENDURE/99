@@ -48,8 +48,19 @@ public class Const {
 	
 	//app 加密账号的秘要
 	public static final String APP_TOKEN_KEY="908067886@qq.com";
-	
+	//token失效时间
+	public static final int APP_TOKEN_MAX_TIME=7;
 	public static final String APP_URL="http://59.110.66.9/MVNFHM/";
 	
 	public static final String APP_IMG_PATH="http://59.110.66.9/MVNFHM/uploadFiles/uploadImgs/";
+	
+	//阿里短信
+	public static final String ALI_SMS_ACCESS_KEY="LTAICpVU09XNLBEC";
+	public static final String ALI_SMS_ACCESS_SECRET="GxxsImlRane5MS8n4XVuM6mUc5oPy9";
+	public static final String ALI_SMS_SignName="周鑫";
+	public static final String ALI_SMS_TemplateCode="SMS_38530038";
+	
+	//验证码
+	public static final String COOKIE_Verification_Code="COOKIE_Verification_Code";
+	public static final int COOKIE_Max_Age=60;
 }
