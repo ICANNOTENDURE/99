@@ -7,6 +7,7 @@ package com.fh.controller.app.pat;
 
 
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,8 @@ public class PatUserControl extends BaseController{
 		} catch(Exception e){
 			logger.error(e.toString(), e);
 		}
+		ConcurrentHashMap<String, String> map=new ConcurrentHashMap<>();
+	
 		return mv;
 	}
 }
