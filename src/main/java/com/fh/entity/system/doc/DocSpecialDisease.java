@@ -1,4 +1,4 @@
-package com.fh.entity.systemdoc;
+package com.fh.entity.system.doc;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

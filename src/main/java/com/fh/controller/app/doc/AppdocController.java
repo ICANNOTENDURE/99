@@ -90,4 +90,29 @@ public class AppdocController extends BaseController{
 		}
 		return jsonResult;
 	}
+	
+	
+	/**
+	 * 医生明细信息
+	 * @return
+	 */
+	@ApiOperation(notes = "医生明细信息",  value = "医生明细信息")
+	@RequestMapping(value="/getDocInfo",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<Select> getDocInfo(){
+		
+		JsonResult<Select> jsonResult=new JsonResult<Select>();
+		List<Select> list=new ArrayList<Select>();
+		jsonResult.setDatas(list);
+		try {
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setCode(10);
+			jsonResult.setMessage(e.getMessage());
+		}
+		return jsonResult;
+	}
 }

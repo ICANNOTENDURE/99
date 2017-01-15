@@ -21,6 +21,14 @@ public class PatAskSub extends BaseEntity{
 	 * DOC:医生回答
 	 */
 	private String asksubType;
+	/*
+	 *消息类型
+	 *sys_dictionaries
+	 *MESSAGE_TYPE
+	 *1:文字
+	 *2：语言
+	 *3：图片
+	 */
 	private String asksubMessageType;
 	private String asksubPath;
 	public String getAsksubId() {

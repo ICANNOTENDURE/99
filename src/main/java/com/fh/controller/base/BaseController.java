@@ -195,4 +195,11 @@ public class BaseController {
         }  
         return cookie; 
     }
+    /**
+     * 获取登陆用户id
+     * @return
+     */
+    public String getAppUserId(){
+    	return session.getAttribute("APP_SESSION_ID").toString();
+    }
 }

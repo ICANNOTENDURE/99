@@ -72,7 +72,9 @@ public class AppHopController extends BaseController{
 		JsonResult<AppHop> jsonResult=new JsonResult<AppHop>();
 		try {
 			Map<String, Object> conMapping=new HashMap<String, Object>();
-			conMapping.put("hop_Level", level);
+			if(!"0".equals(level)){
+				conMapping.put("hop_Level", level);
+			}
 			conMapping.put("hop_Status", "Y");
 			List<AppHop> list=commonService.selectByEqCon(AppHop.class, conMapping);
 			jsonResult.setDatas(list);

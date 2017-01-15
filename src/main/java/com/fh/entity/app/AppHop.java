@@ -34,7 +34,7 @@ public class AppHop extends BaseEntity implements java.io.Serializable{
 	@Transient
 	@Excel(name = "医疗机构级别", orderNum = "2")
 	@ApiModelProperty(hidden=true)
-	@JSONField(serialize = false)
+	@JSONField(serialize = false,deserialize=false)
 	private String levelDesc;
 	
 	
