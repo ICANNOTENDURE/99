@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.service.common.impl.CommonService;
+import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.FileUpload;
 import com.fh.util.PathUtil;
@@ -42,11 +43,13 @@ public class PicController extends BaseController{
 	@ResponseBody
 	public JsonResult<Object> upload(HttpServletRequest request,HttpServletResponse 
 			response) throws Exception{
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		DefaultMultipartHttpServletRequest multipartRequest = (DefaultMultipartHttpServletRequest) request;
+		
 		Iterator<String> fileNames = multipartRequest.getFileNames();
 	    MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
 		String fileName = FileUpload.fileUp(multipartFile, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
-		return new JsonResult<Object>(0,PathUtil.PicPath()+fileName);
+		
+		return new JsonResult<Object>(0,Const.APP_IMG_PATH+fileName);
 	}
 	
 

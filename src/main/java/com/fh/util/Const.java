@@ -31,29 +31,20 @@ public class Const {
 	public static final String FILEPATHFILE = "uploadFiles/file/";		//文件上传路径
 	public static final String UPLOADEXCEL = "system/hop/uploadexcel";		//上传excel公共页面
 	public static final String FILEPATHTWODIMENSIONCODE = "uploadFiles/twoDimensionCode/"; //二维码存放路径
-	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(logout)|(code)|(app)|(weixin)|(static)|(uploadFiles)|(main)|(websocket)).*";	//不对匹配该值的访问路径拦截（正则）
+	public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(logout)|(code)|(app)|(weixin)|(static)|(uploadFiles)|(plugins)|(main)|(websocket)).*";	//不对匹配该值的访问路径拦截（正则）
 	public static final String APP_PATH=".*/(app).*";
 	public static ApplicationContext WEB_APP_CONTEXT = null; //该值会在web容器启动时由WebAppContextListener初始化
 	
-	/**
-	 * APP Constants
-	 */
-	//app注册接口_请求协议参数)
-	public static final String[] APP_REGISTERED_PARAM_ARRAY = new String[]{"countries","uname","passwd","title","full_name","company_name","countries_code","area_code","telephone","mobile"};
-	public static final String[] APP_REGISTERED_VALUE_ARRAY = new String[]{"国籍","邮箱帐号","密码","称谓","名称","公司名称","国家编号","区号","电话","手机号"};
-	
-	//app根据用户名获取会员信息接口_请求协议中的参数
-	public static final String[] APP_GETAPPUSER_PARAM_ARRAY = new String[]{"USERNAME"};
-	public static final String[] APP_GETAPPUSER_VALUE_ARRAY = new String[]{"用户名"};
+
 	
 	//app 加密账号的秘要
 	public static final String APP_TOKEN_KEY="908067886@qq.com";
-	//token失效时间
+	//token失效时间 7天
 	public static final int APP_TOKEN_MAX_TIME=7;
+	//工程路径
 	public static final String APP_URL="http://59.110.66.9/MVNFHM/";
-	
+	//图片访问路径
 	public static final String APP_IMG_PATH="http://59.110.66.9/MVNFHM/uploadFiles/uploadImgs/";
-	
 	//阿里短信
 	public static final String ALI_SMS_ACCESS_KEY="LTAICpVU09XNLBEC";
 	public static final String ALI_SMS_ACCESS_SECRET="GxxsImlRane5MS8n4XVuM6mUc5oPy9";

@@ -27,14 +27,7 @@ public class AppUtil  {
 		String[] valueArray = new String[20];
 		String[] tempArray  = new String[20];  //临时数组
 		
-		if(method=="registered"){// 注册
-			paramArray = Const.APP_REGISTERED_PARAM_ARRAY;  //参数
-			valueArray = Const.APP_REGISTERED_VALUE_ARRAY;  //参数名称
-			
-		}else if(method=="getAppuserByUsernmae"){//根据用户名获取会员信息
-			paramArray = Const.APP_GETAPPUSER_PARAM_ARRAY;  
-			valueArray = Const.APP_GETAPPUSER_VALUE_ARRAY;
-		}
+
 		int size = paramArray.length;
 		for(int i=0;i<size;i++){
 			String param = paramArray[i];

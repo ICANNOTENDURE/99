@@ -1,6 +1,6 @@
 package com.fh.controller.app;
 
-import java.util.Date;
+import io.swagger.annotations.Api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +16,10 @@ import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
-import com.fh.util.PageData;
 import com.fh.util.security.AESCoder;
 @Controller 
 @RequestMapping(value="/apptest")
+@Api(hidden=true)
 public class TestController extends BaseController{
 	@RequestMapping(value="/getToken",method = RequestMethod.GET)
 	@ResponseBody
@@ -34,7 +34,7 @@ public class TestController extends BaseController{
 		System.out.println(appt);
 		String xxString=AESCoder.aesCbcDecrypt(appt,Const.APP_TOKEN_KEY);
 		Token token2=JSON.parseObject(xxString, Token.class);
-		return new JsonResult<Object>(0,appt);
+		return new JsonResult<Object>();
 	}
 	
 	@AppToken
@@ -51,19 +51,17 @@ public class TestController extends BaseController{
 	@RequestMapping(value="/test")
 	public ModelAndView list(Page page){
 		
-			//15920908325
-		//15095394330
-		//SmsUtil.sendSmsAli("15095394330","梁嘉权吃翔");
+		ModelAndView mv = getModelAndView();
 
+			mv.setViewName("test");
+
+		return mv;
+	}
+	@RequestMapping(value="/test2")
+	public ModelAndView list2(Page page){
 		
 		ModelAndView mv = getModelAndView();
-		PageData pd=getPageData();
-		page.setPd(pd);
-		try{
-			mv.setViewName("test");
-		} catch(Exception e){
-			logger.error(e.toString(), e);
-		}
+			mv.setViewName("uploadify");
 		return mv;
 	}
 
