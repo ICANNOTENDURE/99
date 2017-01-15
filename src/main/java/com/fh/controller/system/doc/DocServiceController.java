@@ -19,6 +19,7 @@ import com.fh.entity.system.doc.DocUser;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocService;
+import com.fh.util.Constants;
 import com.fh.util.DelAllFile;
 import com.fh.util.MD5;
 import com.fh.util.PathUtil;
@@ -44,7 +45,7 @@ public class DocServiceController extends BaseController {
 		mv.setViewName("system/doc/list_doc_service");
 		page.setPd(this.getPageData());
 		try{
-			mv.addObject("docService",dictionariesService.listSubDictByParentId("d8cb374052ba4b4a92ae45f2dc7b6078"));
+			mv.addObject("docService",dictionariesService.listSubDictByParentId(Constants.DIC_DOC_SERVICE));
 			mv.addObject("list", docService.listPage(page));
 		} catch(Exception e){
 		}

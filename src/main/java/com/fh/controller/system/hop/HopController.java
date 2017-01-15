@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
-import com.fh.entity.app.AppDisease;
 import com.fh.entity.app.AppHop;
 import com.fh.entity.system.Dictionaries;
 import com.fh.entity.vo.Select;
@@ -30,6 +29,7 @@ import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.HopService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
+import com.fh.util.Constants;
 import com.fh.util.PageData;
 
 @Controller
@@ -58,7 +58,7 @@ public class HopController extends BaseController{
 			mv.setViewName("system/hop/list");
 			mv.addObject("list", hopService.listPage(page));
 			mv.addObject("pd", pd);
-			List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId("120197ba4bc84d32a0d86191bcdfff56");
+			List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId(Constants.DIC_HOP_LEVEL);
 			mv.addObject("levelList", dictionaries);
 
 		} catch(Exception e){

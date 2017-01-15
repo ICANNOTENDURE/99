@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.system.Dictionaries;
+import com.fh.entity.vo.Select;
 import com.fh.entity.vo.doc.DocServiceVO;
+import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocService;
+import com.fh.util.Constants;
 
 
 @Controller 
@@ -25,6 +33,10 @@ public class AppdocController extends BaseController{
 	
 	@Autowired
 	private DocService docService;
+	@Autowired
+	private CommonService commonService;
+	@Autowired
+	private DictionariesService dictionariesService;
 	
 	/**
 	 * 返回科室信息
@@ -45,6 +57,32 @@ public class AppdocController extends BaseController{
 		JsonResult<DocServiceVO> jsonResult=new JsonResult<DocServiceVO>();
 		try {
 			jsonResult.setDatas(docService.listPage(this.getAppPage()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setCode(10);
+			jsonResult.setMessage(e.getMessage());
+		}
+		return jsonResult;
+	}
+	
+	/**
+	 * 医生服务类型
+	 * @return
+	 */
+	@ApiOperation(notes = "医生服务类型",  value = "医生服务类型")
+	@RequestMapping(value="/getDocService",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<Select> getDocService(){
+		
+		JsonResult<Select> jsonResult=new JsonResult<Select>();
+		List<Select> list=new ArrayList<Select>();
+		jsonResult.setDatas(list);
+		try {
+			
+			List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId(Constants.DIC_DOC_SERVICE);
+			for(Dictionaries dictionaries2:dictionaries){
+				list.add(new Select(dictionaries2.getDICTIONARIES_ID(), dictionaries2.getNAME()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResult.setCode(10);

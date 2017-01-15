@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,15 +56,15 @@ public class ApplocController extends BaseController{
 				locMap.put(loc.getLocId(), locVO);
 			}
 			//遍历Map缕清父子关系
-			Iterator<String> keys = locMap.keySet().iterator();
-			while(keys.hasNext()){			
-				String key = keys.next();		
-				LocVO loc = locMap.get(key);	
-				if(!"0".equals(loc.getParent())){
-					LocVO locVO = locMap.get(loc.getParent());
-					locVO.getNodes().add(loc);
-				}
-			}
+//			Iterator<String> keys = locMap.keySet().iterator();
+//			while(keys.hasNext()){			
+//				String key = keys.next();		
+//				LocVO loc = locMap.get(key);	
+//				if(!"0".equals(loc.getParent())){
+//					LocVO locVO = locMap.get(loc.getParent());
+//					locVO.getNodes().add(loc);
+//				}
+//			}
 			
 		} catch (Exception e) {
 			jsonResult.setCode(11);

@@ -1,5 +1,7 @@
 package com.fh.entity.app;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -7,6 +9,7 @@ import javax.persistence.Transient;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fh.entity.BaseEntity;
 
 @ExcelTarget("appHop")
@@ -16,6 +19,8 @@ public class AppHop extends BaseEntity implements java.io.Serializable{
 	/**
 	 * 
 	 */
+	@ApiModelProperty(hidden=true)
+	@JSONField(serialize = false)
 	@Transient
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -23,9 +28,13 @@ public class AppHop extends BaseEntity implements java.io.Serializable{
 	@Excel(name = "医院名称", orderNum = "1")
 	private String hopName;
 	private String hopLevel;
+	@ApiModelProperty(hidden=true)
+	@JSONField(serialize = false)
 	private String hopStatus;
 	@Transient
 	@Excel(name = "医疗机构级别", orderNum = "2")
+	@ApiModelProperty(hidden=true)
+	@JSONField(serialize = false)
 	private String levelDesc;
 	
 	
