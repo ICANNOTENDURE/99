@@ -97,6 +97,38 @@ public class DocInfoDetailVO {
 	public void setDocImg(String docImg) {
 		this.docImg = docImg;
 	}
+
+	public String getDocDisease() {
+		return docDisease;
+	}
+
+	public void setDocDisease(String docDisease) {
+		this.docDisease = docDisease;
+	}
+
+	public String getDocIntroduce() {
+		return docIntroduce;
+	}
+
+	public void setDocIntroduce(String docIntroduce) {
+		this.docIntroduce = docIntroduce;
+	}
+
+	public Integer getDocServerNum() {
+		return docServerNum;
+	}
+
+	public void setDocServerNum(Integer docServerNum) {
+		this.docServerNum = docServerNum;
+	}
+
+	public Integer getDocReplyNum() {
+		return docReplyNum;
+	}
+
+	public void setDocReplyNum(Integer docReplyNum) {
+		this.docReplyNum = docReplyNum;
+	}
 	
 	
 	

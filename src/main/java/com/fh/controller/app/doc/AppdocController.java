@@ -4,25 +4,37 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.app.AppDisease;
+import com.fh.entity.app.AppHop;
+import com.fh.entity.app.AppLoc;
 import com.fh.entity.system.Dictionaries;
+import com.fh.entity.system.doc.DocInfo;
+import com.fh.entity.system.doc.DocSpecialDisease;
 import com.fh.entity.vo.Select;
+import com.fh.entity.vo.doc.DocInfoDetailVO;
 import com.fh.entity.vo.doc.DocServiceVO;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocService;
 import com.fh.util.Constants;
+import com.fh.util.PageData;
 
 
 @Controller 
@@ -99,15 +111,59 @@ public class AppdocController extends BaseController{
 	@ApiOperation(notes = "医生明细信息",  value = "医生明细信息")
 	@RequestMapping(value="/getDocInfo",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResult<Select> getDocInfo(){
+	public JsonResult<DocInfoDetailVO> getDocInfo(@ApiParam(value = "医生id",name="docId", required = true) @RequestParam String docId){
 		
-		JsonResult<Select> jsonResult=new JsonResult<Select>();
-		List<Select> list=new ArrayList<Select>();
+		JsonResult<DocInfoDetailVO> jsonResult=new JsonResult<DocInfoDetailVO>();
+		List<DocInfoDetailVO> list=new ArrayList<DocInfoDetailVO>();
 		jsonResult.setDatas(list);
 		try {
+			DocInfoDetailVO detailVO=new DocInfoDetailVO();
+			DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, docId);
 			
+			detailVO.setDocImg(docInfo.getDocPic());
+			detailVO.setDocIntroduce(docInfo.getDocIntroduce());
+			detailVO.setDocName(docInfo.getDocName());
+			detailVO.setDocReplyNum(docInfo.getDocReplyNum());
+			detailVO.setDocServerNum(docInfo.getDocServerNum());
+			if(StringUtils.isNotBlank(docInfo.getDocLocid())){
+				detailVO.setLocName(commonService.selectByPrimaryKey(AppLoc.class, docInfo.getDocLocid()).getLocName());
+			}
+			if(StringUtils.isNotBlank(docInfo.getDocHopid())){
+				detailVO.setHopName(commonService.selectByPrimaryKey(AppHop.class, docInfo.getDocHopid()).getHopName());
+			}
+			if(StringUtils.isNotBlank(docInfo.getDocTitle())){
+				PageData pd=new PageData();
+				pd.put("DICTIONARIES_ID", docInfo.getDocTitle());
+				detailVO.setDocTitle(dictionariesService.findById(pd).getString("NAME"));
+			}
+			Map<String,Object> conMapping=new HashMap<String, Object>();
+			conMapping.put("docinfo_Id", docId);
+			List<DocSpecialDisease> diseases=commonService.selectByEqCon(DocSpecialDisease.class, conMapping);
+			if(!diseases.isEmpty()){
+				StringBuffer sb=new StringBuffer();
+				for(DocSpecialDisease disease:diseases){
+					conMapping.clear();
+					conMapping.put("disease_Id", disease.getDiseaseId());
+					List<AppDisease> appDisease=commonService.selectByEqCon(AppDisease.class, conMapping);
+					if(!appDisease.isEmpty()){
+						sb.append(appDisease.get(0).getDiseaseName()+",");
+					}
+				}
+				detailVO.setDocDisease(sb.toString());
+			}
+			conMapping.clear();
+			conMapping.put("docinfo_Id", docId);
+			List<com.fh.entity.system.doc.DocService> docServices=commonService.selectByEqCon(com.fh.entity.system.doc.DocService.class, conMapping);
+			if(!docServices.isEmpty()){
+				for(com.fh.entity.system.doc.DocService docService:docServices){
+					PageData pd=new PageData();
+					pd.put("DICTIONARIES_ID", docService.getServiceType());
+					docService.setServiceTypeName(dictionariesService.findById(pd).getString("NAME"));
+				}
+				detailVO.setDocServices(docServices);
+			}
 			
-			
+			list.add(detailVO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResult.setCode(10);
