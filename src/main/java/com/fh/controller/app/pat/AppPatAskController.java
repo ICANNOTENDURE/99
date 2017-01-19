@@ -40,9 +40,9 @@ public class AppPatAskController extends BaseController{
 	 */
 	@AppToken
 	@ApiOperation(notes = "插入病人主问题",  value = "插入病人主问题")
-	@RequestMapping(value="/ ",method = RequestMethod.POST)
+	@RequestMapping(value="/ask",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> getVerification(
+	public JsonResult<Object> ask(
 			@ApiParam(value = "医生id",name="docId", required = true) @RequestParam String docId,
 			@ApiParam(value = "家属id",name="famId", required = true) @RequestParam String famId,
 			@ApiParam(value = "提问类容",name="askContent", required = true) @RequestParam String askContent,
