@@ -32,7 +32,8 @@
 			<bean class="com.fh.interceptor.LoginHandlerInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
-	 
+	
+  	<!--  -->
   	<bean id="websocket" class="com.fh.plugin.websocket.WebsocketEndPoint"/>  
 	<websocket:handlers >  
 	    <websocket:mapping path="/websocket" handler="websocket"/>  

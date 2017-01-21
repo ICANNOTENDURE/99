@@ -6,14 +6,28 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fh.entity.app.AppLoc;
+import com.fh.plugin.GeneralQueryParam;
+import com.fh.service.common.impl.CommonService;
 
+@RunWith(SpringJUnit4ClassRunner.class)    
+@ContextConfiguration(locations = {"classpath:/spring/ApplicationContextTest.xml"}) 
 public class ArrayTest {
 
+	@Autowired
+	private CommonService commonService;
+
+	
 	
 	@Test
-	public void testCollections(){
+	public void testCollections() throws Exception{
 		
+		List<AppLoc> appLocs=commonService.selectAdvanced(AppLoc.class, new GeneralQueryParam());
 		List<Integer> list=new ArrayList<Integer>();
 		list.add(2);
 		
@@ -43,7 +57,7 @@ public class ArrayTest {
 			System.out.println("方式3:"+it.next().getId());
 		}
 	}
-	@Test
+	//@Test
 	public void testThread() throws InterruptedException{
 			final List<Integer> list=new ArrayList<Integer>();
 			//final List<Integer> list=Collections.synchronizedList(new ArrayList<Integer>());

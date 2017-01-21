@@ -43,6 +43,7 @@ public class AppPatAskController extends BaseController{
 	@RequestMapping(value="/ask",method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult<Object> ask(
+			@ApiParam(value = "token",name="APP_TOKEN", required = true) @RequestParam String APP_TOKEN,
 			@ApiParam(value = "医生id",name="docId", required = true) @RequestParam String docId,
 			@ApiParam(value = "家属id",name="famId", required = true) @RequestParam String famId,
 			@ApiParam(value = "提问类容",name="askContent", required = true) @RequestParam String askContent,

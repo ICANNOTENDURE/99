@@ -14,15 +14,10 @@
 						http://www.springframework.org/schema/tx/spring-tx.xsd
 	">
 	
-	<!-- 启用注解 -->
-	<context:annotation-config />
-	
-	<!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
-	<context:component-scan base-package="com.fh">
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-	
+    
+    <bean name="commonService" class="com.fh.service.common.impl.CommonService">   
+ 	</bean>
+
 	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">   
     	<property name="dataSource" ref="dataSource"></property>
  	</bean>
@@ -30,7 +25,7 @@
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 		<property name="locations">  
 			<list>  
-                 <value>/WEB-INF/classes/dbconfig.properties</value>  
+                 <value>classpath:/testdbconfig.properties</value>  
             </list>  
         </property>  
 	</bean> 
@@ -105,57 +100,7 @@
   		<property name="mapperInterface" value="com.fh.dao.CommonDao" />
   		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />  
 	</bean>
-	<!-- ================ Shiro start ================ -->
-		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-			<property name="realm" ref="ShiroRealm" />
-		</bean>
-		
-		<!-- 項目自定义的Realm -->
-	    <bean id="ShiroRealm" class="com.fh.interceptor.shiro.ShiroRealm" ></bean>
-		
-		<!-- Shiro Filter -->
-		<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-			<property name="securityManager" ref="securityManager" />
-			
-			<property name="loginUrl" value="/" />
-			
-			<property name="successUrl" value="/main/index" />
-			
-			<property name="unauthorizedUrl" value="/login_toLogin" />
-			
-			<property name="filterChainDefinitions">
-				<value>
-				/static/login/** 			= anon
-				/static/js/myjs/** 			= authc
-				/static/js/** 				= anon
-				/uploadFiles/uploadImgs/** 	= anon
-	           	/code.do 					= anon
-	           	/login_login	 			= anon
-	           	/app**/** 					= anon
-	           	/weixin/** 					= anon
-	           	/websocket/** 					= anon
-	           	/**							= authc
-				</value>
-			</property>
-		</bean>
-	<!-- ================ Shiro end ================ -->
-	
-	
-		<!-- 微信支付接口代理～start -->
-	<bean id="weixinPayProxy" class="com.foxinmy.weixin4j.payment.WeixinPayProxy">
-		<constructor-arg>
-			<!-- 商户信息:不声明则默认使用weixin4j.properties配置的weixin4j.account字段 -->
-			<bean class="com.foxinmy.weixin4j.model.WeixinPayAccount">
-				<constructor-arg index="0" value="公众账号的appid" />
-				<constructor-arg index="1" value="商户平台的支付密钥:paySignkey" />
-				<constructor-arg index="2" value="商户平台的商户ID:mchId" />
-				<!-- 以下是证书配置，如用到请配置 -->
-				<constructor-arg index="3" value="加载支付证书文件的密码(默认为商户号)" />
-				<!-- ca证书:调用某些支付接口(如退款、红包)需要用到的证书文件,不声明则获取顺序为:weixin4j.properties#weixin4j.certificate.file->`classpath:ca.p12` -->
-				<constructor-arg index="4" value="/path/to/certificate/file" />
-			</bean>
-		</constructor-arg>
-	</bean>
-	<!-- 微信支付接口代理～end -->
+
+
   
 </beans>
