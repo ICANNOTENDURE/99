@@ -43,14 +43,13 @@ public class AppPatAskController extends BaseController{
 	@RequestMapping(value="/ask",method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult<Object> ask(
-			@ApiParam(value = "token",name="APP_TOKEN", required = true) @RequestParam String APP_TOKEN,
-			@ApiParam(value = "医生id",name="docId", required = true) @RequestParam String docId,
-			@ApiParam(value = "家属id",name="famId", required = true) @RequestParam String famId,
-			@ApiParam(value = "提问类容",name="askContent", required = true) @RequestParam String askContent,
-			@ApiParam(value = "提问标题",name="askTitle", required = true) @RequestParam String askTitle,
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "医生id",name="docId") @RequestParam String docId,
+			@ApiParam(value = "家属id",name="famId") @RequestParam String famId,
+			@ApiParam(value = "提问类容",name="askContent") @RequestParam String askContent,
+			@ApiParam(value = "提问标题",name="askTitle") @RequestParam String askTitle,
 			@ApiParam(value = "图标路径字符串",name="picStr",example="2.jpg^3.jpg^4.jpg") @RequestParam String picStr
 		){
-		
 		JsonResult<Object> result=new JsonResult<Object>();
 		PatAsk patAsk=new PatAsk();
 		patAsk.setAskContent(askContent);
@@ -65,6 +64,7 @@ public class AppPatAskController extends BaseController{
 			result.setCode(11);
 			result.setMessage(e.getMessage());
 			e.printStackTrace();
+			return result;
 		}
 		return result;
 	}

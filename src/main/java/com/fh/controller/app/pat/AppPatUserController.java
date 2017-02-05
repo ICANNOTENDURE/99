@@ -35,6 +35,7 @@ import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.MD5;
 import com.fh.util.SmsUtil;
+import com.fh.util.StringUtil;
 import com.fh.util.Tools;
 import com.fh.util.security.AESCoder;
 
@@ -241,6 +242,7 @@ public class AppPatUserController extends BaseController{
 	@RequestMapping(value="/addPatFamily",method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult<Object> addPatFamily(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
 			@ApiParam(value = "家属记录id",name="famId") @RequestParam String famId,
 			@ApiParam(value = "家属姓名",name="famName",example="张三丰") @RequestParam String famName,
 			@ApiParam(value = "性别",name="famSex",example="男") @RequestParam String famSex,
@@ -251,7 +253,7 @@ public class AppPatUserController extends BaseController{
 		
 		PatFamily patFamily=new PatFamily();
 		patFamily.setParentId(session.getAttribute("APP_SESSION_ID").toString());
-		patFamily.setFamId(famId);
+		patFamily.setFamId(StringUtil.trim(famId));
 		patFamily.setFamName(famName);
 		patFamily.setFamBrith(famBrith);
 		patFamily.setFamSex(famSex);
@@ -270,7 +272,8 @@ public class AppPatUserController extends BaseController{
 	@ApiOperation(notes = "查询患者家属列表",  value = "查询患者家属列表")
 	@RequestMapping(value="/listPatFamily",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResult<PatFamily> listPatFamily() throws Exception{
+	public JsonResult<PatFamily> listPatFamily(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN) throws Exception{
 		
 		JsonResult<PatFamily> jsonResult=new JsonResult<PatFamily>();
 		Map<String, Object> conMapping=new HashMap<String, Object>();

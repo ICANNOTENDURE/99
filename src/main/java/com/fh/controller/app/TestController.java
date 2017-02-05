@@ -2,6 +2,7 @@ package com.fh.controller.app;
 
 import io.swagger.annotations.Api;
 
+import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,5 +65,17 @@ public class TestController extends BaseController{
 			mv.setViewName("uploadify");
 		return mv;
 	}
-
+	
+	
+	@Test
+	public void test(){
+		
+		Token token=new Token();
+		token.setAccount("15193190697");
+		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
+		token.setAccounttType("2");
+		token.setLogDate(DateUtil.fomatTime("2017-02-05 10:04:34"));
+		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
+		System.out.println(appt);
+	}
 }
