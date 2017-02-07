@@ -4,6 +4,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fh.util.Const;
+import com.fh.util.enums.AskStatus;
+
 public class PatAskVO {
 
 	@ApiModelProperty(value = "医生姓名")
@@ -18,6 +24,21 @@ public class PatAskVO {
 	private String status;
 	@ApiModelProperty(value = "提问表id")
 	private String askId;
+	@ApiModelProperty(value = "医生头像图片路径")
+	private String docImg;
+	@ApiModelProperty(value = "金额")
+	private String amt;
+	
+	
+	public String getDocImg() {
+		if(StringUtils.isBlank(docImg)){
+			docImg="empty.png";
+		}
+		return Const.APP_IMG_PATH+docImg;
+	}
+	public void setDocImg(String docImg) {
+		this.docImg = docImg;
+	}
 	public String getDocName() {
 		return docName;
 	}
@@ -36,6 +57,7 @@ public class PatAskVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -43,7 +65,7 @@ public class PatAskVO {
 		this.createDate = createDate;
 	}
 	public String getStatus() {
-		return status;
+		return AskStatus.getValueByKey(status);
 	}
 	public void setStatus(String status) {
 		this.status = status;
@@ -53,6 +75,12 @@ public class PatAskVO {
 	}
 	public void setAskId(String askId) {
 		this.askId = askId;
+	}
+	public String getAmt() {
+		return amt;
+	}
+	public void setAmt(String amt) {
+		this.amt = amt;
 	}
 	
 	

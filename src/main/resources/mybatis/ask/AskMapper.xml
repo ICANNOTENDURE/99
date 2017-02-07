@@ -11,12 +11,16 @@
 			t1.ASK_CONTENT as content,
 			t1.ASK_DATE as createDate,
 			t1.ASK_STATUS as status,
-			t2.DOC_NAME as docName
+			t2.DOC_NAME as docName,
+			t2.DOC_PIC as docImg
 		
 		from PAT_ASK t1 left join DOC_INFO t2 on t1.ASK_DOCID=t2.INFO_ID
 		<where>
  			<if test="pd.patuserid != null and pd.patuserid !='' ">
          		and t1.ASK_PATID = #{pd.patuserid}
+    		</if>
+    		<if test="pd.status != null and pd.status !='' ">
+         		and t1.ASK_STATUS = #{pd.status}
     		</if>
 		</where>
 		order by t1.ASK_DATE desc

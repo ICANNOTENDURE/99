@@ -17,7 +17,12 @@
     
     <bean name="commonService" class="com.fh.service.common.impl.CommonService">   
  	</bean>
-
+	<bean name="patAskService" class="com.fh.service.system.app.impl.PatAskService">   
+ 	</bean>
+ 	<bean name="daoSupport" class="com.fh.dao.DaoSupport">   
+ 	</bean>
+ 	<bean name="crudSupport" class="com.fh.dao.CrudSupport" />   
+ 	
 	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">   
     	<property name="dataSource" ref="dataSource"></property>
  	</bean>

@@ -13,8 +13,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
+import com.fh.entity.Page;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.app.impl.PatAskService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/spring/ApplicationContextTest.xml")
@@ -23,8 +25,10 @@ public class SpringTest {
 	@Autowired
 	private CommonService commonService;
 	
+	@Autowired
+	private PatAskService patAskService;
 	
-	@Test
+	//@Test
 	public void test() throws Exception{
 		
 		long start=System.currentTimeMillis();
@@ -77,5 +81,11 @@ public class SpringTest {
 		System.out.println(" test1:"+(System.currentTimeMillis()-start)+"ms");
 	}
 	
-	
+	@Test
+	public void test123() throws Exception{
+		Page pg=new Page();
+		pg.setShowCount(1);
+		pg.setCurrentPage(1);
+		System.out.println(JSON.toJSONString(patAskService.listAsk(pg)));
+	}
 }

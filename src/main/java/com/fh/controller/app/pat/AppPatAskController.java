@@ -58,7 +58,7 @@ public class AppPatAskController extends BaseController{
 		patAsk.setAskDocid(docId);
 		patAsk.setAskFamid(famId);
 		patAsk.setAskTitle(askTitle);
-		patAsk.setAskStatus(AskStatus.CHAT_READY.getCode());
+		patAsk.setAskStatus(AskStatus.TO_PAY.getCode());
 		patAsk.setAskPatid(getAppUserId());
 		try {
 			patAskService.saveAsk(patAsk, picStr);

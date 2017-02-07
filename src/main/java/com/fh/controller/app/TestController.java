@@ -17,6 +17,7 @@ import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
+import com.fh.util.enums.AskStatus;
 import com.fh.util.security.AESCoder;
 @Controller 
 @RequestMapping(value="/apptest")
@@ -74,8 +75,9 @@ public class TestController extends BaseController{
 		token.setAccount("15193190697");
 		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
 		token.setAccounttType("2");
-		token.setLogDate(DateUtil.fomatTime("2017-02-05 10:04:34"));
+		token.setLogDate(DateUtil.fomatTime("2017-02-07 20:54:36"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
+		//System.out.println((AskStatus.getValueByKey("1")));
 	}
 }
