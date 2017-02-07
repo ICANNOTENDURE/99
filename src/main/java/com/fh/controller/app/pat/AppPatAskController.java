@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.Page;
 import com.fh.entity.system.pat.PatAsk;
+import com.fh.entity.vo.ask.PatAskVO;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.PatAskService;
@@ -66,8 +68,28 @@ public class AppPatAskController extends BaseController{
 			e.printStackTrace();
 			return result;
 		}
+		result.setMessage(patAsk.getAskId());
 		return result;
 	}
 	
-	
+	/**
+	 * 查询病人提问问题
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "查询病人提问问题",  value = "查询病人提问问题")
+	@RequestMapping(value="/listAsk",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<PatAskVO> listAsk(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "提问状态",name="status") @RequestParam String status,
+			@ApiParam(value = "一页的显示条数,传空默认为10",name="SHOW_COUNT") @RequestParam Long SHOW_COUNT,
+			@ApiParam(value = "当前页数,不传默认为",name="CURRENT_PAGE") @RequestParam Long CURRENT_PAGE) throws Exception{
+		JsonResult<PatAskVO> result=new JsonResult<PatAskVO>();
+		Page pg=this.getAppPage();
+		pg.getPd().put("patuserid", this.getAppUserId());
+		result.setDatas(patAskService.listAsk(pg));
+		return result;
+	}
 }

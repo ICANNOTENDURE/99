@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="AskMapper">
+
+	<!-- 医院查询 -->
+	<select id="listPage" parameterType="page" resultType="com.fh.entity.vo.ask.PatAskVO">
+		select
+			t1.ASK_ID as askId,
+			t1.ASK_TITLE as title,
+			t1.ASK_CONTENT as content,
+			t1.ASK_DATE as createDate,
+			t1.ASK_STATUS as status,
+			t2.DOC_NAME as docName
+		
+		from PAT_ASK t1 left join DOC_INFO t2 on t1.ASK_DOCID=t2.INFO_ID
+		<where>
+ 			<if test="pd.patuserid != null and pd.patuserid !='' ">
+         		and t1.ASK_PATID = #{pd.patuserid}
+    		</if>
+		</where>
+		order by t1.ASK_DATE desc
+	</select>
+</mapper>

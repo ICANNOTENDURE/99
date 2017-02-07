@@ -1,14 +1,20 @@
 package com.fh.service.system.app.impl;
 
 import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fh.dao.CrudSupport;
+import com.fh.dao.DaoSupport;
+import com.fh.entity.Page;
 import com.fh.entity.system.pat.PatAsk;
 import com.fh.entity.system.pat.PatAskSub;
+import com.fh.entity.vo.ask.PatAskVO;
 import com.fh.service.system.app.PatAskManager;
 import com.fh.util.enums.AskType;
 import com.fh.util.enums.MessageType;
@@ -19,6 +25,9 @@ public class PatAskService implements PatAskManager{
 	
 	@Autowired
 	private CrudSupport crudSupport;
+	
+	@Resource(name = "daoSupport")
+	private DaoSupport dao;
 	
 	@Override
 	public void saveAsk(PatAsk patAsk, String picStr) throws Exception {
@@ -43,6 +52,13 @@ public class PatAskService implements PatAskManager{
 			}
 		}
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PatAskVO> listAsk(Page pg) throws Exception {
+		
+		return (List<PatAskVO>) dao.findForList("AskMapper.listPage", pg);
 	}
 
 }

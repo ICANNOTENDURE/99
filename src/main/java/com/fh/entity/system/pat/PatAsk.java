@@ -15,8 +15,10 @@ public class PatAsk extends BaseEntity{
 	private String askId;
 	private String askTitle;
 	private String askContent;
+	//
 	private String askPatid;
 	private String askFamid;
+	//DocInfo
 	private String askDocid;
 	private Date askDate;
 	private String askEvalFlag;

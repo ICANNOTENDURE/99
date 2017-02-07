@@ -282,4 +282,20 @@ public class AppPatUserController extends BaseController{
 		jsonResult.setDatas(families);
 		return jsonResult;
 	}
+	/**
+	 * 删除家属用户
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "删除家属用户",  value = "删除家属用户")
+	@RequestMapping(value="/deletePatFamily",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> deletePatFamily(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "id",name="id") @RequestParam String id) throws Exception{
+		
+		commonService.deleteByPrimaryKey(PatFamily.class, id);
+		return new JsonResult<Object>();
+	}
 }
