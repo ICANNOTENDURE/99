@@ -16,7 +16,35 @@ import org.springframework.web.multipart.MultipartFile;
  * @version
  */
 public class FileUpload {
-
+	
+	/**
+	 * @param file
+	 *            //文件对象
+	 * @param filePath
+	 *            //上传路径
+	 * @param fileName
+	 *            //文件名
+	 * @return 文件名
+	 */
+	public static String ImageUp(MultipartFile file, String filePath,
+			String fileName) {
+		String extName = ""; // 扩展名格式：
+		try {
+			if (file.getOriginalFilename().lastIndexOf(".") >= 0) {
+				extName = file.getOriginalFilename().substring(
+						file.getOriginalFilename().lastIndexOf("."));
+			}
+			copyFile(file.getInputStream(), filePath, fileName + extName)
+					.replaceAll("-", "");
+			try {
+				ImageUtil.toSmaillImg(filePath+File.separator+fileName + extName,filePath+File.separator+fileName+"_THUMB"+ extName);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+		}
+		return fileName + extName;
+	}
 	/**
 	 * @param file
 	 *            //文件对象
@@ -37,7 +65,6 @@ public class FileUpload {
 			copyFile(file.getInputStream(), filePath, fileName + extName)
 					.replaceAll("-", "");
 		} catch (IOException e) {
-			System.out.println(e);
 		}
 		return fileName + extName;
 	}
