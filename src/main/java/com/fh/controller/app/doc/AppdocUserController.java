@@ -25,6 +25,7 @@ import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.MD5;
+import com.fh.util.enums.UserType;
 import com.fh.util.security.AESCoder;
 
 
@@ -103,7 +104,7 @@ public class AppdocUserController extends BaseController{
 		docUsers.get(0).setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(docUsers.get(0));
 		Token token=new Token();
-		token.setAccounttType("1");
+		token.setAccounttType(UserType.DOC.getType());
 		token.setAccount(docUsers.get(0).getDocId());
 		token.setLogDate(docUsers.get(0).getDocLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
@@ -148,7 +149,7 @@ public class AppdocUserController extends BaseController{
 		docUser.setDocPassword(MD5.md5(pwd));
 		commonService.saveOrUpdate(docUser);
 		Token token=new Token();
-		token.setAccounttType("1");
+		token.setAccounttType(UserType.DOC.getType());
 		token.setAccount(docUser.getDocId());
 		token.setLogDate(docUser.getDocLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));

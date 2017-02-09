@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
 import com.fh.entity.Page;
+import com.fh.entity.app.AppBanner;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.PatAskService;
@@ -83,9 +84,13 @@ public class SpringTest {
 	
 	@Test
 	public void test123() throws Exception{
-		Page pg=new Page();
-		pg.setShowCount(1);
-		pg.setCurrentPage(1);
-		System.out.println(JSON.toJSONString(patAskService.listAsk(pg)));
+//		Page pg=new Page();
+//		pg.setShowCount(1);
+//		pg.setCurrentPage(1);
+//		System.out.println(JSON.toJSONString(patAskService.listAsk(pg)));
+		
+		AppBanner banner=new AppBanner();
+		banner.setBannerImg("213221321");
+		commonService.saveOrUpdate(banner);
 	}
 }

@@ -2,8 +2,6 @@ package com.fh.controller.app;
 
 import io.swagger.annotations.Api;
 
-import java.io.FileOutputStream;
-
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.app.AppBanner;
 import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.util.Const;
@@ -87,6 +86,7 @@ public class TestController extends BaseController{
 	   
 	   @Test
 	   public void testxx() throws Exception{
-		  // toSmaillImg("d:/1.jpg","d:/11.jpg");   
+		  // toSmaillImg("d:/1.jpg","d:/11.jpg"); 
+		   
 	   }
 }

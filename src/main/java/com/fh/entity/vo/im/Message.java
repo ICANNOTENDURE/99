@@ -6,6 +6,7 @@ public class Message {
 	private String token;
 	private String askId;
 	private String toUser;
+	private String fromUser;
 	private String msg;
 	/*
 	 * 消息类型
@@ -16,7 +17,13 @@ public class Message {
 	private String msgType;
 	private String toUserImg;
 	private String frUserImg;
-	
+	/*
+	 * 1:发送
+	 * 2:接收
+	 */
+	private String sendType;
+	//接收图片的时候的缩略图
+	private String thumbImg;
 	
 	
 	public String getToUserImg() {
@@ -61,6 +68,24 @@ public class Message {
 	}
 	public void setToUser(String toUser) {
 		this.toUser = toUser;
+	}
+	public String getSendType() {
+		return sendType;
+	}
+	public void setSendType(String sendType) {
+		this.sendType = sendType;
+	}
+	public String getFromUser() {
+		return fromUser;
+	}
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+	public String getThumbImg() {
+		return thumbImg;
+	}
+	public void setThumbImg(String thumbImg) {
+		this.thumbImg = thumbImg;
 	}
 	
 	

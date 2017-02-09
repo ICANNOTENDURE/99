@@ -37,6 +37,7 @@ import com.fh.util.MD5;
 import com.fh.util.SmsUtil;
 import com.fh.util.StringUtil;
 import com.fh.util.Tools;
+import com.fh.util.enums.UserType;
 import com.fh.util.security.AESCoder;
 
 @Controller
@@ -107,7 +108,7 @@ public class AppPatUserController extends BaseController{
 		patUsers.get(0).setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(patUsers.get(0));
 		Token token=new Token();
-		token.setAccounttType("2");
+		token.setAccounttType(UserType.PAT.getType());
 		token.setAccount(patUsers.get(0).getUserId());
 		token.setLogDate(patUsers.get(0).getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
@@ -142,7 +143,7 @@ public class AppPatUserController extends BaseController{
 		patUsers.get(0).setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(patUsers.get(0));
 		Token token=new Token();
-		token.setAccounttType("2");
+		token.setAccounttType(UserType.PAT.getType());
 		token.setAccount(patUsers.get(0).getUserId());
 		token.setLogDate(patUsers.get(0).getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
@@ -187,7 +188,7 @@ public class AppPatUserController extends BaseController{
 		patUser.setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(patUser);
 		Token token=new Token();
-		token.setAccounttType("2");
+		token.setAccounttType(UserType.PAT.getType());
 		token.setAccount(patUser.getUserId());
 		token.setLogDate(patUser.getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
