@@ -125,7 +125,12 @@ public class Jurisdiction {
 	public static String getUsername(){
 		return getSession().getAttribute(Const.SESSION_USERNAME).toString();
 	}
-	
+	/**获取APP当前登录的用户ID
+	 * @return
+	 */
+	public static String getAppUserId(){
+		return getSession().getAttribute("APP_SESSION_ID").toString();
+	}
 	/**获取当前按钮权限(增删改查)
 	 * @return
 	 */

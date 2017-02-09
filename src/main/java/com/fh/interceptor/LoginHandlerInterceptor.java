@@ -58,7 +58,6 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 						}else{
 							try {
 								String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
-								System.out.println(str);
 								Token token=JSON.parseObject(str, Token.class);
 								if(token.getExpDate().getTime()<=DateUtil.fomatDate(DateUtil.getDay()).getTime()){
 									jsonResult.setCode(11);
@@ -67,7 +66,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 									Map<String, Object> parMap = new HashMap<String, Object>();
 									// 医生用户
 									if ("1".equals(token.getAccounttType())) {
-										parMap.put("doc_Account", token.getAccount());
+										parMap.put("doc_id", token.getAccount());
 										parMap.put("status", "Y");
 										parMap.put("doc_Logindate", token.getLogDate());
 										List<DocUser> docUsers = commonService.selectByEqCon(DocUser.class, parMap);
@@ -80,7 +79,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 									}
 									// 病人用户
 									if ("2".equals(token.getAccounttType())) {
-										parMap.put("user_Account", token.getAccount());
+										parMap.put("user_id", token.getAccount());
 										parMap.put("status", "Y");
 										parMap.put("user_Logindate", token.getLogDate());
 										List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);

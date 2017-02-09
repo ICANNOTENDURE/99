@@ -17,8 +17,8 @@ public class PatAskSub extends BaseEntity{
 	private Date asksubDate;
 	private String asksubContent;
 	/*
-	 * PAT:病人提问
-	 * DOC:医生回答
+	 * 1:病人提问
+	 * 2:医生回答
 	 */
 	private String asksubType;
 	/*

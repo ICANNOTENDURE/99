@@ -69,7 +69,7 @@ public class AppdocUserController extends BaseController{
 		commonService.saveOrUpdate(docUsers.get(0));
 		Token token=new Token();
 		token.setAccounttType("1");
-		token.setAccount(docUsers.get(0).getDocAccount());
+		token.setAccount(docUsers.get(0).getDocId());
 		token.setLogDate(docUsers.get(0).getDocLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
@@ -104,7 +104,7 @@ public class AppdocUserController extends BaseController{
 		commonService.saveOrUpdate(docUsers.get(0));
 		Token token=new Token();
 		token.setAccounttType("1");
-		token.setAccount(docUsers.get(0).getDocAccount());
+		token.setAccount(docUsers.get(0).getDocId());
 		token.setLogDate(docUsers.get(0).getDocLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
@@ -149,7 +149,7 @@ public class AppdocUserController extends BaseController{
 		commonService.saveOrUpdate(docUser);
 		Token token=new Token();
 		token.setAccounttType("1");
-		token.setAccount(docUser.getDocAccount());
+		token.setAccount(docUser.getDocId());
 		token.setLogDate(docUser.getDocLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);

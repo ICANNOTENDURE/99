@@ -108,7 +108,7 @@ public class AppPatUserController extends BaseController{
 		commonService.saveOrUpdate(patUsers.get(0));
 		Token token=new Token();
 		token.setAccounttType("2");
-		token.setAccount(patUsers.get(0).getUserAccount());
+		token.setAccount(patUsers.get(0).getUserId());
 		token.setLogDate(patUsers.get(0).getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
@@ -143,7 +143,7 @@ public class AppPatUserController extends BaseController{
 		commonService.saveOrUpdate(patUsers.get(0));
 		Token token=new Token();
 		token.setAccounttType("2");
-		token.setAccount(patUsers.get(0).getUserAccount());
+		token.setAccount(patUsers.get(0).getUserId());
 		token.setLogDate(patUsers.get(0).getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
@@ -188,7 +188,7 @@ public class AppPatUserController extends BaseController{
 		commonService.saveOrUpdate(patUser);
 		Token token=new Token();
 		token.setAccounttType("2");
-		token.setAccount(patUser.getUserAccount());
+		token.setAccount(patUser.getUserId());
 		token.setLogDate(patUser.getUserLogindate());
 		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);

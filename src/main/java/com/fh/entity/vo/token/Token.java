@@ -10,9 +10,10 @@ public class Token {
 
 	private String account;
 	private Date expDate;
+	//1:医生
+	//2：病人
 	private String accounttType;
 	private Date logDate;
-
 	
 	public Date getLogDate() {
 		return logDate;

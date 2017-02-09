@@ -5,7 +5,6 @@ public class Message {
 	
 	private String token;
 	private String askId;
-	private String fromUser;
 	private String toUser;
 	private String msg;
 	/*
@@ -15,6 +14,23 @@ public class Message {
 	 * 3:语言
 	 */
 	private String msgType;
+	private String toUserImg;
+	private String frUserImg;
+	
+	
+	
+	public String getToUserImg() {
+		return toUserImg;
+	}
+	public void setToUserImg(String toUserImg) {
+		this.toUserImg = toUserImg;
+	}
+	public String getFrUserImg() {
+		return frUserImg;
+	}
+	public void setFrUserImg(String frUserImg) {
+		this.frUserImg = frUserImg;
+	}
 	public String getAskId() {
 		return askId;
 	}
@@ -39,12 +55,7 @@ public class Message {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public String getFromUser() {
-		return fromUser;
-	}
-	public void setFromUser(String fromUser) {
-		this.fromUser = fromUser;
-	}
+
 	public String getToUser() {
 		return toUser;
 	}
