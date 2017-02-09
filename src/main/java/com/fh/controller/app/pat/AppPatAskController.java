@@ -10,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +19,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.system.pat.PatAsk;
 import com.fh.entity.vo.ask.PatAskVO;
+import com.fh.entity.vo.im.Message;
+import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.PatAskService;
+import com.fh.util.Const;
 import com.fh.util.enums.AskStatus;
+import com.fh.util.enums.UserType;
+import com.fh.util.security.AESCoder;
 
 @Controller
 @RequestMapping(value="/apppatask")
@@ -90,6 +98,43 @@ public class AppPatAskController extends BaseController{
 		Page pg=this.getAppPage();
 		pg.getPd().put("patuserid", this.getAppUserId());
 		result.setDatas(patAskService.listAsk(pg));
+		return result;
+	}
+	
+	/**
+	 * 查询病人提问问题
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "查询病人提问明细,进入聊天界面",  value = "查询病人提问明细,进入聊天界面")
+	@RequestMapping(value="/listAskSub",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<Message> listAskSub(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "问题id",name="askId") @RequestParam String askId,
+			@ApiParam(value = "一页的显示条数,传空默认为10",name="SHOW_COUNT") @RequestParam Long SHOW_COUNT,
+			@ApiParam(value = "当前页数,不传默认为",name="CURRENT_PAGE") @RequestParam Long CURRENT_PAGE) throws Exception{
+		JsonResult<Message> result=new JsonResult<Message>();
+		Page pg=this.getAppPage();
+		List<Message> messages=patAskService.listAskSub(pg);
+		String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
+		Token token=JSON.parseObject(str, Token.class);
+		for(Message msg:messages){
+			if(UserType.PAT.getType().equals(token.getAccounttType())){
+				if(UserType.PAT.getType().equals(msg.getSendUserType())){
+					msg.setSendType("1");
+				}else{
+					msg.setSendType("2");
+				}
+			}else{
+				if(UserType.DOC.getType().equals(msg.getSendUserType())){
+					msg.setSendType("1");
+				}else{
+					msg.setSendType("2");
+				}
+			}
+		}
+		result.setDatas(messages);
 		return result;
 	}
 }

@@ -37,7 +37,7 @@ public class FileUpload {
 			copyFile(file.getInputStream(), filePath, fileName + extName)
 					.replaceAll("-", "");
 			try {
-				ImageUtil.toSmaillImg(filePath+File.separator+fileName + extName,filePath+File.separator+fileName+"_THUMB"+ extName);
+				ImageUtil.toSmaillImg(filePath+File.separator+fileName + extName,filePath+File.separator+"THUMB_"+fileName+ extName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

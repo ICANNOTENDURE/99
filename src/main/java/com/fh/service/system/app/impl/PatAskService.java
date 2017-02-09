@@ -15,6 +15,7 @@ import com.fh.entity.Page;
 import com.fh.entity.system.pat.PatAsk;
 import com.fh.entity.system.pat.PatAskSub;
 import com.fh.entity.vo.ask.PatAskVO;
+import com.fh.entity.vo.im.Message;
 import com.fh.service.system.app.PatAskManager;
 import com.fh.util.enums.AskType;
 import com.fh.util.enums.MessageType;
@@ -59,6 +60,13 @@ public class PatAskService implements PatAskManager{
 	public List<PatAskVO> listAsk(Page pg) throws Exception {
 		
 		return (List<PatAskVO>) dao.findForList("AskMapper.listPage", pg);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Message> listAskSub(Page pg) throws Exception {
+		// TODO Auto-generated method stub
+		return (List<Message>) dao.findForList("AskMapper.listAskSubPage", pg);
 	}
 
 }

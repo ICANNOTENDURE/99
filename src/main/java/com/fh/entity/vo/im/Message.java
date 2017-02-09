@@ -1,5 +1,7 @@
 package com.fh.entity.vo.im;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Message {
 	
 	
@@ -15,28 +17,34 @@ public class Message {
 	 * 3:语言
 	 */
 	private String msgType;
-	private String toUserImg;
-	private String frUserImg;
 	/*
 	 * 1:发送
 	 * 2:接收
 	 */
 	private String sendType;
+	private String img;
 	//接收图片的时候的缩略图
 	private String thumbImg;
+	/*
+	 * 1:医生
+	 * 2:病人
+	 */
+	private String sendUserType;
 	
 	
-	public String getToUserImg() {
-		return toUserImg;
+	
+	
+	public String getSendUserType() {
+		return sendUserType;
 	}
-	public void setToUserImg(String toUserImg) {
-		this.toUserImg = toUserImg;
+	public void setSendUserType(String sendUserType) {
+		this.sendUserType = sendUserType;
 	}
-	public String getFrUserImg() {
-		return frUserImg;
+	public String getImg() {
+		return img;
 	}
-	public void setFrUserImg(String frUserImg) {
-		this.frUserImg = frUserImg;
+	public void setImg(String img) {
+		this.img = img;
 	}
 	public String getAskId() {
 		return askId;
@@ -82,6 +90,9 @@ public class Message {
 		this.fromUser = fromUser;
 	}
 	public String getThumbImg() {
+		if(StringUtils.isNotBlank(img)){
+			thumbImg="THUMB_"+img;
+		}
 		return thumbImg;
 	}
 	public void setThumbImg(String thumbImg) {

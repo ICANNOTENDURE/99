@@ -3,7 +3,7 @@
 
 <mapper namespace="AskMapper">
 
-	<!-- 医院查询 -->
+
 	<select id="listPage" parameterType="page" resultType="com.fh.entity.vo.ask.PatAskVO">
 		select
 			t1.ASK_ID as askId,
@@ -24,5 +24,23 @@
     		</if>
 		</where>
 		order by t1.ASK_DATE desc
+	</select>
+	
+	
+	<select id="listAskSubPage" parameterType="page" resultType="com.fh.entity.vo.im.Message">
+		select
+			t1.PARENT_ID as askId,
+			t1.ASKSUB_CONTENT as msg,
+			t1.ASKSUB_TYPE as sendUserType,
+			t1.ASKSUB_MESSAGE_TYPE as msgType,
+			t1.ASKSUB_PATH as img
+		
+		from PAT_ASK_SUB t1
+		<where>
+ 			<if test="pd.askid != null and pd.askid !='' ">
+         		and t1.PARENT_ID = #{pd.askid}
+    		</if>
+		</where>
+		order by t1.ASKSUB_DATE desc
 	</select>
 </mapper>
