@@ -2,6 +2,11 @@ package com.fh.controller.app;
 
 import io.swagger.annotations.Api;
 
+import java.io.File;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
+
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +18,6 @@ import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
-import com.fh.entity.app.AppBanner;
 import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.util.Const;
@@ -87,6 +91,11 @@ public class TestController extends BaseController{
 	   @Test
 	   public void testxx() throws Exception{
 		  // toSmaillImg("d:/1.jpg","d:/11.jpg"); 
+		   File destinationDir = new File("D:/");
+
+		   Thumbnails.of("D:/1.jpg")
+		           .size(200, 200)
+		           .toFiles(destinationDir, Rename.PREFIX_DOT_THUMBNAIL);
 		   
 	   }
 }

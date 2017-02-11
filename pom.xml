@@ -584,6 +584,13 @@
                <artifactId>aliyun-java-sdk-sms</artifactId>
                <version>3.0.0-rc1</version>
            </dependency>
+           
+        <!-- 缩略图 -->
+		<dependency>
+		    <groupId>net.coobird</groupId>
+		    <artifactId>thumbnailator</artifactId>
+		    <version>0.4.8</version>
+		</dependency>
 	</dependencies>
 	
 	<!-- ========================================================== -->
