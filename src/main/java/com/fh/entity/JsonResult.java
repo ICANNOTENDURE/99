@@ -2,6 +2,7 @@ package com.fh.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,9 @@ public class JsonResult<T> {
 	
 	
 	public List<T> getDatas() {
+		if(datas==null){
+			datas=new ArrayList<T>();
+		}
 		return datas;
 	}
 	public void setDatas(List<T> datas) {

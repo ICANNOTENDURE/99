@@ -74,12 +74,12 @@ public class AppPatAskController extends BaseController{
 		patAsk.setAskStatus(AskStatus.TO_PAY.getCode());
 		patAsk.setAskPatid(getAppUserId());
 		patAskService.saveAsk(patAsk, picStr);
-		DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, docId);
+		DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, patAsk.getAskDocid());
 		ReadyMsgVO readyMsgVO=new ReadyMsgVO();
 		readyMsgVO.setAskId(patAsk.getAskId());
 		readyMsgVO.setDocImg(docInfo.getDocPic());
 		readyMsgVO.setDocName(docInfo.getDocName());
-		PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, getAppUserId());
+		PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, patAsk.getAskPatid());
 		readyMsgVO.setPatImg(patUser.getUserImg());
 		result.getDatas().add(readyMsgVO);
 		return result;
