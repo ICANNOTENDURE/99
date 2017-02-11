@@ -12,9 +12,15 @@
 			t1.ASK_DATE as createDate,
 			t1.ASK_STATUS as status,
 			t2.DOC_NAME as docName,
-			t2.DOC_PIC as docImg
+			t2.DOC_PIC as docImg,
+			t1.ASK_DOCID docId,
+			t1.ASK_PATID patId,
+			t3.user_name patName,
+			t3.user_img patImg,
+			t1.ASK_DOCID docId
 		
 		from PAT_ASK t1 left join DOC_INFO t2 on t1.ASK_DOCID=t2.INFO_ID
+					    left join PAT_USER t3 on t1.ASK_PATID=t3.user_id
 		<where>
  			<if test="pd.patuserid != null and pd.patuserid !='' ">
          		and t1.ASK_PATID = #{pd.patuserid}
@@ -33,9 +39,11 @@
 			t1.ASKSUB_CONTENT as msg,
 			t1.ASKSUB_TYPE as sendUserType,
 			t1.ASKSUB_MESSAGE_TYPE as msgType,
-			t1.ASKSUB_PATH as img
+			t1.ASKSUB_PATH as img,
+			t2.ASK_DOCID docId,
+			t2.ASK_PATID patId    
 		
-		from PAT_ASK_SUB t1
+		from PAT_ASK_SUB t1 left join PAT_ASK t2 on t1.PARENT_ID=t2.ASK_ID
 		<where>
  			<if test="pd.askid != null and pd.askid !='' ">
          		and t1.PARENT_ID = #{pd.askid}

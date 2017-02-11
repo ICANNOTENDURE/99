@@ -1,39 +1,50 @@
 package com.fh.entity.vo.im;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import org.apache.commons.lang.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(value = {"patId" ,"docId"})
 public class Message {
 	
-	
+	@ApiModelProperty(value = "token")
 	private String token;
+	@ApiModelProperty(value = "提问id")
 	private String askId;
+	@ApiModelProperty(value = "接收消息用户id")
 	private String toUser;
-	private String fromUser;
+	@ApiModelProperty(value = "文本消息")
 	private String msg;
-	/*
-	 * 消息类型
-	 * 1:文本
-	 * 2:图片
-	 * 3:语言
-	 */
+	@ApiModelProperty(value = "消息类型，1:文本，2:图片，3:语音")
 	private String msgType;
-	/*
-	 * 1:发送
-	 * 2:接收
-	 */
-	private String sendType;
+	@ApiModelProperty(value = "图片")
 	private String img;
-	//接收图片的时候的缩略图
+	@ApiModelProperty(value = "缩略图")
 	private String thumbImg;
-	/*
-	 * 1:医生
-	 * 2:病人
-	 */
+	@ApiModelProperty(value = "发送消息人类型,1:医生,2:病人")
 	private String sendUserType;
 	
+	@ApiModelProperty(hidden=true)
+	private String patId;
+	@ApiModelProperty(hidden=true)
+	private String docId;
 	
 	
 	
+	
+	public String getPatId() {
+		return patId;
+	}
+	public void setPatId(String patId) {
+		this.patId = patId;
+	}
+	public String getDocId() {
+		return docId;
+	}
+	public void setDocId(String docId) {
+		this.docId = docId;
+	}
 	public String getSendUserType() {
 		return sendUserType;
 	}
@@ -77,21 +88,9 @@ public class Message {
 	public void setToUser(String toUser) {
 		this.toUser = toUser;
 	}
-	public String getSendType() {
-		return sendType;
-	}
-	public void setSendType(String sendType) {
-		this.sendType = sendType;
-	}
-	public String getFromUser() {
-		return fromUser;
-	}
-	public void setFromUser(String fromUser) {
-		this.fromUser = fromUser;
-	}
 	public String getThumbImg() {
 		if(StringUtils.isNotBlank(img)){
-			thumbImg="THUMB_"+img;
+			thumbImg="thumbnail."+img;
 		}
 		return thumbImg;
 	}

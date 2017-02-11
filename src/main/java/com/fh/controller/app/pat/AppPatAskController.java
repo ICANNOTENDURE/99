@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,11 @@ import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.system.PatUser;
+import com.fh.entity.system.doc.DocInfo;
 import com.fh.entity.system.pat.PatAsk;
 import com.fh.entity.vo.ask.PatAskVO;
+import com.fh.entity.vo.ask.ReadyMsgVO;
 import com.fh.entity.vo.im.Message;
 import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
@@ -47,20 +51,21 @@ public class AppPatAskController extends BaseController{
 	/**
 	 * 插入病人主问题
 	 * @return
+	 * @throws Exception 
 	 */
 	@AppToken
 	@ApiOperation(notes = "插入病人主问题",  value = "插入病人主问题")
 	@RequestMapping(value="/ask",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> ask(
+	public JsonResult<ReadyMsgVO> ask(
 			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
 			@ApiParam(value = "医生id",name="docId") @RequestParam String docId,
 			@ApiParam(value = "家属id",name="famId") @RequestParam String famId,
 			@ApiParam(value = "提问类容",name="askContent") @RequestParam String askContent,
 			@ApiParam(value = "提问标题",name="askTitle") @RequestParam String askTitle,
 			@ApiParam(value = "图标路径字符串",name="picStr",example="2.jpg^3.jpg^4.jpg") @RequestParam String picStr
-		){
-		JsonResult<Object> result=new JsonResult<Object>();
+		) throws Exception{
+		JsonResult<ReadyMsgVO> result=new JsonResult<ReadyMsgVO>();
 		PatAsk patAsk=new PatAsk();
 		patAsk.setAskContent(askContent);
 		patAsk.setAskDocid(docId);
@@ -68,15 +73,15 @@ public class AppPatAskController extends BaseController{
 		patAsk.setAskTitle(askTitle);
 		patAsk.setAskStatus(AskStatus.TO_PAY.getCode());
 		patAsk.setAskPatid(getAppUserId());
-		try {
-			patAskService.saveAsk(patAsk, picStr);
-		} catch (Exception e) {
-			result.setCode(11);
-			result.setMessage(e.getMessage());
-			e.printStackTrace();
-			return result;
-		}
-		result.setMessage(patAsk.getAskId());
+		patAskService.saveAsk(patAsk, picStr);
+		DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, docId);
+		ReadyMsgVO readyMsgVO=new ReadyMsgVO();
+		readyMsgVO.setAskId(patAsk.getAskId());
+		readyMsgVO.setDocImg(docInfo.getDocPic());
+		readyMsgVO.setDocName(docInfo.getDocName());
+		PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, getAppUserId());
+		readyMsgVO.setPatImg(patUser.getUserImg());
+		result.getDatas().add(readyMsgVO);
 		return result;
 	}
 	
@@ -115,26 +120,20 @@ public class AppPatAskController extends BaseController{
 			@ApiParam(value = "一页的显示条数,传空默认为10",name="SHOW_COUNT") @RequestParam Long SHOW_COUNT,
 			@ApiParam(value = "当前页数,不传默认为",name="CURRENT_PAGE") @RequestParam Long CURRENT_PAGE) throws Exception{
 		JsonResult<Message> result=new JsonResult<Message>();
-		Page pg=this.getAppPage();
-		List<Message> messages=patAskService.listAskSub(pg);
-		String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
-		Token token=JSON.parseObject(str, Token.class);
-		for(Message msg:messages){
-			if(UserType.PAT.getType().equals(token.getAccounttType())){
-				if(UserType.PAT.getType().equals(msg.getSendUserType())){
-					msg.setSendType("1");
+
+		List<Message> msgs=patAskService.listAskSub(getAppPage());
+		if(StringUtils.isNotBlank(APP_TOKEN)){
+			String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
+			Token token=JSON.parseObject(str, Token.class);
+			for(Message msg:msgs){
+				if(UserType.DOC.getType().equals(token.getAccounttType())){
+					msg.setToUser(msg.getPatId());
 				}else{
-					msg.setSendType("2");
-				}
-			}else{
-				if(UserType.DOC.getType().equals(msg.getSendUserType())){
-					msg.setSendType("1");
-				}else{
-					msg.setSendType("2");
+					msg.setToUser(msg.getDocId());
 				}
 			}
 		}
-		result.setDatas(messages);
+		result.setDatas(msgs);
 		return result;
 	}
 }

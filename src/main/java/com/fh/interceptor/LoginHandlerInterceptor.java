@@ -62,6 +62,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 								if(token.getExpDate().getTime()<=DateUtil.fomatDate(DateUtil.getDay()).getTime()){
 									jsonResult.setCode(11);
 									jsonResult.setMessage("TOKEN过期,请重新登陆");
+									request.getSession().removeAttribute("APP_SESSION_ID");
 								}else{
 									Map<String, Object> parMap = new HashMap<String, Object>();
 									// 医生用户

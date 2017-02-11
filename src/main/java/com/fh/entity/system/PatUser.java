@@ -21,6 +21,15 @@ public class PatUser extends BaseEntity{
 	private String userMarry;
 	private Date userLogindate;
 	private String userSex;
+	private String userImg;
+	
+	
+	public String getUserImg() {
+		return userImg;
+	}
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
 	public String getUserId() {
 		return userId;
 	}
