@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.fh.entity.Page;
+import com.fh.entity.vo.token.Token;
 import com.fh.util.Const;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Logger;
 import com.fh.util.PageData;
 import com.fh.util.UuidUtil;
+import com.fh.util.security.AESCoder;
 
 
 public class BaseController {
@@ -200,6 +203,12 @@ public class BaseController {
      * @return
      */
     public String getAppUserId(){
-    	return session.getAttribute("APP_SESSION_ID").toString();
+    	String APP_TOKEN=getPar("APP_TOKEN");
+    	if(StringUtils.isNotBlank(APP_TOKEN)){
+			String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
+			Token token=JSON.parseObject(str, Token.class);
+			return token.getAccount();
+    	}
+    	return "";
     }
 }

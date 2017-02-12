@@ -72,14 +72,14 @@ public class TestController extends BaseController{
 	}
 	
 	
-	//@Test
+	@Test
 	public void test(){
 		
 		Token token=new Token();
-		token.setAccount("5c42b638ff474b3db4d8a11d8d96bd6c");
+		token.setAccount("c70854b630ba47718b1dd109b4f77836");
 		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
 		token.setAccounttType("2");
-		token.setLogDate(DateUtil.fomatTime("2017-02-07 20:54:36"));
+		token.setLogDate(DateUtil.fomatTime("2017-02-12 14:57:08"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 		//System.out.println((AskStatus.getValueByKey("1")));
@@ -88,7 +88,7 @@ public class TestController extends BaseController{
 	}
 
 	   
-	   @Test
+	   //@Test
 	   public void testxx() throws Exception{
 		  // toSmaillImg("d:/1.jpg","d:/11.jpg"); 
 		   File destinationDir = new File("D:/");

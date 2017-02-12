@@ -64,31 +64,35 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 									jsonResult.setMessage("TOKEN过期,请重新登陆");
 									request.getSession().removeAttribute("APP_SESSION_ID");
 								}else{
-									Map<String, Object> parMap = new HashMap<String, Object>();
-									// 医生用户
-									if ("1".equals(token.getAccounttType())) {
-										parMap.put("doc_id", token.getAccount());
-										parMap.put("status", "Y");
-										parMap.put("doc_Logindate", token.getLogDate());
-										List<DocUser> docUsers = commonService.selectByEqCon(DocUser.class, parMap);
-										if (docUsers.size() == 0) {
-											jsonResult.setCode(11);
-											jsonResult.setMessage("用户状态异常");
-										}else{
-											request.getSession().setAttribute("APP_SESSION_ID", docUsers.get(0).getDocId());
+									if(request.getSession().getAttribute("APP_SESSION_ID")==null){
+										Map<String, Object> parMap = new HashMap<String, Object>();
+										// 医生用户
+										if ("1".equals(token.getAccounttType())) {
+											parMap.put("doc_id", token.getAccount());
+											parMap.put("status", "Y");
+											parMap.put("doc_Logindate", token.getLogDate());
+											List<DocUser> docUsers = commonService.selectByEqCon(DocUser.class, parMap);
+											if (docUsers.size() == 0) {
+												jsonResult.setCode(11);
+												jsonResult.setMessage("用户状态异常");
+											}else{
+												request.getSession().setMaxInactiveInterval(3*60);
+												request.getSession().setAttribute("APP_SESSION_ID", docUsers.get(0).getDocId());
+											}
 										}
-									}
-									// 病人用户
-									if ("2".equals(token.getAccounttType())) {
-										parMap.put("user_id", token.getAccount());
-										parMap.put("status", "Y");
-										parMap.put("user_Logindate", token.getLogDate());
-										List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);
-										if (patUsers.size() == 0) {
-											jsonResult.setCode(11);
-											jsonResult.setMessage("用户状态异常");
-										}else{
-											request.getSession().setAttribute("APP_SESSION_ID", patUsers.get(0).getUserId());
+										// 病人用户
+										if ("2".equals(token.getAccounttType())) {
+											parMap.put("user_id", token.getAccount());
+											parMap.put("status", "Y");
+											parMap.put("user_Logindate", token.getLogDate());
+											List<PatUser> patUsers = commonService.selectByEqCon(PatUser.class, parMap);
+											if (patUsers.size() == 0) {
+												jsonResult.setCode(11);
+												jsonResult.setMessage("用户状态异常");
+											}else{
+												request.getSession().setMaxInactiveInterval(3*60);
+												request.getSession().setAttribute("APP_SESSION_ID", patUsers.get(0).getUserId());
+											}
 										}
 									}
 								}
