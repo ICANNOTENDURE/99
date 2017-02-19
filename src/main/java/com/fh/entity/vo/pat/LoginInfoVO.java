@@ -2,6 +2,10 @@ package com.fh.entity.vo.pat;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.fh.util.enums.DefaultImgEnum;
+
 public class LoginInfoVO {
 	
 	@ApiModelProperty(value = "账号")
@@ -17,13 +21,16 @@ public class LoginInfoVO {
 		this.account = account;
 	}
 	public String getImg() {
+		if(StringUtils.isBlank(img)){
+			img=DefaultImgEnum.PAT.getImagePath();
+		}
 		return img;
 	}
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public Float getAmt() {
-		return amt;
+	public Float getAmt() { 
+		return null==amt?0F:amt;
 	}
 	public void setAmt(Float amt) {
 		this.amt = amt;

@@ -26,11 +26,14 @@ import com.fh.entity.vo.pat.EvaluteVO;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.EvalService;
+import com.fh.util.Logger;
 
 @Controller
 @RequestMapping(value="/appeval")
 @Api(value = "病人评价", tags = "病人评价") 
 public class AppEvalController extends BaseController{
+	
+	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	private CommonService commonService;
@@ -53,7 +56,7 @@ public class AppEvalController extends BaseController{
 			@ApiParam(value = "治疗效果",name="evalEffect") @RequestParam Integer evalEffect,
 			@ApiParam(value = "回答提问速度",name="evalReplySpeed") @RequestParam Integer evalReplySpeed,
 			@ApiParam(value = "评论内容",name="evalContent") @RequestParam String evalContent
-		) throws Exception{
+		) {
 		
 		AskEvalute askEvalute=new AskEvalute();
 		askEvalute.setParentId(askid);
@@ -63,7 +66,14 @@ public class AppEvalController extends BaseController{
 		askEvalute.setEvalReplySpeed(evalReplySpeed);
 		askEvalute.setPatId(this.getAppUserId());
 		askEvalute.setCreateDate(new Date());
-		evalService.saveEval(askEvalute);
+		try {
+			evalService.saveEval(askEvalute);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return new JsonResult<Object>(2,e.getMessage());
+			
+		}
 		return new JsonResult<Object>();
 	}
 	
