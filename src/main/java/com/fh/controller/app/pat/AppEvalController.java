@@ -56,7 +56,7 @@ public class AppEvalController extends BaseController{
 			@ApiParam(value = "治疗效果",name="evalEffect") @RequestParam Integer evalEffect,
 			@ApiParam(value = "回答提问速度",name="evalReplySpeed") @RequestParam Integer evalReplySpeed,
 			@ApiParam(value = "评论内容",name="evalContent") @RequestParam String evalContent
-		) {
+		) throws Exception {
 		
 		AskEvalute askEvalute=new AskEvalute();
 		askEvalute.setParentId(askid);
@@ -66,14 +66,7 @@ public class AppEvalController extends BaseController{
 		askEvalute.setEvalReplySpeed(evalReplySpeed);
 		askEvalute.setPatId(this.getAppUserId());
 		askEvalute.setCreateDate(new Date());
-		try {
-			evalService.saveEval(askEvalute);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-			return new JsonResult<Object>(2,e.getMessage());
-			
-		}
+		evalService.saveEval(askEvalute);
 		return new JsonResult<Object>();
 	}
 	
