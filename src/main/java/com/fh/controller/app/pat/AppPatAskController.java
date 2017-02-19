@@ -152,15 +152,20 @@ public class AppPatAskController extends BaseController{
 		map.put("ask_Patid", this.getAppUserId());
 		List<PatAsk> asks=commonService.selectByEqCon(PatAsk.class,map);
 		if(asks.size()==1){
-			//删除问题
+			//删除问题 6
 			if(AskStatus.COLSE.getCode().equals(status)&&
 			   AskStatus.TO_PAY.getCode().equals(asks.get(0).getAskStatus())){
 				asks.get(0).setAskStatus(AskStatus.COLSE.getCode());
 			}
-			//退费申请
+			//退费申请 5
 			if(AskStatus.RET_REQUEST.getCode().equals(status)&&
 			   AskStatus.CHAT_READY.getCode().equals(asks.get(0).getAskStatus())){
 				asks.get(0).setAskStatus(AskStatus.RET_REQUEST.getCode());		
+			}
+			// 取消退费申请 7
+			if("7".equals(status)&&
+			   AskStatus.COLSE.getCode().equals(asks.get(0).getAskStatus())){
+				asks.get(0).setAskStatus("7");		
 			}
 			commonService.saveOrUpdate(asks.get(0));
 		}else{
