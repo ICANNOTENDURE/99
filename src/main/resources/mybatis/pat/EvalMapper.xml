@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="EvalMapper">
+
+
+	<select id="listPage" parameterType="page" resultType="com.fh.entity.vo.pat.EvaluteVO">
+		select
+			t1.CREATE_DATE createDate,
+			t1.EVAL_REPLY_SPEED as speed ,
+			t1.EVAL_ATTITUDE as attitude ,
+			t1.EVAL_EFFECT as effect ,
+			t1.EVAL_CONTENT as content ,
+			t2.user_account	as account
+			
+		from pat_ask_evaluate t1
+			 left join pat_user t2 on t1.pat_Id=t2.user_id
+		<where>
+ 			<if test="pd.docid != null and pd.docid !='' ">
+         		and t1.DOCINFO_ID = #{pd.docid}
+    		</if>
+		</where>
+		order by  t1.CREATE_DATE desc
+	</select>
+
+</mapper>

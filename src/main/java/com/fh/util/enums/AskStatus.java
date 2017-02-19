@@ -8,8 +8,8 @@ public enum AskStatus {
 	CHAT_END("3","咨询完成(待评价)"),
 	RETURN("4","退费"),
 	RET_REQUEST("5","退费申请"),
-	COLSE("6","删除"),;
-	
+	COLSE("6","删除"),
+	EVAL("8","已评价");
 	private String code;
 	
 	private String desc;
