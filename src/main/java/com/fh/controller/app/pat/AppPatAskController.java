@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +136,37 @@ public class AppPatAskController extends BaseController{
 			}
 		}
 		result.setDatas(msgs);
+		return result;
+	}
+	
+	@ApiOperation(notes = "更新问题状态",  value = "更新问题状态")
+	@RequestMapping(value="/updateAskStatus",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> updateAskStatus(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "问题id",name="askId") @RequestParam String askId,
+			@ApiParam(value = "状态",name="status") @RequestParam String status) throws Exception{
+		JsonResult<Object> result=new JsonResult<Object>();
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("ask_Id", askId);
+		map.put("ask_Patid", this.getAppUserId());
+		List<PatAsk> asks=commonService.selectByEqCon(PatAsk.class,map);
+		if(asks.size()==1){
+			//删除问题
+			if(AskStatus.COLSE.getCode().equals(status)&&
+			   AskStatus.TO_PAY.getCode().equals(asks.get(0).getAskStatus())){
+				asks.get(0).setAskStatus(AskStatus.COLSE.getCode());
+			}
+			//退费申请
+			if(AskStatus.RET_REQUEST.getCode().equals(status)&&
+			   AskStatus.CHAT_READY.getCode().equals(asks.get(0).getAskStatus())){
+				asks.get(0).setAskStatus(AskStatus.RET_REQUEST.getCode());		
+			}
+			commonService.saveOrUpdate(asks.get(0));
+		}else{
+			result.setCode(2);
+			result.setMessage("error");
+		}
 		return result;
 	}
 }

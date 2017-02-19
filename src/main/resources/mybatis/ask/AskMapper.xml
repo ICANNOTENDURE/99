@@ -28,6 +28,7 @@
     		<if test="pd.status != null and pd.status !='' ">
          		and t1.ASK_STATUS = #{pd.status}
     		</if>
+    		and t1.ASK_STATUS !=6
 		</where>
 		order by t1.ASK_DATE desc
 	</select>

@@ -7,7 +7,8 @@ public enum AskStatus {
 	CHAT_ING("2","咨询中"),
 	CHAT_END("3","咨询完成(待评价)"),
 	RETURN("4","退费"),
-	RET_REQUEST("5","退费申请");
+	RET_REQUEST("5","退费申请"),
+	COLSE("6","删除"),;
 	
 	private String code;
 	
