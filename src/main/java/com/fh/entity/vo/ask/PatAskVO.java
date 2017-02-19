@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fh.util.enums.AskStatus;
+import com.fh.util.enums.DefaultImgEnum;
 
 public class PatAskVO {
 
@@ -35,7 +36,7 @@ public class PatAskVO {
 	
 	public String getDocImg() {
 		if(StringUtils.isBlank(docImg)){
-			docImg="empty.png";
+			docImg=DefaultImgEnum.DOC.getImagePath();
 		}
 		return docImg;
 	}
@@ -92,6 +93,9 @@ public class PatAskVO {
 		this.patName = patName;
 	}
 	public String getPatImg() {
+		if(StringUtils.isBlank(patImg)){
+			patImg=DefaultImgEnum.PAT.getImagePath();
+		}
 		return patImg;
 	}
 	public void setPatImg(String patImg) {

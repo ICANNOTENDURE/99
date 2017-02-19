@@ -367,14 +367,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jackson-all-1.7.6.jar</systemPath>
 		</dependency>
-		<!-- jpush-java-libraryV2 -->
-		<dependency>
-			<groupId>jpush</groupId>
-			<artifactId>jpush</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jpush-java-libraryV2.jar</systemPath>
-		</dependency>
 		<!-- mail -->
 		<dependency>
 			<groupId>mail</groupId>
@@ -591,6 +583,26 @@
 		    <artifactId>thumbnailator</artifactId>
 		    <version>0.4.8</version>
 		</dependency>
+		 <!-- -->
+		 <dependency>
+        	<groupId>cn.jpush.api</groupId>
+        	<artifactId>jiguang-common</artifactId>
+        	<version>1.0.2</version>
+    	</dependency>
+    	 
+		<dependency>
+    		<groupId>cn.jpush.api</groupId>
+    		<artifactId>jpush-client</artifactId>
+    		<version>3.2.16</version>
+		</dependency>
+		<!-- -->
+		<dependency>
+        	<groupId>io.netty</groupId>
+        	<artifactId>netty-all</artifactId>
+        	<version>4.1.6.Final</version>
+        	<scope>compile</scope>
+    	</dependency>
+    	
 	</dependencies>
 	
 	<!-- ========================================================== -->

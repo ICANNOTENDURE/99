@@ -15,12 +15,12 @@
 			t2.DOC_PIC as docImg,
 			t1.ASK_DOCID docId,
 			t1.ASK_PATID patId,
-			t3.user_name patName,
-			t3.user_img patImg,
-			t1.ASK_DOCID docId
+			t4.FAM_NAME patName,
+			t3.user_img patImg
 		
 		from PAT_ASK t1 left join DOC_INFO t2 on t1.ASK_DOCID=t2.INFO_ID
 					    left join PAT_USER t3 on t1.ASK_PATID=t3.user_id
+					    left join PAT_FAMILY t4 on t1.ASK_FAMID=t4.FAM_ID
 		<where>
  			<if test="pd.patuserid != null and pd.patuserid !='' ">
          		and t1.ASK_PATID = #{pd.patuserid}

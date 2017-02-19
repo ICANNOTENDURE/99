@@ -13,8 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.alibaba.fastjson.JSON;
-import com.fh.entity.Page;
-import com.fh.entity.app.AppBanner;
+import com.fh.entity.system.pat.PatFamily;
 import com.fh.plugin.GeneralQueryParam;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.PatAskService;
@@ -89,8 +88,14 @@ public class SpringTest {
 //		pg.setCurrentPage(1);
 //		System.out.println(JSON.toJSONString(patAskService.listAsk(pg)));
 		
-		AppBanner banner=new AppBanner();
-		banner.setBannerImg("213221321");
-		commonService.saveOrUpdate(banner);
+//		AppBanner banner=new AppBanner();
+//		banner.setBannerImg("213221321");
+//		commonService.saveOrUpdate(banner);
+		Map<String, Object> columnValueMapping=new HashMap<String, Object>();
+		columnValueMapping.put("FAM_SEX", "A");
+		Map<String, Object> conditionParam=new HashMap<String, Object>();
+		conditionParam.put("FAM_ID", "111e24f311114b4cb46d598581d4055e");
+		String conditionExp=" FAM_ID = #{conditionParam.FAM_ID}";
+		commonService.updateByConditionSelective(PatFamily.class, columnValueMapping, conditionExp, conditionParam);
 	}
 }

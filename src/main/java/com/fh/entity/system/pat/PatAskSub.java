@@ -31,6 +31,15 @@ public class PatAskSub extends BaseEntity{
 	 */
 	private String asksubMessageType;
 	private String asksubPath;
+	private String asksubReadFlag;
+	
+	
+	public String getAsksubReadFlag() {
+		return asksubReadFlag;
+	}
+	public void setAsksubReadFlag(String asksubReadFlag) {
+		this.asksubReadFlag = asksubReadFlag;
+	}
 	public String getAsksubId() {
 		return asksubId;
 	}
