@@ -211,4 +211,17 @@ public class BaseController {
     	}
     	return "";
     }
+    /**
+     * 获取登录用户账号类型
+     * @return
+     */
+    public String getLoginType(){
+    	String APP_TOKEN=getPar("APP_TOKEN");
+    	if(StringUtils.isNotBlank(APP_TOKEN)){
+			String str=AESCoder.aesCbcDecrypt(APP_TOKEN, Const.APP_TOKEN_KEY);
+			Token token=JSON.parseObject(str, Token.class);
+			return token.getAccounttType();
+    	}
+    	return "";
+    }
 }

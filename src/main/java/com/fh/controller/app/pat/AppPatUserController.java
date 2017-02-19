@@ -27,7 +27,10 @@ import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.system.PatUser;
+import com.fh.entity.system.doc.DocInfo;
+import com.fh.entity.system.doc.DocUser;
 import com.fh.entity.system.pat.PatFamily;
+import com.fh.entity.vo.pat.LoginInfoVO;
 import com.fh.entity.vo.token.Token;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
@@ -298,5 +301,32 @@ public class AppPatUserController extends BaseController{
 		
 		commonService.deleteByPrimaryKey(PatFamily.class, id);
 		return new JsonResult<Object>();
+	}
+	
+	@AppToken
+	@ApiOperation(notes = "获取登录信息",  value = "获取登录信息")
+	@RequestMapping(value="/getLoginInfo",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<LoginInfoVO> getLoginInfo(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN
+			) throws Exception{
+		
+		JsonResult<LoginInfoVO> result=new JsonResult<LoginInfoVO>();
+		LoginInfoVO infoVO=new LoginInfoVO();
+		result.getDatas().add(infoVO);
+		if(UserType.DOC.getType().equals(this.getLoginType())){
+			DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, this.getAppUserId());
+			DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, docInfo.getDocId());
+			infoVO.setAccount(docUser.getDocAccount());
+			infoVO.setImg(docInfo.getDocPic());
+			infoVO.setAmt(docInfo.getAmt());
+		}
+		if(UserType.PAT.getType().equals(this.getLoginType())){
+			PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, this.getAppUserId());
+			infoVO.setAccount(patUser.getUserAccount());
+			infoVO.setImg(patUser.getUserImg());
+			infoVO.setAmt(patUser.getAmt());
+		}
+		return result;
 	}
 }

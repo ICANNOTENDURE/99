@@ -21,8 +21,16 @@ public class DocInfo extends BaseEntity{
 	private Integer docReplyNum;
 	private String docPic;
 	private Integer docSeq;
+	private Float amt;
 	
 	
+	
+	public Float getAmt() {
+		return amt;
+	}
+	public void setAmt(Float amt) {
+		this.amt = amt;
+	}
 	@Transient
 	private String docAccount;
 	@Transient

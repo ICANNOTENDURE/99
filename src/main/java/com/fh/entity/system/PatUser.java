@@ -22,8 +22,16 @@ public class PatUser extends BaseEntity{
 	private Date userLogindate;
 	private String userSex;
 	private String userImg;
+	private Float amt;
 	
 	
+	
+	public Float getAmt() {
+		return amt;
+	}
+	public void setAmt(Float amt) {
+		this.amt = amt;
+	}
 	public String getUserImg() {
 		return userImg;
 	}
