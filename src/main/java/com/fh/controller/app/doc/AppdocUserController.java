@@ -16,18 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.system.doc.DocInfo;
 import com.fh.entity.system.doc.DocUser;
-import com.fh.entity.vo.token.Token;
 import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.MD5;
-import com.fh.util.enums.UserType;
-import com.fh.util.security.AESCoder;
+import com.fh.util.TokenUtil;
 
 
 @Controller 
@@ -68,14 +65,15 @@ public class AppdocUserController extends BaseController{
 			return new JsonResult<>(5, "账号不存在");
 		}
 		docUsers.get(0).setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
-		commonService.saveOrUpdate(docUsers.get(0));
-		Token token=new Token();
-		token.setAccounttType("1");
-		token.setAccount(docUsers.get(0).getDocId());
-		token.setLogDate(docUsers.get(0).getDocLogindate());
-		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
-		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
-		return new JsonResult<Object>(0,JSON.toJSONString(tk));
+		commonService.saveOrUpdate(docUsers.get(0));		
+		parMap.clear();
+		parMap.put("", docUsers.get(0).getDocId());
+		List<DocInfo> docInfos = commonService.selectByEqCon(DocInfo.class, parMap);
+		if(docInfos.size()>0){
+			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),docInfos.get(0).getInfoId()));
+		}else{
+			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),""));
+		}
 	}
 	
 	/**
@@ -104,13 +102,16 @@ public class AppdocUserController extends BaseController{
 		}
 		docUsers.get(0).setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(docUsers.get(0));
-		Token token=new Token();
-		token.setAccounttType(UserType.DOC.getType());
-		token.setAccount(docUsers.get(0).getDocId());
-		token.setLogDate(docUsers.get(0).getDocLogindate());
-		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
-		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
-		return new JsonResult<Object>(0,tk);
+		
+		parMap.clear();
+		parMap.put("", docUsers.get(0).getDocId());
+		List<DocInfo> docInfos = commonService.selectByEqCon(DocInfo.class, parMap);
+		if(docInfos.size()>0){
+			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),docInfos.get(0).getInfoId()));
+		}else{
+			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),""));
+		}
+		
 	}
 	
 	
@@ -149,13 +150,7 @@ public class AppdocUserController extends BaseController{
 		docUser.setStatus("Y");
 		docUser.setDocPassword(MD5.md5(pwd));
 		commonService.saveOrUpdate(docUser);
-		Token token=new Token();
-		token.setAccounttType(UserType.DOC.getType());
-		token.setAccount(docUser.getDocId());
-		token.setLogDate(docUser.getDocLogindate());
-		token.setExpDate(DateUtil.getExpDay(Const.APP_TOKEN_MAX_TIME));
-		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
-		return new JsonResult<Object>(0,tk);
+		return new JsonResult<Object>(0,TokenUtil.docToken(docUser,""));
 	}
 	
 	/**
@@ -218,13 +213,8 @@ public class AppdocUserController extends BaseController{
 			@ApiParam(value = "医师资格证照片名称",name="docQualifyImg")	@RequestParam String docQualifyImg,
 			@ApiParam(value = "姓名",name="docName")	@RequestParam String docName) throws Exception{
 		
-		Map<String, Object> conMapping=new HashMap<String, Object>();
-		conMapping.put("doc_Id", this.getAppUserId());
-		List<DocInfo>  docInfos=commonService.selectByEqCon(DocInfo.class, conMapping);
 		DocInfo docInfo=new DocInfo();
-		if(docInfos.size()>0){
-			docInfo=docInfos.get(0);
-		}
+		docInfo.setInfoId(this.getLoginInfoId());
 		docInfo.setDocId(this.getAppUserId());
 		docInfo.setDocHopid(hopId);
 		docInfo.setDocLocid(locId);

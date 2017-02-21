@@ -9,12 +9,21 @@ import java.util.Date;
 public class Token {
 
 	private String account;
+	private String infoId;
 	private Date expDate;
 	//1:医生
 	//2：病人
 	private String accounttType;
 	private Date logDate;
 	
+	
+	
+	public String getInfoId() {
+		return infoId;
+	}
+	public void setInfoId(String infoId) {
+		this.infoId = infoId;
+	}
 	public Date getLogDate() {
 		return logDate;
 	}

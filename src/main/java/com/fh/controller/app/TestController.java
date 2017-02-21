@@ -78,8 +78,8 @@ public class TestController extends BaseController{
 	}
 	
 	
-	@Test
-	public void test(){
+	//@Test
+	public void test1(){
 		
 		Token token=new Token();
 		token.setAccount("c70854b630ba47718b1dd109b4f77836");
@@ -88,11 +88,19 @@ public class TestController extends BaseController{
 		token.setLogDate(DateUtil.fomatTime("2017-02-19 17:53:06"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
-		//System.out.println((AskStatus.getValueByKey("1")));
-		
-		System.out.println(this.get32UUID());
 	}
-
+	@Test
+	public void testdoc(){
+		
+		Token token=new Token();
+		token.setAccount("bfb0d058b38147828db4e4d4cd1e6db2");
+		token.setInfoId("12dcdc98b32e4c2da6350eb89ed972c6");
+		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
+		token.setAccounttType("1");
+		token.setLogDate(DateUtil.fomatTime("2017-02-21 20:39:36"));
+		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
+		System.out.println(appt);
+	}
 	   
 	   //@Test
 	   public void testxx() throws Exception{
