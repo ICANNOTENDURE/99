@@ -62,7 +62,7 @@ public class AppHopController extends BaseController{
 		return jsonResult;
 	}
 	/**
-	 * 医院级别
+	 * 医院
 	 * @return
 	 */
 	@ApiOperation(notes = "根据医院级别获取 医院列表",  value = "医院级别")

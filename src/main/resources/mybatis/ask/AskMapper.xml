@@ -49,8 +49,8 @@
 		
 		from PAT_ASK_SUB t1 left join PAT_ASK t2 on t1.PARENT_ID=t2.ASK_ID
 		<where>
- 			<if test="pd.askid != null and pd.askid !='' ">
-         		and t1.PARENT_ID = #{pd.askid}
+ 			<if test="pd.askId != null and pd.askId !='' ">
+         		and t1.PARENT_ID = #{pd.askId}
     		</if>
 		</where>
 		order by t1.ASKSUB_DATE desc

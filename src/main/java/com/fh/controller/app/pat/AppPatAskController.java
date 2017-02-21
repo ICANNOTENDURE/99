@@ -104,7 +104,10 @@ public class AppPatAskController extends BaseController{
 		JsonResult<PatAskVO> result=new JsonResult<PatAskVO>();
 		Page pg=this.getAppPage();
 		if(UserType.DOC.getType().equals(this.getLoginType())){
-			pg.getPd().put("docinfoid", this.getAppUserId());
+			Map<String, Object> conMapping=new HashMap<String, Object>();
+			conMapping.put("doc_Id", this.getAppUserId());
+			List<DocInfo>  docInfos=commonService.selectByEqCon(DocInfo.class, conMapping);
+			pg.getPd().put("docinfoid", docInfos.get(0).getInfoId());
 		}else{
 			pg.getPd().put("patuserid", this.getAppUserId());
 		}

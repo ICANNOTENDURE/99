@@ -90,7 +90,7 @@ public class TestController extends BaseController{
 		System.out.println(appt);
 		//System.out.println((AskStatus.getValueByKey("1")));
 		
-		System.out.println(AESCoder.aesCbcDecrypt(appt, Const.APP_TOKEN_KEY));
+		System.out.println(this.get32UUID());
 	}
 
 	   
