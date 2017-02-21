@@ -31,7 +31,9 @@ public class MyExceptionResolver implements HandlerExceptionResolver {
 			PrintWriter writer;
 			try {
 				writer = response.getWriter();
-				writer.write(JSON.toJSONString(new JsonResult<>(999, ex.getMessage())));
+				String msg=JSON.toJSONString(ex.getStackTrace());
+				//String msg=JSON.toJSONString(ex.);
+				writer.write(JSON.toJSONString(new JsonResult<>(999, msg)));
 				writer.flush();
 				writer.close();
 			} catch (IOException e) {

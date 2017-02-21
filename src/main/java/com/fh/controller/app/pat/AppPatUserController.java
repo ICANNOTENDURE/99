@@ -315,11 +315,16 @@ public class AppPatUserController extends BaseController{
 		LoginInfoVO infoVO=new LoginInfoVO();
 		result.getDatas().add(infoVO);
 		if(UserType.DOC.getType().equals(this.getLoginType())){
-			DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, this.getAppUserId());
-			DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, docInfo.getDocId());
+			Map<String, Object> conMapping=new HashMap<String, Object>();
+			DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, this.getAppUserId());
+			conMapping.put("doc_Id", docUser.getDocId());
+			List<DocInfo> docInfos=commonService.selectByEqCon(DocInfo.class, conMapping);
 			infoVO.setAccount(docUser.getDocAccount());
-			infoVO.setImg(docInfo.getDocPic());
-			infoVO.setAmt(docInfo.getAmt());
+			if(docInfos.size()==1){
+				infoVO.setImg(docInfos.get(0).getDocPic());
+				infoVO.setAmt(docInfos.get(0).getAmt());
+			}
+
 		}
 		if(UserType.PAT.getType().equals(this.getLoginType())){
 			PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, this.getAppUserId());

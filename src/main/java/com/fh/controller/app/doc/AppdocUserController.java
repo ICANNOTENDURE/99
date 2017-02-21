@@ -156,4 +156,43 @@ public class AppdocUserController extends BaseController{
 		String tk=AESCoder.aesCbcEncrypt(JSON.toJSONString(token),Const.APP_TOKEN_KEY);
 		return new JsonResult<Object>(0,tk);
 	}
+	
+	/**
+	 * 找回丢失账号
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "找回丢失账号",  value = "找回丢失账号")
+	@RequestMapping(value="/getLostDocUser",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> getLostDocUser(
+			@ApiParam(value = "手机号",name="account", required = true) @RequestParam String account,
+			@ApiParam(value = "密码",name="pwd", required = true)	@RequestParam String pwd,
+			@ApiParam(value = "验证码",name="verifyCode", required = true)	@RequestParam String verifyCode) throws Exception{
+		
+		
+		if(StringUtils.isBlank(account)||StringUtils.isBlank(pwd)||StringUtils.isBlank(verifyCode)){
+			return new JsonResult<>(2, "账号或者密码或验证码不能为空");
+		}
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(3, "无效验证码,请重新获取验证码");
+		}
+		if(!verifyCode.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		delCookieValueByName(Const.COOKIE_Verification_Code);
+		Map<String,Object> parMap=new HashMap<String, Object>();
+		parMap.put("doc_Account", account);
+		List<DocUser> docUsers = commonService.selectByEqCon(DocUser.class, parMap);
+		if(docUsers.size()==0){
+			return new JsonResult<>(5, "账号错误");
+		}
+		if(!"Y".equals(docUsers.get(0).getStatus())){
+			return new JsonResult<>(6, "账号已被冻结");
+		}
+		docUsers.get(0).setDocPassword(MD5.md5(pwd));
+		docUsers.get(0).setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		commonService.saveOrUpdate(docUsers.get(0));
+		return new JsonResult<Object>();
+	}
 }
