@@ -22,9 +22,47 @@ public class DocInfo extends BaseEntity{
 	private String docPic;
 	private Integer docSeq;
 	private Float amt;
+	private String docIdCard;
+	private String docIdCardImg;
+	private String docWorkCardImg;
+	private String docQualificationImg;
+	private String auditFlag;
 	
 	
 	
+	
+	
+	
+	public String getAuditFlag() {
+		return auditFlag;
+	}
+	public void setAuditFlag(String auditFlag) {
+		this.auditFlag = auditFlag;
+	}
+	public String getDocIdCard() {
+		return docIdCard;
+	}
+	public void setDocIdCard(String docIdCard) {
+		this.docIdCard = docIdCard;
+	}
+	public String getDocIdCardImg() {
+		return docIdCardImg;
+	}
+	public void setDocIdCardImg(String docIdCardImg) {
+		this.docIdCardImg = docIdCardImg;
+	}
+	public String getDocWorkCardImg() {
+		return docWorkCardImg;
+	}
+	public void setDocWorkCardImg(String docWorkCardImg) {
+		this.docWorkCardImg = docWorkCardImg;
+	}
+	public String getDocQualificationImg() {
+		return docQualificationImg;
+	}
+	public void setDocQualificationImg(String docQualificationImg) {
+		this.docQualificationImg = docQualificationImg;
+	}
 	public Float getAmt() {
 		return amt;
 	}

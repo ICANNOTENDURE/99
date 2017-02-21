@@ -1,4 +1,4 @@
-package com.fh.controller.app.doc;
+ package com.fh.controller.app.doc;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.system.doc.DocInfo;
 import com.fh.entity.system.doc.DocUser;
 import com.fh.entity.vo.token.Token;
 import com.fh.service.common.impl.CommonService;
@@ -195,4 +196,47 @@ public class AppdocUserController extends BaseController{
 		commonService.saveOrUpdate(docUsers.get(0));
 		return new JsonResult<Object>();
 	}
+	
+	
+	/**
+	 * 医生账户认证
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(notes = "医生账户认证",  value = "医生账户认证")
+	@RequestMapping(value="/saveDocInfo",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> saveDocInfo(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "医院id",name="hopId") @RequestParam String hopId,
+			@ApiParam(value = "科室id",name="locId")	@RequestParam String locId,
+			@ApiParam(value = "身份证",name="idCard")	@RequestParam String idCard,
+			@ApiParam(value = "医生职称id",name="titleId")	@RequestParam String titleId,
+			@ApiParam(value = "医生照片名称",name="docImg")	@RequestParam String docImg,
+			@ApiParam(value = "工牌照片名称",name="workCardImg")	@RequestParam String workCardImg,
+			@ApiParam(value = "身份证照片名称",name="idCardImg")	@RequestParam String idCardImg,
+			@ApiParam(value = "医师资格证照片名称",name="docQualifyImg")	@RequestParam String docQualifyImg,
+			@ApiParam(value = "姓名",name="docName")	@RequestParam String docName) throws Exception{
+		
+		Map<String, Object> conMapping=new HashMap<String, Object>();
+		conMapping.put("doc_Id", this.getAppUserId());
+		List<DocInfo>  docInfos=commonService.selectByEqCon(DocInfo.class, conMapping);
+		DocInfo docInfo=new DocInfo();
+		if(docInfos.size()>0){
+			docInfo=docInfos.get(0);
+		}
+		docInfo.setDocId(this.getAppUserId());
+		docInfo.setDocHopid(hopId);
+		docInfo.setDocLocid(locId);
+		docInfo.setDocPic(docImg);
+		docInfo.setDocName(docName);
+		docInfo.setDocTitle(titleId);
+		docInfo.setDocWorkCardImg(workCardImg);
+		docInfo.setDocQualificationImg(docQualifyImg);
+		docInfo.setDocIdCard(idCard);
+		docInfo.setDocIdCardImg(idCardImg);
+		commonService.saveOrUpdate(docInfo);
+		return new JsonResult<>();
+	}	
+	
 }
