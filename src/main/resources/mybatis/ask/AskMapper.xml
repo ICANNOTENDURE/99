@@ -28,6 +28,9 @@
     		<if test="pd.status != null and pd.status !='' ">
          		and t1.ASK_STATUS = #{pd.status}
     		</if>
+    		<if test="pd.docinfoid != null and pd.docinfoid !='' ">
+         		and t1.ASK_DOCID = #{pd.docinfoid}
+    		</if>
     		and t1.ASK_STATUS !=6
 		</where>
 		order by t1.ASK_DATE desc

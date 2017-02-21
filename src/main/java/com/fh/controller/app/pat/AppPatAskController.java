@@ -103,7 +103,11 @@ public class AppPatAskController extends BaseController{
 			@ApiParam(value = "当前页数,不传默认为",name="CURRENT_PAGE") @RequestParam Long CURRENT_PAGE) throws Exception{
 		JsonResult<PatAskVO> result=new JsonResult<PatAskVO>();
 		Page pg=this.getAppPage();
-		pg.getPd().put("patuserid", this.getAppUserId());
+		if(UserType.DOC.getType().equals(this.getLoginType())){
+			pg.getPd().put("docinfoid", this.getAppUserId());
+		}else{
+			pg.getPd().put("patuserid", this.getAppUserId());
+		}
 		result.setDatas(patAskService.listAsk(pg));
 		return result;
 	}
