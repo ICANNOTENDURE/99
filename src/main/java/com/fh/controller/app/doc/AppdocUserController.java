@@ -1,9 +1,10 @@
- package com.fh.controller.app.doc;
+package com.fh.controller.app.doc;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +20,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.system.doc.DocInfo;
+import com.fh.entity.system.doc.DocInfoReq;
 import com.fh.entity.system.doc.DocUser;
+import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.MD5;
 import com.fh.util.TokenUtil;
+import com.fh.util.enums.AuditDocStatusEnum;
 
 
 @Controller 
@@ -67,7 +71,7 @@ public class AppdocUserController extends BaseController{
 		docUsers.get(0).setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
 		commonService.saveOrUpdate(docUsers.get(0));		
 		parMap.clear();
-		parMap.put("", docUsers.get(0).getDocId());
+		parMap.put("doc_Id", docUsers.get(0).getDocId());
 		List<DocInfo> docInfos = commonService.selectByEqCon(DocInfo.class, parMap);
 		if(docInfos.size()>0){
 			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),docInfos.get(0).getInfoId()));
@@ -104,7 +108,7 @@ public class AppdocUserController extends BaseController{
 		commonService.saveOrUpdate(docUsers.get(0));
 		
 		parMap.clear();
-		parMap.put("", docUsers.get(0).getDocId());
+		parMap.put("doc_Id", docUsers.get(0).getDocId());
 		List<DocInfo> docInfos = commonService.selectByEqCon(DocInfo.class, parMap);
 		if(docInfos.size()>0){
 			return new JsonResult<Object>(0,TokenUtil.docToken(docUsers.get(0),docInfos.get(0).getInfoId()));
@@ -198,6 +202,7 @@ public class AppdocUserController extends BaseController{
 	 * @return
 	 * @throws Exception 
 	 */
+	@AppToken
 	@ApiOperation(notes = "医生账户认证",  value = "医生账户认证")
 	@RequestMapping(value="/saveDocInfo",method = RequestMethod.POST)
 	@ResponseBody
@@ -225,7 +230,14 @@ public class AppdocUserController extends BaseController{
 		docInfo.setDocQualificationImg(docQualifyImg);
 		docInfo.setDocIdCard(idCard);
 		docInfo.setDocIdCardImg(idCardImg);
+		docInfo.setAuditFlag(AuditDocStatusEnum.AUDIT_ING.getCode());
 		commonService.saveOrUpdate(docInfo);
+		DocInfoReq docInfoReq=new DocInfoReq();
+		docInfoReq.setContent("医师申请");
+		docInfoReq.setCreateDate(new Date());
+		docInfoReq.setStatus(AuditDocStatusEnum.AUDIT_ING.getCode());
+		docInfoReq.setReqInfoId(docInfo.getInfoId());
+		commonService.saveOrUpdate(docInfoReq);
 		return new JsonResult<>();
 	}	
 	

@@ -16,7 +16,7 @@ public class Message {
 	private String toUser;
 	@ApiModelProperty(value = "文本消息")
 	private String msg;
-	@ApiModelProperty(value = "消息类型，1:文本，2:图片，3:语音")
+	@ApiModelProperty(value = "消息类型，0:初始化websocket,1:文本，2:图片，3:语音")
 	private String msgType;
 	@ApiModelProperty(value = "图片")
 	private String img;

@@ -32,6 +32,10 @@ public class PatAskVO {
 	private String patImg;
 	@ApiModelProperty(value = "金额")
 	private String amt;
+	@ApiModelProperty(value = "病人id")
+	private String patId;
+	@ApiModelProperty(value = "医生id")
+	private String docId;
 	
 	
 	public String getDocImg() {
@@ -100,6 +104,18 @@ public class PatAskVO {
 	}
 	public void setPatImg(String patImg) {
 		this.patImg = patImg;
+	}
+	public String getPatId() {
+		return patId;
+	}
+	public void setPatId(String patId) {
+		this.patId = patId;
+	}
+	public String getDocId() {
+		return docId;
+	}
+	public void setDocId(String docId) {
+		this.docId = docId;
 	}
 	
 	

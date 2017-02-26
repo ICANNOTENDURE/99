@@ -18,6 +18,7 @@ import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
 import com.fh.util.Logger;
 import com.fh.util.enums.MessageType;
+import com.fh.util.enums.UserType;
 import com.fh.util.security.AESCoder;
 
 public class WebsocketEndPoint extends TextWebSocketHandler {
@@ -42,7 +43,14 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			Message msg=JSON.parseObject(message.getPayload().toString(),Message.class);
 			String str=AESCoder.aesCbcDecrypt(msg.getToken(), Const.APP_TOKEN_KEY);
 			Token token=JSON.parseObject(str, Token.class);
-			users.put(token.getAccount(), session);
+			if(UserType.DOC.getType().equals(token.getAccounttType())){
+				users.put(token.getInfoId(), session);
+			}else{
+				users.put(token.getAccount(), session);
+			}
+			if("0".equals(msg.getMsgType())){
+				return;
+			}
 			saveMsg(msg,token);
 			if(users.containsKey(msg.getToUser())){
 				if(users.get(msg.getToUser()).isOpen()){ 

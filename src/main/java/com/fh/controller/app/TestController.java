@@ -2,6 +2,11 @@ package com.fh.controller.app;
 
 import io.swagger.annotations.Api;
 
+import java.io.File;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
+
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,18 +83,18 @@ public class TestController extends BaseController{
 	}
 	
 	
-	//@Test
+	@Test
 	public void test1(){
 		
 		Token token=new Token();
-		token.setAccount("c70854b630ba47718b1dd109b4f77836");
+		token.setAccount("28b89e44a38e47fcb3bd097ded76f232");
 		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
 		token.setAccounttType("2");
-		token.setLogDate(DateUtil.fomatTime("2017-02-19 17:53:06"));
+		token.setLogDate(DateUtil.fomatTime("2017-02-24 20:10:00"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}
-	@Test
+	//@Test
 	public void testdoc(){
 		
 		Token token=new Token();
@@ -101,7 +106,14 @@ public class TestController extends BaseController{
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}
-	   
+	  
+	//@Test
+	public void testxx1() throws Exception{
+		File destinationDir = new File("D:/"); 
+		Thumbnails.of("D:/2.jpg")
+        .size(200, 200)
+        .toFiles(destinationDir, Rename.PREFIX_DOT_THUMBNAIL);
+	}
 	   //@Test
 	   public void testxx() throws Exception{
 		  // toSmaillImg("d:/1.jpg","d:/11.jpg"); 

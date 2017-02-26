@@ -66,7 +66,7 @@ public class PatAskService implements PatAskManager{
 	@Override
 	public List<Message> listAskSub(Page pg) throws Exception {
 		// TODO Auto-generated method stub
-		return (List<Message>) dao.findForList("AskMapper.listAskSubPage", pg);
+		return (List<Message>) dao.findForList("AskMapper.AskSublistPage", pg);
 	}
 
 }

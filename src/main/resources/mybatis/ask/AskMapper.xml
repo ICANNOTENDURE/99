@@ -37,7 +37,7 @@
 	</select>
 	
 	
-	<select id="listAskSubPage" parameterType="page" resultType="com.fh.entity.vo.im.Message">
+	<select id="AskSublistPage" parameterType="page" resultType="com.fh.entity.vo.im.Message">
 		select
 			t1.PARENT_ID as askId,
 			t1.ASKSUB_CONTENT as msg,

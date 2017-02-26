@@ -1,8 +1,12 @@
 package com.fh.entity.system.doc;
 
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.fh.entity.BaseEntity;
 
@@ -28,12 +32,19 @@ public class DocInfo extends BaseEntity{
 	private String docQualificationImg;
 	private String auditFlag;
 	
-	
-	
+	@Transient
+	private List<String> docIdCardImgList;
+	@Transient
+	private List<String> docWorkCardImgList;
+	@Transient
+	private List<String> docQualificationImgList;
 	
 	
 	
 	public String getAuditFlag() {
+		if(StringUtils.isBlank(auditFlag)){
+			return "0";
+		}
 		return auditFlag;
 	}
 	public void setAuditFlag(String auditFlag) {
@@ -168,6 +179,34 @@ public class DocInfo extends BaseEntity{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public List<String> getDocIdCardImgList() {
+		if(StringUtils.isNotBlank(docIdCardImg)){
+			return java.util.Arrays.asList(docIdCardImg.split(","));
+		}
+		return docIdCardImgList;
+	}
+	public void setDocIdCardImgList(List<String> docIdCardImgList) {
+		this.docIdCardImgList = docIdCardImgList;
+	}
+	public List<String> getDocWorkCardImgList() {
+		if(StringUtils.isNotBlank(docWorkCardImg)){
+			return java.util.Arrays.asList(docWorkCardImg.split(","));
+		}
+		return docWorkCardImgList;
+	}
+	public void setDocWorkCardImgList(List<String> docWorkCardImgList) {
+		this.docWorkCardImgList = docWorkCardImgList;
+	}
+	public List<String> getDocQualificationImgList() {
+		
+		if(StringUtils.isNotBlank(docQualificationImg)){
+			return java.util.Arrays.asList(docQualificationImg.split(","));
+		}
+		return docQualificationImgList;
+	}
+	public void setDocQualificationImgList(List<String> docQualificationImgList) {
+		this.docQualificationImgList = docQualificationImgList;
 	}
 	
 	
