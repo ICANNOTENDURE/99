@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fh.entity.BaseEntity;
+import com.fh.util.enums.AuditDocStatusEnum;
 
 @Table(name="DOC_SERVICE")
 public class DocService extends BaseEntity{
@@ -22,9 +23,22 @@ public class DocService extends BaseEntity{
 	private String serviceType;
 	@ApiModelProperty(value = "服务价格")
 	private BigDecimal servicePrice;
+	@ApiModelProperty(hidden=true)
+	private String auditFlag;
 	@Transient
 	@ApiModelProperty(value = "服务类型")
 	private String serviceTypeName;
+	@Transient
+	private String auditFlagDesc;
+	
+	
+	
+	public String getAuditFlagDesc() {
+		return AuditDocStatusEnum.getValueByKey(auditFlag);
+	}
+	public void setAuditFlagDesc(String auditFlagDesc) {
+		this.auditFlagDesc = auditFlagDesc;
+	}
 	public String getServiceId() {
 		return serviceId;
 	}
@@ -54,6 +68,12 @@ public class DocService extends BaseEntity{
 	}
 	public void setServiceTypeName(String serviceTypeName) {
 		this.serviceTypeName = serviceTypeName;
+	}
+	public String getAuditFlag() {
+		return auditFlag;
+	}
+	public void setAuditFlag(String auditFlag) {
+		this.auditFlag = auditFlag;
 	}
 	
 	

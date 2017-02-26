@@ -23,6 +23,7 @@ import com.fh.util.Constants;
 import com.fh.util.DelAllFile;
 import com.fh.util.MD5;
 import com.fh.util.PathUtil;
+import com.fh.util.enums.AuditDocStatusEnum;
 
 @Controller
 @RequestMapping(value="/docservice")
@@ -52,7 +53,22 @@ public class DocServiceController extends BaseController {
 		return mv;
 	}
 	
-	
+	/**显示认证列表
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value="/listAuth")
+	public ModelAndView listAuth(Page page){
+		ModelAndView mv = getModelAndView();
+		mv.setViewName("system/doc/list_doc_service_auth");
+		page.setPd(this.getPageData());
+		try{
+			mv.addObject("status", AuditDocStatusEnum.getCombo(this.getPar("status")));
+			mv.addObject("list", docService.listPage(page));
+		} catch(Exception e){
+		}
+		return mv;
+	}
 	
 	/**保存或者新增
 	 * @return
@@ -69,6 +85,7 @@ public class DocServiceController extends BaseController {
 		if(list.size()>0){
 			return new JsonResult<Object>(100,"以存在，不能重复添加");
 		}
+		docService.setAuditFlag(AuditDocStatusEnum.AUDIT_PASS.getCode());
 		commonService.saveOrUpdate(docService);
 		return new JsonResult<Object>();
 	}
@@ -122,6 +139,13 @@ public class DocServiceController extends BaseController {
 	@ResponseBody
 	public Object delete(@PathVariable String id){
 		commonService.deleteByPrimaryKey(com.fh.entity.system.doc.DocService.class, id);
+		return new JsonResult<>(); 
+	}
+	
+	@RequestMapping(value="/audit")
+	@ResponseBody
+	public Object audit() throws Exception{
+		docService.audit(this.getPageData());
 		return new JsonResult<>(); 
 	}
 }

@@ -18,6 +18,7 @@
 	    <id property="serviceId" column="serviceId"/>
 	    <result property="serviceTypeName" column="serviceTypeName"/>
 	    <result property="servicePrice" column="servicePrice"/>
+	    <result property="auditFlag" column="auditFlag"/>
 	  </collection>
 	</resultMap>
 	<!-- 医生服务项目查询 -->
@@ -34,6 +35,7 @@
 			t5.NAME	as docTitle,
 			t.service_Id	as serviceId,
 			t.SERVICE_PRICE as servicePrice,
+			t.audit_Flag as auditFlag,
 			t6.NAME	as serviceTypeName
 		
 		from DOC_SERVICE t
@@ -58,6 +60,9 @@
 			</if>
 			<if test="pd.DOC_TITLE != null and pd.DOC_TITLE != ''"><!-- 职称检索 -->
 				and t2.DOC_TITLE=#{pd.DOC_TITLE} 
+			</if>
+			<if test="pd.status != null and pd.status != ''">
+				and t.audit_Flag=#{pd.status} 
 			</if>
 		</where>
 	</select>

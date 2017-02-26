@@ -5,7 +5,7 @@ public class Select {
 	private String id;
 	private String text;
 	
-	
+	private String selected;
 	
 	public Select(String id, String text) {
 		super();
@@ -23,6 +23,12 @@ public class Select {
 	}
 	public void setText(String text) {
 		this.text = text;
+	}
+	public String getSelected() {
+		return selected;
+	}
+	public void setSelected(String selected) {
+		this.selected = selected;
 	}
 	
 
