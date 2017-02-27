@@ -39,7 +39,8 @@
 	    <websocket:mapping path="/websocket" handler="websocket"/>  
 	    <websocket:handshake-interceptors>  
 	        <bean class="com.fh.plugin.websocket.HandshakeInterceptor"/>  
-	    </websocket:handshake-interceptors>  
+	    </websocket:handshake-interceptors>
+	    <websocket:sockjs/>  
 	</websocket:handlers>  
  
   	
