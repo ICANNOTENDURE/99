@@ -85,7 +85,7 @@ public class TestController extends BaseController{
 	
 	
 	//@Test
-	public void test1(){
+	public void testpat(){
 		
 		Token token=new Token();
 		token.setAccount("259fcfdb82f84ee4877d665ace8b8fec");
@@ -95,7 +95,7 @@ public class TestController extends BaseController{
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}
-	@Test
+	//@Test
 	public void testdoc(){
 		
 		Token token=new Token();
@@ -108,7 +108,7 @@ public class TestController extends BaseController{
 		System.out.println(appt);
 	}
 	  
-	//@Test
+	@Test
 	public void testxx1() throws Exception{
 		File destinationDir = new File("D:/"); 
 		Thumbnails.of("D:/2.jpg")

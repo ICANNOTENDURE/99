@@ -9,14 +9,12 @@ package com.fh.controller.app.pic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import java.io.File;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.name.Rename;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,10 +50,9 @@ public class PicController extends BaseController{
 	    MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
 		String fileName = FileUpload.fileUp(multipartFile, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
 		
-		File destinationDir = new File(PathUtil.PicPath());
 		Thumbnails.of(PathUtil.PicPath()+fileName)
-		           .size(200, 200)
-		           .toFiles(destinationDir, Rename.PREFIX_DOT_THUMBNAIL);
+        .size(200, 200)
+        .toFile(PathUtil.PicPath()+"thumbnail."+fileName);
 		return new JsonResult<Object>(0,fileName);
 	}
 	
