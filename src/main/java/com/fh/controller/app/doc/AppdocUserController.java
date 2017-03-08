@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,15 @@ import com.fh.entity.system.doc.DocInfoReq;
 import com.fh.entity.system.doc.DocService;
 import com.fh.entity.system.doc.DocServiceReq;
 import com.fh.entity.system.doc.DocUser;
+import com.fh.entity.vo.doc.DocInfoStatusVO;
+import com.fh.entity.vo.doc.DocServiceStatusVO;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.MD5;
+import com.fh.util.PageData;
 import com.fh.util.TokenUtil;
 import com.fh.util.enums.AuditDocStatusEnum;
 
@@ -41,6 +46,8 @@ public class AppdocUserController extends BaseController{
 	
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private DictionariesService dictionariesService;
 	
 	/**
 	 * 医生用户手机验证码登陆
@@ -286,5 +293,38 @@ public class AppdocUserController extends BaseController{
 		docServiceReq.setServiceId(docService.getServiceId());
 		commonService.saveOrUpdate(docServiceReq);
 		return jsonResult;
-	}	
+	}
+	
+	@AppToken
+	@ApiOperation(notes = "医生，服务认证状态",  value = "医生，服务认证状态")
+	@RequestMapping(value="/getAuditInfo",method = RequestMethod.POST)
+	@ResponseBody
+	public DocInfoStatusVO getAuditInfo(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN) throws Exception{
+		DocInfoStatusVO docInfoStatusVO=new DocInfoStatusVO();
+		
+		if(StringUtils.isBlank(super.getLoginInfoId())){
+			docInfoStatusVO.setDocQualifyStatus(AuditDocStatusEnum.TO_AUDIT.getCode());
+		}else{
+			DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, getLoginInfoId());
+			docInfoStatusVO.setDocQualifyStatus(docInfo.getAuditFlag());
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("docinfo_Id", docInfo.getInfoId());
+			List<DocService> docServices=commonService.selectByEqCon(DocService.class, map);
+			List<DocServiceStatusVO> docServiceStatusVOs=new ArrayList<DocServiceStatusVO>();
+			PageData pd=new PageData();
+			for(DocService docService:docServices){
+				
+				DocServiceStatusVO serviceVO=new DocServiceStatusVO();
+				serviceVO.setServiceId(docService.getServiceId());
+				serviceVO.setServicePrice(docService.getServicePrice());
+				serviceVO.setServiceStatus(docService.getAuditFlag());
+				pd.put("DICTIONARIES_ID", docService.getServiceType());
+				serviceVO.setServiceName(dictionariesService.findById(pd).getString("NAME"));
+				docServiceStatusVOs.add(serviceVO);
+			}
+			docInfoStatusVO.setDocServiceStatusVOs(docServiceStatusVOs);
+		}
+		return docInfoStatusVO;
+	}
 }

@@ -30,6 +30,7 @@ import com.fh.plugin.annotation.AppToken;
 import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.Logger;
+import com.fh.util.SmsUtil;
 import com.fh.util.security.AESCoder;
 @Controller 
 @RequestMapping(value="/apptest")
@@ -83,26 +84,26 @@ public class TestController extends BaseController{
 	}
 	
 	
-	@Test
+	//@Test
 	public void test1(){
 		
 		Token token=new Token();
-		token.setAccount("28b89e44a38e47fcb3bd097ded76f232");
-		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
+		token.setAccount("259fcfdb82f84ee4877d665ace8b8fec");
+		token.setExpDate(DateUtil.fomatDate("2017-03-15"));
 		token.setAccounttType("2");
-		token.setLogDate(DateUtil.fomatTime("2017-02-24 20:10:00"));
+		token.setLogDate(DateUtil.fomatTime("2017-01-07 00:00:00"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}
-	//@Test
+	@Test
 	public void testdoc(){
 		
 		Token token=new Token();
-		token.setAccount("bfb0d058b38147828db4e4d4cd1e6db2");
-		token.setInfoId("12dcdc98b32e4c2da6350eb89ed972c6");
-		token.setExpDate(DateUtil.fomatDate("2017-03-05"));
+		token.setAccount("259fcfdb82f84ee4877d665ace8b8fec");
+		token.setInfoId("938ae77f61644a849701c8d5a6441360");
+		token.setExpDate(DateUtil.fomatDate("2017-03-15"));
 		token.setAccounttType("1");
-		token.setLogDate(DateUtil.fomatTime("2017-02-21 20:39:36"));
+		token.setLogDate(DateUtil.fomatTime("2017-01-07 00:00:00"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}
@@ -146,5 +147,11 @@ public class TestController extends BaseController{
 		    	logger.error("Error Message: " + e.getErrorMessage());
 		    }
 		   
+	   }
+	   //@Test
+	   public void jiafanggou(){
+		   //for(int i=0;i<100;i++){
+			   SmsUtil.sendSmsAli("13919007855", "甲方狗,汪汪汪");
+		   //}
 	   }
 }
