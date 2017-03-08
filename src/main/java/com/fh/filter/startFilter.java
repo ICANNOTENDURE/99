@@ -30,7 +30,7 @@ public class startFilter extends BaseController implements Filter{
 	 */
 	public void init(FilterConfig fc) throws ServletException {
 		this.startWebsocketInstantMsg();
-		this.startWebsocketOnline();
+		//this.startWebsocketOnline();
 	}
 	
 	/**

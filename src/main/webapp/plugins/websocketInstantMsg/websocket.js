@@ -67,7 +67,7 @@ function toUserMsg(toU){
 			//初始话WebSocket
 			function initWebSocket() {
 				if (window.WebSocket) {
-					wimadress="127.0.0.1:8080/MVNFHM/websocket"
+					//wimadress="127.0.0.1:8080/MVNFHM/websocket"
 					websocket = new WebSocket(encodeURI('ws://'+wimadress));
 					
 					websocket.onopen = function() {

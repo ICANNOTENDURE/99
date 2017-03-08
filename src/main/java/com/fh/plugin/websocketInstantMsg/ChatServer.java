@@ -1,17 +1,27 @@
 package com.fh.plugin.websocketInstantMsg;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
-
-import net.sf.json.JSONObject;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.java_websocket.WebSocket;
-import org.java_websocket.WebSocketImpl;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoader;
+
+import com.alibaba.fastjson.JSON;
+import com.fh.entity.system.pat.PatAskSub;
+import com.fh.entity.vo.im.Message;
+import com.fh.entity.vo.token.Token;
+import com.fh.service.common.impl.CommonService;
+import com.fh.util.Const;
+import com.fh.util.enums.MessageType;
+import com.fh.util.enums.UserType;
+import com.fh.util.security.AESCoder;
 
 
 /**
@@ -19,6 +29,12 @@ import org.java_websocket.server.WebSocketServer;
  */
 public class ChatServer extends WebSocketServer{
 	
+	@Autowired
+	private CommonService commonService;
+	private static final ConcurrentHashMap<String,WebSocket> users;
+	static{
+		users = new ConcurrentHashMap<String,WebSocket>();
+	}
 	
 	public ChatServer(int port) throws UnknownHostException {
 		super(new InetSocketAddress(port));
@@ -33,8 +49,9 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onOpen( WebSocket conn, ClientHandshake handshake ) {
-		//this.sendToAll( "new connection: " + handshake.getResourceDescriptor() );
-		//System.out.println("===" + conn.getRemoteSocketAddress().getAddress().getHostAddress());
+		if(commonService==null){
+			commonService=(CommonService)ContextLoader.getCurrentWebApplicationContext().getBean("commonService");
+		}
 	}
 
 	/**
@@ -42,7 +59,12 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onClose( WebSocket conn, int code, String reason, boolean remote ) {
-		userLeave(conn);
+		conn.close();
+        for (Map.Entry<String, WebSocket> m :users.entrySet())  {  
+        	if(m.getValue().isClosed()){
+        		users.remove(m.getKey());
+        	}
+        }
 	}
 
 	/**
@@ -50,23 +72,32 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onMessage(WebSocket conn, String message){
-		message = message.toString();
 		
 		
+		Message msg=JSON.parseObject(message.toString(),Message.class);
+		String str=AESCoder.aesCbcDecrypt(msg.getToken(), Const.APP_TOKEN_KEY);
+		Token token=JSON.parseObject(str, Token.class);
+		if(UserType.DOC.getType().equals(token.getAccounttType())){
+			users.put(token.getInfoId(), conn);
+		}else{
+			users.put(token.getAccount(), conn);
+		}
+		if("0".equals(msg.getMsgType())){
+			return;
+		}
+		try {
+			saveMsg(msg,token);
+			if(users.containsKey(msg.getToUser())){
+				if(users.get(msg.getToUser()).isOpen()){ 
+					users.get(msg.getToUser()).send(message);
+				}else{
+					users.remove(msg.getToUser());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		ChatServerPool.sendMessage("123");
-//		if(null != message && message.startsWith("FHadminqq313596790")){
-//			this.userjoin(message.replaceFirst("FHadminqq313596790", ""),conn);
-//		}if(null != message && message.startsWith("LeaveFHadminqq313596790")){
-//			this.userLeave(conn);
-//		}if(null != message && message.contains("fhadmin886")){
-//			String toUser = message.substring(message.indexOf("fhadmin886")+10, message.indexOf("fhfhadmin888"));
-//			message = message.substring(0, message.indexOf("fhadmin886")) +"[私信]  "+ message.substring(message.indexOf("fhfhadmin888")+12, message.length());
-//			ChatServerPool.sendMessageToUser(ChatServerPool.getWebSocketByUser(toUser),message);//向所某用户发送消息
-//			ChatServerPool.sendMessageToUser(conn, message);//同时向本人发送消息
-//		}else{
-//			ChatServerPool.sendMessage(message.toString());//向所有在线用户发送消息
-//		}
 	}
 
 	public void onFragment( WebSocket conn, Framedata fragment ) {
@@ -78,53 +109,35 @@ public class ChatServer extends WebSocketServer{
 	@Override
 	public void onError( WebSocket conn, Exception ex ) {
 		ex.printStackTrace();
-		if( conn != null ) {
-			//some errors like port binding failed may not be assignable to a specific websocket
+		if(conn!=null){
+			conn.close();
 		}
+        for (Map.Entry<String, WebSocket> m :users.entrySet())  {  
+        	if(m.getValue().isClosed()){
+        		users.remove(m.getKey());
+        	}
+        }
 	}
 
 	
-	/**
-	 * 用户加入处理
-	 * @param user
-	 */
-	public void userjoin(String user, WebSocket conn){
-		JSONObject result = new JSONObject();
-		result.element("type", "user_join");
-		result.element("user", "<a onclick=\"toUserMsg('"+user+"');\">"+user+"</a>");
-		ChatServerPool.sendMessage(result.toString());				//把当前用户加入到所有在线用户列表中
-		String joinMsg = "{\"from\":\"[系统]\",\"content\":\""+user+"上线了\",\"timestamp\":"+new Date().getTime()+",\"type\":\"message\"}";
-		ChatServerPool.sendMessage(joinMsg);						//向所有在线用户推送当前用户上线的消息
-		result = new JSONObject();
-		result.element("type", "get_online_user");
-		ChatServerPool.addUser(user,conn);							//向连接池添加当前的连接对象
-		result.element("list", ChatServerPool.getOnlineUser());
-		ChatServerPool.sendMessageToUser(conn, result.toString());	//向当前连接发送当前在线用户的列表
-	}
-	
-	/**
-	 * 用户下线处理
-	 * @param user
-	 */
-	public void userLeave(WebSocket conn){
-		String user = ChatServerPool.getUserByKey(conn);
-		boolean b = ChatServerPool.removeUser(conn);				//在连接池中移除连接
-		if(b){
-			JSONObject result = new JSONObject();
-			result.element("type", "user_leave");
-			result.element("user", "<a onclick=\"toUserMsg('"+user+"');\">"+user+"</a>");
-			ChatServerPool.sendMessage(result.toString());			//把当前用户从所有在线用户列表中删除
-			String joinMsg = "{\"from\":\"[系统]\",\"content\":\""+user+"下线了\",\"timestamp\":"+new Date().getTime()+",\"type\":\"message\"}";
-			ChatServerPool.sendMessage(joinMsg);					//向在线用户发送当前用户退出的消息
-		}
-	}
-	public static void main( String[] args ) throws InterruptedException , IOException {
-		WebSocketImpl.DEBUG = false;
-		int port = 8887; //端口
-		ChatServer s = new ChatServer(port);
-		s.start();
-		//System.out.println( "服务器的端口" + s.getPort() );
-	}
 
+	
+    //保存聊天记录
+    public void saveMsg(Message msg,Token token) throws Exception{
+		PatAskSub askSub=new PatAskSub();
+		askSub.setAsksubDate(new Date());
+		askSub.setParentId(msg.getAskId());
+		//发送类型
+		askSub.setAsksubType(token.getAccounttType());
+		//消息类型
+		askSub.setAsksubMessageType(msg.getMsgType());
+		//文本图片消息
+		if((MessageType.TEXT.getType()).equals(msg.getMsgType())){
+			askSub.setAsksubContent(msg.getMsg());
+		}else{
+			askSub.setAsksubPath(msg.getMsg());
+		}
+		commonService.saveOrUpdate(askSub);
+    }
 }
 

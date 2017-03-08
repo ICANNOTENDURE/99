@@ -19,6 +19,7 @@
 	<context:component-scan base-package="com.json" />
 	<context:component-scan base-package="org.jeecgframework.poi.excel.view" />
 	<context:component-scan base-package="com.fh.plugin.websocket" />
+	<context:component-scan base-package="com.fh.plugin.websocketInstantMsg" />
 	<!-- 对静态资源文件的访问  restful-->     
 	<mvc:resources mapping="/admin/**" location="/,/admin/" />
 	<mvc:resources mapping="/static/**" location="/,/static/" />
@@ -33,16 +34,16 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
-  	<!--  -->
+  	<!--  
   	<bean id="websocket" class="com.fh.plugin.websocket.WebsocketEndPoint"/>  
 	<websocket:handlers >  
 	    <websocket:mapping path="/websocket" handler="websocket"/>  
 	    <websocket:handshake-interceptors>  
 	        <bean class="com.fh.plugin.websocket.HandshakeInterceptor"/>  
 	    </websocket:handshake-interceptors>
-	    <websocket:sockjs/>  
+
 	</websocket:handlers>  
- 
+ 	-->
   	
 	<!-- 配置SpringMVC的视图解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
