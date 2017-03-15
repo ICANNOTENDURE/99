@@ -19,6 +19,7 @@ import com.fh.entity.vo.im.Message;
 import com.fh.entity.vo.token.Token;
 import com.fh.service.common.impl.CommonService;
 import com.fh.util.Const;
+import com.fh.util.Logger;
 import com.fh.util.enums.MessageType;
 import com.fh.util.enums.UserType;
 import com.fh.util.security.AESCoder;
@@ -29,6 +30,7 @@ import com.fh.util.security.AESCoder;
  */
 public class ChatServer extends WebSocketServer{
 	
+	protected Logger logger = Logger.getLogger(this.getClass());
 	@Autowired
 	private CommonService commonService;
 	private static final ConcurrentHashMap<String,WebSocket> users;
@@ -49,6 +51,7 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onOpen( WebSocket conn, ClientHandshake handshake ) {
+		logger.error("onOpen:");
 		if(commonService==null){
 			commonService=(CommonService)ContextLoader.getCurrentWebApplicationContext().getBean("commonService");
 		}
@@ -59,7 +62,7 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onClose( WebSocket conn, int code, String reason, boolean remote ) {
-		conn.close();
+	
         for (Map.Entry<String, WebSocket> m :users.entrySet())  {  
         	if(m.getValue().isClosed()){
         		users.remove(m.getKey());
@@ -72,7 +75,6 @@ public class ChatServer extends WebSocketServer{
 	 */
 	@Override
 	public void onMessage(WebSocket conn, String message){
-		
 		
 		Message msg=JSON.parseObject(message.toString(),Message.class);
 		String str=AESCoder.aesCbcDecrypt(msg.getToken(), Const.APP_TOKEN_KEY);
@@ -101,6 +103,7 @@ public class ChatServer extends WebSocketServer{
 	}
 
 	public void onFragment( WebSocket conn, Framedata fragment ) {
+		System.out.println(22);
 	}
 
 	/**
@@ -110,7 +113,7 @@ public class ChatServer extends WebSocketServer{
 	public void onError( WebSocket conn, Exception ex ) {
 		ex.printStackTrace();
 		if(conn!=null){
-			conn.close();
+			//conn.close(org.java_websocket.server.WebSocketServer.DECODERS);
 		}
         for (Map.Entry<String, WebSocket> m :users.entrySet())  {  
         	if(m.getValue().isClosed()){

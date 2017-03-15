@@ -72,7 +72,7 @@ public class AppHopController extends BaseController{
 		JsonResult<AppHop> jsonResult=new JsonResult<AppHop>();
 		try {
 			Map<String, Object> conMapping=new HashMap<String, Object>();
-			if(!"0".equals(level)){
+			if(!"".equals(level)){
 				conMapping.put("hop_Level", level);
 			}
 			conMapping.put("hop_Status", "Y");

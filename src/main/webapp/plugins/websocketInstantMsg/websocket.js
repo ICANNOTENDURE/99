@@ -71,10 +71,11 @@ function toUserMsg(toU){
 					websocket = new WebSocket(encodeURI('ws://'+wimadress));
 					
 					websocket.onopen = function() {
-						alert(2)
+						//alert(2)
 						//连接成功
-						win.setTitle(title + '&nbsp;&nbsp;(已连接)   【现在全局对话】');
-						websocket.send('FHadminqq313596790'+user);
+						//win.setTitle(title + '&nbsp;&nbsp;(已连接)   【现在全局对话】');
+						
+						//websocket.send('FHadminqq313596790'+user);
 					}
 					websocket.onerror = function() {
 						//连接失败
@@ -179,10 +180,11 @@ function toUserMsg(toU){
 				if (websocket != null) {
 					if (input.getValue()) {
 						Ext.apply(message, {
-									from : user,
-									content : content,
-									timestamp : new Date().getTime(),
-									type : 'message'
+									token : 'ljuJvkb5NCv23UHt06kSYWSwH6khRDD9Ktwwx2Ei3uG3ZensMl1HoHZdTYhDxu56vzTXccq2ZZYCTfRb/xn+qHRQhng8fEeP+nPrwTyr+6a7qM3m7zk0PrnbOegMRb6kewUyvPc2zmnOLzj3hqNkC3L7kut8wRDc7NXSNEbnw4s=',
+									msg : '22',
+									toUser : '28b89e44a38e47fcb3bd097ded76f232',
+									msgType : '1',
+									askId:'73fbb869d51448a4997c8cc335f35995'
 								});
 						websocket.send(JSON.stringify(message));
 						//output.receive(message);

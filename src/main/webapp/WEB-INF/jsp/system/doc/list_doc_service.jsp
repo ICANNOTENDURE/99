@@ -31,7 +31,7 @@
 								<td>
 									<div class="nav-search">
 									<span class="input-icon">
-										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="keywords" value="${pd.keywords}" placeholder="这里输入关键词/账号或姓名" />
+										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="KEYWORD" value="${pd.KEYWORD}" placeholder="这里输入关键词/账号或姓名" />
 										<i class="ace-icon fa fa-search nav-search-icon"></i>
 									</span>
 									</div>

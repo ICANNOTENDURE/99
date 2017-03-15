@@ -84,14 +84,14 @@ public class TestController extends BaseController{
 	}
 	
 	
-	//@Test
+	@Test
 	public void testpat(){
 		
 		Token token=new Token();
-		token.setAccount("259fcfdb82f84ee4877d665ace8b8fec");
+		token.setAccount("28b89e44a38e47fcb3bd097ded76f232");
 		token.setExpDate(DateUtil.fomatDate("2017-03-15"));
 		token.setAccounttType("2");
-		token.setLogDate(DateUtil.fomatTime("2017-01-07 00:00:00"));
+		token.setLogDate(DateUtil.fomatTime("2017-03-12 18:29:53"));
 		String appt=AESCoder.aesCbcEncrypt(JSON.toJSONString(token), Const.APP_TOKEN_KEY);
 		System.out.println(appt);
 	}

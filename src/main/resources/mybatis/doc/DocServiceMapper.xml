@@ -46,24 +46,30 @@
 			 left join sys_dictionaries t5 on t2.DOC_TITLE=t5.DICTIONARIES_ID
 			 left join sys_dictionaries t6 on t.SERVICE_TYPE=t6.DICTIONARIES_ID
 		<where>
-			<if test="pd.keywords != null and pd.keywords !='' ">
+			<if test="pd.KEYWORD != null and pd.KEYWORD !='' ">
          		and (
-         			t2.DOC_NAME like CONCAT('%',#{pd.keywords},'%') 
-         			or t1.DOC_ACCOUNT like CONCAT('%',#{pd.keywords},'%')
+         			t2.DOC_NAME like CONCAT('%',#{pd.KEYWORD},'%') 
+         			or t1.DOC_ACCOUNT like CONCAT('%',#{pd.KEYWORD},'%')
+         			or t4.LOC_NAME like CONCAT('%',#{pd.KEYWORD},'%')
+         			or t3.HOP_NAME like CONCAT('%',#{pd.KEYWORD},'%')
          			)	 
     		</if>
-    		<if test="pd.DOC_HOPID != null and pd.DOC_HOPID != ''"><!-- 医院检索 -->
+    		<if test="pd.DOC_HOPID !=null and pd.DOC_HOPID != '' "><!-- 医院检索 -->
 				and t2.DOC_HOPID=#{pd.DOC_HOPID} 
 			</if>
-			<if test="pd.DOC_LOCID != null and pd.DOC_LOCID != ''"><!-- 科室检索 -->
+			<if test="pd.DOC_LOCID!=null and pd.DOC_LOCID != '' "><!-- 科室检索 -->
 				and t2.DOC_LOCID=#{pd.DOC_LOCID} 
 			</if>
-			<if test="pd.DOC_TITLE != null and pd.DOC_TITLE != ''"><!-- 职称检索 -->
-				and t2.DOC_TITLE=#{pd.DOC_TITLE} 
+			<if test="pd.DOC_SER !=null and pd.DOC_SER != '' "><!-- 医生服务类型 -->
+				and t.SERVICE_TYPE=#{pd.DOC_SER} 
 			</if>
 			<if test="pd.status != null and pd.status != ''">
 				and t.audit_Flag=#{pd.status} 
 			</if>
+				
 		</where>
+			<if test="pd.ORDER != null and pd.ORDER != ''">
+			order by #{pd.ORDER}  
+			</if>
 	</select>
 </mapper>

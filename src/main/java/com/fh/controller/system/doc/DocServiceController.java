@@ -16,6 +16,7 @@ import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.system.doc.DocInfo;
 import com.fh.entity.system.doc.DocUser;
+import com.fh.entity.vo.doc.DocServiceVO;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocService;
@@ -62,10 +63,13 @@ public class DocServiceController extends BaseController {
 		ModelAndView mv = getModelAndView();
 		mv.setViewName("system/doc/list_doc_service_auth");
 		page.setPd(this.getPageData());
+		page.getPd().put("ORDER", "t.audit_Flag");
 		try{
 			mv.addObject("status", AuditDocStatusEnum.getCombo(this.getPar("status")));
-			mv.addObject("list", docService.listPage(page));
+			List<DocServiceVO> docServiceVOs=docService.listPage(page);
+			mv.addObject("list", docServiceVOs);
 		} catch(Exception e){
+			e.printStackTrace();
 		}
 		return mv;
 	}

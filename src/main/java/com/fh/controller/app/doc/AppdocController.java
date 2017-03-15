@@ -1,8 +1,6 @@
 package com.fh.controller.app.doc;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.Page;
 import com.fh.entity.app.AppDisease;
 import com.fh.entity.app.AppHop;
 import com.fh.entity.app.AppLoc;
@@ -35,6 +34,7 @@ import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.service.system.doc.impl.DocService;
 import com.fh.util.Constants;
 import com.fh.util.PageData;
+import com.fh.util.enums.AuditDocStatusEnum;
 
 
 @Controller 
@@ -55,20 +55,32 @@ public class AppdocController extends BaseController{
 	 * @return
 	 */
 	@ApiOperation(notes = "医生列表",  value = "医生列表")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "DOC_HOPID", value = "医院的id", required = false, dataType = "String"),
-		@ApiImplicitParam(name = "DOC_LOCID", value = "科室id", required = false, dataType = "String"),
-		@ApiImplicitParam(name = "DOC_TITLE", value = "医生职称", required = false, dataType = "String"),
-		@ApiImplicitParam(name = "SHOW_COUNT", value = "一页的显示条数,传空默认为10", required = false, dataType = "String"),
-		@ApiImplicitParam(name = "CURRENT_PAGE", value = "当前页数,不传默认为1", required = false, dataType = "String")
-	})
 	@RequestMapping(value="/getAppDoc",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResult<DocServiceVO> getAppDoc(){
+	public JsonResult<DocServiceVO> getAppDoc(
+			@ApiParam(value = "DOC_HOPID",name="医院的id") @RequestParam String DOC_HOPID,
+			@ApiParam(value = "DOC_LOCID",name="科室id") @RequestParam String DOC_LOCID,
+			@ApiParam(value = "DOC_SER",name="医生服务") @RequestParam String DOC_SER,
+			@ApiParam(value = "KEYWORD",name="关键字") @RequestParam String KEYWORD,
+			@ApiParam(value = "SORT_ORDER",name="排序字段") @RequestParam String SORT_ORDER,
+			@ApiParam(value = "SORT",name="排序，升序还是倒叙") @RequestParam String SORT,
+			@ApiParam(value = "SHOW_COUNT",name="一页的显示条数,传空默认为10") @RequestParam String SHOW_COUNT,
+			@ApiParam(value = "CURRENT_PAGE",name="当前页数,不传默认为1") @RequestParam String CURRENT_PAGE){
 		
 		JsonResult<DocServiceVO> jsonResult=new JsonResult<DocServiceVO>();
 		try {
-			jsonResult.setDatas(docService.listPage(this.getAppPage()));
+			Page pg=this.getAppPage();
+			pg.getPd().put("status", AuditDocStatusEnum.AUDIT_PASS.getCode());
+			pg.getPd().put("ORDER", "t2.doc_Seq");
+			if(StringUtils.isNotBlank(SORT)&&StringUtils.isNotBlank(SORT_ORDER)){
+				if("1".equals(SORT_ORDER)){
+					pg.getPd().put("ORDER","t2.doc_Server_Num");
+				}
+				if("2".equals(SORT_ORDER)){
+					pg.getPd().put("ORDER", "t2.doc_Reply_Num");
+				}
+			}
+			jsonResult.setDatas(docService.listPage(pg));
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonResult.setCode(10);
