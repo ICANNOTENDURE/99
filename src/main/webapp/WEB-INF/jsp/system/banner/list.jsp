@@ -76,8 +76,9 @@
 											</td>
 											<td class='center' >${rd.bannerSeq}</td>
 											<td class='center' >
-												<c:if test="${rd.bannerType == '1' }"><span class="label  arrowed-in">首页图片</span></c:if>
-												<c:if test="${rd.bannerType == '2' }"><span class="label  arrowed">健康咨询</span></c:if>
+												<c:if test="${rd.bannerType == '0' }"><span class="label  arrowed-in">病人首页图片</span></c:if>
+												<c:if test="${rd.bannerType == '1' }"><span class="label  arrowed">病人新闻列表</span></c:if>
+												<c:if test="${rd.bannerType == '2' }"><span class="label  arrowed">医生首页图片</span></c:if>
 											</td>
 											<td class="center" >
 												<c:if test="${rd.bannerStatus == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>

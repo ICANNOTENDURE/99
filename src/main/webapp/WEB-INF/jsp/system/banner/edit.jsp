@@ -105,7 +105,7 @@
 <!-- 上传控件 -->
 <script src="static/ace/js/ace/elements.fileinput.js"></script>
 <!-- 编辑框-->
-<script type="text/javascript" charset="utf-8">window.UEDITOR_HOME_URL = "<%=path%>/plugins/ueditor/";</script>
+<script type="text/javascript" charset="utf-8">window.UEDITOR_HOME_URL = "${APP_URL}plugins/ueditor/";</script>
 <script type="text/javascript" charset="utf-8" src="plugins/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="plugins/ueditor/ueditor.all.js"></script>
 <!-- 编辑框-->

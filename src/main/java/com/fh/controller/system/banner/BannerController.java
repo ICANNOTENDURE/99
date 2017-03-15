@@ -2,6 +2,8 @@ package com.fh.controller.system.banner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.app.AppBanner;
 import com.fh.service.common.impl.CommonService;
+import com.fh.util.Const;
 import com.fh.util.DateUtil;
 import com.fh.util.DelAllFile;
 import com.fh.util.FileUpload;
@@ -58,7 +61,7 @@ public class BannerController extends BaseController{
 			mv.addObject("pd", commonService.selectByPrimaryKey(AppBanner.class, id));
 		}
 		mv.addObject("bannerType",BannerEnum.getCombo(this.getPar("status")));
-		
+		mv.addObject("APP_URL",Const.APP_URL);
 		return mv;
 	}
 	
@@ -69,6 +72,9 @@ public class BannerController extends BaseController{
 		try {
 			if(file!=null){
 				String fileName = FileUpload.fileUp(file, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
+				Thumbnails.of(PathUtil.PicPath()+fileName)
+		        .size(200, 200)
+		        .toFile(PathUtil.PicPath()+"thumbnail."+fileName);
 				appBanner.setBannerImg(fileName);
 			}
 			commonService.saveOrUpdate(appBanner);
