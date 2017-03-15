@@ -57,10 +57,13 @@ public class BannerController extends BaseController{
 	
 		ModelAndView mv = getModelAndView();
 		mv.setViewName("system/banner/edit");
+		String type="";
 		if(StringUtils.isNotBlank(id)){
-			mv.addObject("pd", commonService.selectByPrimaryKey(AppBanner.class, id));
+			AppBanner appBanner=commonService.selectByPrimaryKey(AppBanner.class, id);
+			type=appBanner.getBannerType();
+			mv.addObject("pd", appBanner);
 		}
-		mv.addObject("bannerType",BannerEnum.getCombo(this.getPar("status")));
+		mv.addObject("bannerType",BannerEnum.getCombo(type));
 		mv.addObject("APP_URL",Const.APP_URL);
 		return mv;
 	}
@@ -87,9 +90,9 @@ public class BannerController extends BaseController{
 	
 	@RequestMapping(value="/deltp")
 	@ResponseBody
-	public JsonResult deltp(String id) throws Exception{
+	public JsonResult<Object> deltp(String id) throws Exception{
 		
-		JsonResult jsonResult=new JsonResult();
+		JsonResult<Object> jsonResult=new JsonResult<Object>();
 		AppBanner appBanner=commonService.selectByPrimaryKey(AppBanner.class, id);
 		DelAllFile.delFolder(PathUtil.PicPath()+appBanner.getBannerImg());
 		appBanner.setBannerImg("");
@@ -98,9 +101,9 @@ public class BannerController extends BaseController{
 	}
 	@RequestMapping(value="/delete/{id}")
 	@ResponseBody
-	public JsonResult delete(@PathVariable String id) throws Exception{
+	public JsonResult<Object> delete(@PathVariable String id) throws Exception{
 		
-		JsonResult jsonResult=new JsonResult();
+		JsonResult<Object> jsonResult=new JsonResult<Object>();
 		AppBanner appBanner=commonService.selectByPrimaryKey(AppBanner.class, id);
 		if(StringUtils.isNotBlank(appBanner.getBannerImg())){
 			DelAllFile.delFolder(PathUtil.PicPath()+  appBanner.getBannerImg());
@@ -111,9 +114,9 @@ public class BannerController extends BaseController{
 	
 	@RequestMapping(value="/deleteAll/{ids}")
 	@ResponseBody
-	public JsonResult deleteAll(@PathVariable String ids) throws Exception{
+	public JsonResult<Object> deleteAll(@PathVariable String ids) throws Exception{
 		
-		JsonResult jsonResult=new JsonResult();
+		JsonResult<Object> jsonResult=new JsonResult<Object>();
 		String[] arr=ids.split(",");
 		for(int i=0;i<arr.length;i++){
 			AppBanner appBanner=commonService.selectByPrimaryKey(AppBanner.class, arr[i]);
