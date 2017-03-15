@@ -23,6 +23,7 @@ import com.fh.util.DelAllFile;
 import com.fh.util.FileUpload;
 import com.fh.util.PageData;
 import com.fh.util.PathUtil;
+import com.fh.util.enums.BannerEnum;
 @Controller
 @RequestMapping(value="/banner")
 public class BannerController extends BaseController{
@@ -56,6 +57,8 @@ public class BannerController extends BaseController{
 		if(StringUtils.isNotBlank(id)){
 			mv.addObject("pd", commonService.selectByPrimaryKey(AppBanner.class, id));
 		}
+		mv.addObject("bannerType",BannerEnum.getCombo(this.getPar("status")));
+		
 		return mv;
 	}
 	

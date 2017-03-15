@@ -55,8 +55,11 @@
 									<td style="width:50px;text-align: right;padding-top: 13px;">类型:</td>
 									<td>
 										<select name="bannerType" title="类型" style="width:120px">
-										<option value="1" <c:if test="${pd.bannerType == '1' }">selected</c:if> >首页图片</option>
-										<option value="2" <c:if test="${pd.bannerType == '2' }">selected</c:if> >健康咨询</option>
+											<c:if test="${bannerType != null }">
+											<c:forEach items="${bannerType}" var="statusrd" >
+												<option value="${statusrd.id}" <c:if test="${statusrd.selected == '1' }">selected</c:if> >${statusrd.text}</option>
+											</c:forEach>
+											</c:if>
 										</select>
 									</td>
 									<td style="width:50px;text-align: right;padding-top: 13px;">排序:</td>
