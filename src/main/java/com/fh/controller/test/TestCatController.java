@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -134,7 +135,7 @@ public class TestCatController extends BaseController{
 				if("1".equals(appTest.getSunday())){weekMap.put("星期日", "星期日");}
 				String week="";
 				int count=0;
-				SimpleDateFormat sdf = new SimpleDateFormat("E");
+				SimpleDateFormat sdf = new SimpleDateFormat("E",Locale.CHINESE);
 				Calendar cal=Calendar.getInstance();
 				cal.setTime(startDate);	
 				for(long i=0;i<=day;i++){
