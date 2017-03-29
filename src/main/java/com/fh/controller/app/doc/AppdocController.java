@@ -70,6 +70,10 @@ public class AppdocController extends BaseController{
 		JsonResult<DocServiceVO> jsonResult=new JsonResult<DocServiceVO>();
 		try {
 			Page pg=this.getAppPage();
+			if(StringUtils.isNotBlank(KEYWORD)){
+				KEYWORD = new String(KEYWORD.getBytes("ISO-8859-1"),"UTF-8");
+				pg.getPd().put("KEYWORD", KEYWORD);
+			}
 			pg.getPd().put("status", AuditDocStatusEnum.AUDIT_PASS.getCode());
 			pg.getPd().put("ORDER", "t2.doc_Seq");
 			if(StringUtils.isNotBlank(SORT)&&StringUtils.isNotBlank(SORT_ORDER)){

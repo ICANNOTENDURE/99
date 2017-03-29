@@ -158,7 +158,7 @@ public class DateUtil {
         canlendar.add(Calendar.DATE, daysInt); // 日期减 如果不够减会将月变动
         Date date = canlendar.getTime();
         
-        SimpleDateFormat sdfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdfd = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = sdfd.format(date);
         
         return dateStr;
