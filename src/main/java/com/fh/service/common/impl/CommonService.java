@@ -105,37 +105,27 @@ public class CommonService implements CommonManager{
 	}
 
 	public <T> int insertBatch(List<T> list) throws Exception {
-		Map<String, Object> param = new HashMap<String, Object>();
-
-		String tableName = "";
-		List<String> columns = new ArrayList<String>();
-
-		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
-
-		for (T t : list) {
-			if (tableName.equals("")) {
-				Class<?> clazz = t.getClass();
-				tableName = GeneralMapperReflectUtil.getTableName(clazz);
+		
+		T tmp=list.get(0);
+		Class<?> clazz = tmp.getClass();
+		String primaryKey = GeneralMapperReflectUtil.getPrimaryField(clazz).getName();
+		String primaryKeyValue=(String)ReflectHelper.getValueByFieldName(tmp, primaryKey);
+		int i=0;
+		for(T t:list){
+			if(StringUtils.isBlank(primaryKeyValue)){
+				ReflectHelper.setValueByFieldName(t, primaryKey, UuidUtil.get32UUID());
+				insertSelective(t);
+			}else{
+				updateByPrimaryKey(t);
 			}
-			if (columns.size() == 0) {
-				Class<?> clazz = t.getClass();
-				columns = GeneralMapperReflectUtil.getAllColumns(clazz);
-			}
-			Map<String, String> mapping = GeneralMapperReflectUtil.getAllFieldValueMapping(t);
-			dataList.add(mapping);
+			i++;
 		}
-
-		param.put("tableName", tableName);
-		param.put("columns", columns);
-		param.put("dataList", dataList);
-
-		return commonDao.insertBatch(param);
+		return i;
 	}
 
 	public <T> int deleteByCondition(Class<T> clazz, String conditionExp,
 			Map<String, Object> conditionParam) {
 		Map<String, Object> param = new HashMap<String, Object>();
-
 		String tableName = GeneralMapperReflectUtil.getTableName(clazz);
 
 		param.put("tableName", tableName);

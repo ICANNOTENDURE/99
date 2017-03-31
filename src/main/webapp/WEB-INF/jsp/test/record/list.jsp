@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -15,6 +16,8 @@
 <link rel="stylesheet" href="static/ace/css/chosen.css" />
 <!-- jsp文件头和头部 -->
 <%@ include file="../../system/index/top.jsp"%>
+<!-- 日期框 -->
+<link rel="stylesheet" href="static/ace/css/datepicker.css" />
 </head>
 <body class="no-skin">
 
@@ -27,13 +30,13 @@
 					<div class="row">
 						<div class="col-xs-12">
 						<!-- 检索  -->
-						<form action="testcat/list.do" method="post" name="userForm" id="userForm">
+						<form action="testrecord/list.do" method="post" name="userForm" id="userForm">
 						<table style="margin-top:5px;">
 							<tr>
 								<td>
 									<div class="nav-search">
 									<span class="input-icon">
-										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="name" value="${name}" placeholder="这里输入关键词" />
+										<input class="nav-search-input" autocomplete="off" id="nav-search-input" type="text" name="name" value="${pd.name}" placeholder="这里体检名称" />
 										<i class="ace-icon fa fa-search nav-search-icon"></i>
 									</span>
 									</div>
@@ -42,6 +45,17 @@
 								 	<select id="hopId" name="hopId" class="form-control inputBorder" style="width:200px;"></select>
 									
 								</td>
+	
+								<td style="vertical-align:top;padding-left:2px;">
+									
+									<input class="span10 date-picker"  name="startDate" id="startDate"   type="text" data-date-format="yyyy-mm-dd" readonly="readonly"  placeholder="开始日期" value='${pd.startDate}' />
+								</td>
+								<td style="vertical-align:top;padding-left:2px;">
+									
+									<input class="span10 date-picker"  name="endDate" id="endDate"   type="text" data-date-format="yyyy-mm-dd" readonly="readonly"  placeholder="结束日期" value='${pd.endDate}' />
+								</td>
+	
+														
 								<!-- 按钮 -->
 								<c:if test="${QX.cha == 1 }">
 									<td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="searchs();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
@@ -49,11 +63,6 @@
 									<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
 									<c:if test="${QX.FromExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="fromExcel();" title="从EXCEL导入"><i id="nav-search-icon" class="ace-icon fa fa-cloud-upload bigger-110 nav-search-icon blue"></i></a></td></c:if>
 									 -->
-								</c:if>
-								<c:if test="${QX.add == 1 }">
-									<td style="vertical-align:top;padding-left:2px;">
-									<a class="btn btn-xs btn-success" onclick="edit();">新增</a>
-									</td>
 								</c:if>
 								<!-- 按钮 -->
 							</tr>
@@ -66,16 +75,10 @@
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">医院名称</th>
 									<th class="center">体检分类名称</th>
+									<th class="center">号数</th>
+									<th class="center">已约号数</th>
 									<th class="center">价格</th>
-									<th class="center">状态</th>
-									<th class="center">周一</th>
-									<th class="center">周二</th>
-									<th class="center">周三</th>
-									<th class="center">周四</th>
-									<th class="center">周五</th>
-									<th class="center">周六</th>
-									<th class="center">周日</th>
-									<th class="center">操作</th>
+									<th class="center">日期</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -88,47 +91,10 @@
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class="center">${rd.hopName}</td>
 											<td class='center' >${rd.testName}</td>
-										
+											<td class='center' >${rd.qty}</td>
+											<td class='center' >${rd.appointentQty}</td>
 											<td class='center' >${rd.price}</td>
-											
-											<td class="center" >
-												<c:if test="${rd.status == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
-												<c:if test="${rd.status == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
-											</td>
-											<c:choose>
-												<c:when test="${not empty rd.templates}">
-													<c:forEach items="${rd.templates}" var="temp" >
-														<td class="center" >
-														<c:if test="${temp.flag == '1' }"><span class="label label-success">有 (${temp.qty})</span></c:if>
-														<c:if test="${temp.flag != '1' }"><span class="label label-danger">无(${temp.qty})</span></c:if>
-														</td>
-													</c:forEach>
-												</c:when>
-												<c:otherwise>
-													<td class='center' ></td>
-													<td class='center' ></td>
-													<td class='center' ></td>
-													<td class='center' ></td>
-													<td class='center' ></td>
-													<td class='center' ></td>
-													<td class='center' ></td>
-												</c:otherwise>
-											</c:choose>			
-											<td class="center">
-												<c:if test="${QX.edit != 1 && QX.del != 1 }">
-												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
-												</c:if>
-												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${rd.id}');">
-														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
-													</a>
-													</c:if>
-													<a class="btn btn-xs btn-primary" title="生成排班记录" onclick="create('${rd.id}');">
-														<i class="ace-icon fa fa-key bigger-120" title="生成排班记录"></i>生成排班记录
-													</a>
-												</div>
-											</td>
+											<td class='center' ><fmt:formatDate value='${rd.date}' pattern="yyyy-MM-dd"/></td>
 										</tr>
 									</c:forEach>
 									</c:if>
@@ -170,13 +136,16 @@
 	</div>
 	<!-- /.main-container -->
 	
-	
-
+		<!-- ace scripts -->
+	<script src="static/ace/js/ace/ace.js"></script>
+	<!-- 日期框 -->
+	<script src="static/ace/js/date-time/bootstrap-datepicker.js"></script>
 	</body>
  	<script type="text/javascript">
-
-		
-		//检索
+ 	$(function() {
+ 		$('.date-picker').datepicker({autoclose: true,todayHighlight: true})
+ 	})	
+ 		//检索
 		function searchs(){
 			top.jzts();
 			$("#userForm").submit();
@@ -231,7 +200,7 @@
 			$('#hopId').commonSelect({
 				url:"hop/hopSelect.do"   
 			});
-			if('${hopId}'!=""){
+			if('${pd.hopId}'!=""){
 				$('#hopId').commonSelect({
 					url:"hop/hopSelect.do",
 					data:[{"id": '${hopId}', "text": '${hopName}'}]

@@ -56,9 +56,13 @@
 
 
 								<tr>
-									<td style="width:79px;text-align: right;padding-top: 13px;">上次生成日期:</td>
-									<td style="padding-left:2px;"></td>
+									<td style="width:79px;text-align: right;padding-top: 13px;">价格:</td>
+									<td colspan="3">${pd.price}</td>
 								</tr>
+								<tr>	
+									<td style="width:79px;text-align: right;padding-top: 13px;">号数:</td>
+									<td colspan="3">${pd.qty}</td>
+								</tr>	
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">上次排班结束日期:</td>
 									<td style="padding-left:2px;"></td>
@@ -144,10 +148,9 @@
 				 commonLoadClose(index)
 				 if(0 == data.code){
 					 top.layer.confirm(data.message, {
-						  btn: ['查看生成排班记录', '返回']
+						  btn: ['确认', '返回']
 						}, function(index){
 							top.layer.close(index)
-						  	alert(123)
 						}, function(index){
 							top.layer.close(index)
 						});

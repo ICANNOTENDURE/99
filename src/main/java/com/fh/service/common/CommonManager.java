@@ -71,7 +71,7 @@ public interface CommonManager {
 	 */
 	<T> int insertBatch(List<T> list) throws Exception;
 
-   /**
+	/**
 	 * 删除
 	 * <p> 根据条件删除</p>
 	 * @param <T> pojo类

@@ -40,12 +40,25 @@
 									</td>
 								</tr>
 								<tr>
+									<td style="width:79px;text-align: right;padding-top: 13px;">价格:</td>
+									<td colspan="3">
+										<input type="text" name="price" value="${pd.price}"  title="账号" style="width:98%;" />
+									</td>
+									<!-- 
+									<td style="width:79px;text-align: right;padding-top: 13px;">号数:</td>
+									<td >
+										<input type="text" name="qty"  value="${pd.qty}"  style="width:98%;" />
+									</td>
+									 -->
+								</tr>
+								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">周一:</td>
 									<td >
 										<label>
 											<input type="hidden" name="monday" value="${pd.monday}">
 											<input onclick="upRb('monday',this)" class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.monday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="mondayQty" value="${pd.mondayQty}" style="width:50px;">
 										</label>
 									</td>
 
@@ -55,6 +68,7 @@
 											<input type="hidden" name="tuesday" value="${pd.tuesday}">
 											<input onclick="upRb('tuesday',this)" class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.tuesday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="tuesdayQty" value="${pd.tuesdayQty}" style="width:50px;">
 										</label>
 									</td>
 								</tr>
@@ -65,6 +79,7 @@
 											<input type="hidden" name="wednesday" value="${pd.wednesday}">
 											<input onclick="upRb('wednesday',this)" class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.wednesday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="wednesdayQty" value="${pd.wednesdayQty}" style="width:50px;">
 										</label>
 									</td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">周四:</td>
@@ -73,6 +88,7 @@
 											<input type="hidden" name="thursday" value="${pd.thursday}">
 											<input onclick="upRb('thursday',this)"  class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.thursday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="thursdayQty" value="${pd.thursdayQty}" style="width:50px;">
 										</label>
 									</td>
 								</tr>
@@ -83,6 +99,7 @@
 											<input type="hidden" name="friday" value="${pd.friday}">
 											<input onclick="upRb('friday',this)"  class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.friday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="fridayQty" value="${pd.fridayQty}" style="width:50px;">
 										</label>
 									</td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">周六:</td>
@@ -91,6 +108,7 @@
 											<input type="hidden" name="saturday" value="${pd.saturday}">
 											<input onclick="upRb('saturday',this)"  class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.saturday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="saturdayQty" value="${pd.saturdayQty}" style="width:50px;">
 										</label>
 									</td>
 								</tr>
@@ -101,6 +119,7 @@
 											<input type="hidden" name="sunday" value="${pd.sunday}">
 											<input onclick="upRb('sunday',this)"  class="ace ace-switch ace-switch-3" type="checkbox" <c:if test="${pd.sunday == 1 }">checked="checked"</c:if> >
 											<span class="lbl"></span>
+											<input type="text" name="sundayQty" value="${pd.sundayQty}" style="width:50px;">
 										</label>
 									</td>
 									<td style="width:79px;text-align: right;padding-top: 13px;">状态:</td>
@@ -169,6 +188,7 @@
 			return false;
 		}
 
+		layer.load(1, {shade: [0.5,'#fff']})
 		$("#form").submit();
 	
 	}

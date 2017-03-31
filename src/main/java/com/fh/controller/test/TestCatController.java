@@ -11,7 +11,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,16 +20,22 @@ import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.app.AppHop;
-import com.fh.entity.test.AppTest;
+import com.fh.entity.test.AppTestRecord;
+import com.fh.entity.test.AppTestResourse;
+import com.fh.entity.test.AppTestTemplate;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.test.record.impl.TestTemplateService;
 import com.fh.util.DateUtil;
 import com.fh.util.PageData;
+import com.fh.util.enums.WeekEnum;
 @Controller
 @RequestMapping(value="/testcat")
 public class TestCatController extends BaseController{
 
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private TestTemplateService testTemplateService;
 	
 	/**显示列表
 	 * @param page
@@ -41,32 +46,10 @@ public class TestCatController extends BaseController{
 		ModelAndView mv = getModelAndView();
 		PageData pd=getPageData();
 		page.setPd(pd);
+		page.setShowCount(70);
 		try{
 			mv.setViewName("test/cat/list");
-			Map<String, Object> eqParam=new HashMap<String, Object>();
-			Map<String, Object> lkParam=new HashMap<String, Object>();
-			if(StringUtils.isNotBlank(getPar("name"))){
-				lkParam.put("name", "%"+getPar("name").trim()+"%");
-				page.setLkParam(lkParam);
-				mv.addObject("name", getPar("name"));
-			}
-			if(StringUtils.isNotBlank(getPar("hopId"))){
-				eqParam.put("hop_Id", getPar("hopId"));
-				page.setEqParam(eqParam);
-				mv.addObject("hopId", getPar("hopId"));
-				AppHop appHop=commonService.selectByPrimaryKey(AppHop.class, getPar("hopId"));
-				if(appHop!=null){
-					mv.addObject("hopName", appHop.getHopName());
-				}
-			}
-			List<AppTest> appTests=commonService.listPage(AppTest.class, page);
-			for(AppTest appTest:appTests){
-				AppHop appHop=commonService.selectByPrimaryKey(AppHop.class, appTest.getHopId());
-				if(appHop!=null){
-					appTest.setHopName(appHop.getHopName());
-				}
-			}
-			mv.addObject("list", appTests);
+			mv.addObject("list", testTemplateService.list(page));
 		} catch(Exception e){
 			logger.error(e.toString(), e);
 		}
@@ -83,14 +66,15 @@ public class TestCatController extends BaseController{
 			mv.setViewName("test/cat/edit");
 		}
 		if(StringUtils.isNotBlank(id)){
-			AppTest appTest=commonService.selectByPrimaryKey(AppTest.class, id);
-			if(StringUtils.isNotBlank(appTest.getHopId())){
-				AppHop appHop=commonService.selectByPrimaryKey(AppHop.class, appTest.getHopId());
+			AppTestResourse appTestResourse=commonService.selectByPrimaryKey(AppTestResourse.class, id);
+			if(StringUtils.isNotBlank(appTestResourse.getHopId())){
+				AppHop appHop=commonService.selectByPrimaryKey(AppHop.class, appTestResourse.getHopId());
 				if(appHop!=null){
-					appTest.setHopName(appHop.getHopName());
+					appTestResourse.setHopName(appHop.getHopName());
 				}
 			}
-			mv.addObject("pd", appTest);
+			castTestWeek(appTestResourse);
+			mv.addObject("pd", appTestResourse);
 			mv.addObject("date", DateUtil.getDay());
 			mv.addObject("eddate", DateUtil.getAfterDayDate("7"));
 		}
@@ -98,20 +82,76 @@ public class TestCatController extends BaseController{
 	}
 	
 	@RequestMapping(value="/saveOrUpdate", method = RequestMethod.POST)
-	public ModelAndView saveOrUpdate(AppTest appTest) throws Exception {
+	public ModelAndView saveOrUpdate(AppTestResourse appTest) throws Exception {
 		ModelAndView mv = this.getModelAndView();
 		commonService.saveOrUpdate(appTest);
+		String condition = "resourse_Id = #{conditionParam.resourseId}";
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("resourseId",appTest.getId());
+		commonService.deleteByCondition(AppTestTemplate.class,condition,param);
+
+		
+	
+		AppTestTemplate appTestTemplate=new AppTestTemplate();
+		appTestTemplate.setFlag(appTest.getMonday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Mon.getCode());
+		appTestTemplate.setQty(appTest.getMondayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+		
+
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getTuesday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Tues.getCode());
+		appTestTemplate.setQty(appTest.getTuesdayQty());
+		commonService.saveOrUpdate(appTestTemplate);	
+	
+
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getWednesday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Wed.getCode());
+		appTestTemplate.setQty(appTest.getWednesdayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+		
+
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getThursday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Thur.getCode());
+		appTestTemplate.setQty(appTest.getThursdayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+				
+
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getFriday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Fri.getCode());
+		appTestTemplate.setQty(appTest.getFridayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+			
+	
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getSaturday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Sat.getCode());
+		appTestTemplate.setQty(appTest.getSaturdayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+	
+
+		appTestTemplate.setId(null);
+		appTestTemplate.setFlag(appTest.getSunday());
+		appTestTemplate.setResourseId(appTest.getId());
+		appTestTemplate.setDay(WeekEnum.Sun.getCode());
+		appTestTemplate.setQty(appTest.getSundayQty());
+		commonService.saveOrUpdate(appTestTemplate);
+
 		mv.setViewName("save_result");
 		return mv;
 	}
 	
-	@RequestMapping(value="/delete/{id}")
-	@ResponseBody
-	public JsonResult<Object> delete(@PathVariable String id) throws Exception{
 
-		commonService.deleteByPrimaryKey(AppTest.class, id);
-		return new JsonResult<Object>();
-	}
 	
 	@RequestMapping(value="/saveCreate", method = RequestMethod.POST)
 	@ResponseBody
@@ -123,16 +163,18 @@ public class TestCatController extends BaseController{
 		if(day<0){
 			jsonResult.setMessage("开始日期不能小于结束日期");
 		}else{
-			AppTest appTest=commonService.selectByPrimaryKey(AppTest.class, id);
+			AppTestResourse appTest=commonService.selectByPrimaryKey(AppTestResourse.class, id);
 			if("Y".equals(appTest.getStatus())){
-				Map<String, String> weekMap=new HashMap<String, String>();
-				if("1".equals(appTest.getMonday())){weekMap.put("星期一", "星期一");}
-				if("1".equals(appTest.getTuesday())){weekMap.put("星期二", "星期二");}
-				if("1".equals(appTest.getWednesday())){weekMap.put("星期三", "星期三");}
-				if("1".equals(appTest.getThursday())){weekMap.put("星期四", "星期四");}
-				if("1".equals(appTest.getFriday())){weekMap.put("星期五", "星期五");}
-				if("1".equals(appTest.getSaturday())){weekMap.put("星期六", "星期六");}				
-				if("1".equals(appTest.getSunday())){weekMap.put("星期日", "星期日");}
+				castTestWeek(appTest);
+				Map<String, Integer> weekMap=new HashMap<String, Integer>();
+				Map<String, Object> parMap=new HashMap<String, Object>();
+				if("1".equals(appTest.getMonday())){weekMap.put("星期一", appTest.getMondayQty());}
+				if("1".equals(appTest.getTuesday())){weekMap.put("星期二", appTest.getTuesdayQty());}
+				if("1".equals(appTest.getWednesday())){weekMap.put("星期三", appTest.getWednesdayQty());}
+				if("1".equals(appTest.getThursday())){weekMap.put("星期四", appTest.getThursdayQty());}
+				if("1".equals(appTest.getFriday())){weekMap.put("星期五", appTest.getFridayQty());}
+				if("1".equals(appTest.getSaturday())){weekMap.put("星期六", appTest.getSaturdayQty());}				
+				if("1".equals(appTest.getSunday())){weekMap.put("星期日", appTest.getSundayQty());}
 				String week="";
 				int count=0;
 				SimpleDateFormat sdf = new SimpleDateFormat("E",Locale.CHINESE);
@@ -141,7 +183,20 @@ public class TestCatController extends BaseController{
 				for(long i=0;i<=day;i++){
 				    week = sdf.format(cal.getTime());
 				    if(weekMap.containsKey(week)){
-				    	count++;
+				    	parMap.clear();
+				    	parMap.put("resource_Id", appTest.getId());
+				    	parMap.put("date", cal.getTime());
+				    	List<AppTestRecord> appTestRecords=commonService.selectByEqCon(AppTestRecord.class, parMap);
+				    	if(appTestRecords.size()==0){
+				    		AppTestRecord appTestRecord=new AppTestRecord();
+				    		appTestRecord.setQty(weekMap.get(week));
+				    		appTestRecord.setPrice(appTest.getPrice());
+				    		appTestRecord.setDate(cal.getTime());
+				    		appTestRecord.setResourceId(appTest.getId());
+				    		commonService.saveOrUpdate(appTestRecord);
+				    		count++;
+				    	}
+				    	
 				    }
 				    cal.add(Calendar.DATE, 1);
 				}
@@ -152,5 +207,43 @@ public class TestCatController extends BaseController{
 			}
 		}
 		return jsonResult;
+	}
+	
+	private void castTestWeek(AppTestResourse appTestResourse) throws Exception{
+		
+		Map<String, Object> templatesMap=new HashMap<String, Object>();
+		templatesMap.clear();
+		templatesMap.put("resourse_Id", appTestResourse.getId());
+		List<AppTestTemplate> templates=commonService.selectByEqCon(AppTestTemplate.class, templatesMap);
+		for(AppTestTemplate appTestTemplate:templates){
+			if(WeekEnum.Mon.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setMonday(appTestTemplate.getFlag());
+				appTestResourse.setMondayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Tues.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setTuesday(appTestTemplate.getFlag());
+				appTestResourse.setTuesdayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Wed.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setWednesday(appTestTemplate.getFlag());
+				appTestResourse.setWednesdayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Thur.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setThursday(appTestTemplate.getFlag());
+				appTestResourse.setThursdayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Fri.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setFriday(appTestTemplate.getFlag());
+				appTestResourse.setFridayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Sat.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setSaturday(appTestTemplate.getFlag());
+				appTestResourse.setSaturdayQty(appTestTemplate.getQty());
+			}
+			if(WeekEnum.Sun.getCode().equals(appTestTemplate.getDay())){
+				appTestResourse.setSunday(appTestTemplate.getFlag());
+				appTestResourse.setSundayQty(appTestTemplate.getQty());
+			}
+		}
 	}
 }

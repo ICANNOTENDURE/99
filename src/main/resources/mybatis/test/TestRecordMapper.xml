@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="TestRecordMapper">
+
+	<!-- 医生认证查询 -->
+	<select id="listPage" parameterType="page" resultType="com.fh.entity.test.AppTestRecord">
+		select
+			t2.id as id ,
+			t2.date as date ,
+			t2.qty as qty ,
+			t2.appointent_Qty as appointentQty ,
+			t2.price as price ,
+			t3.HOP_NAME as hopName ,
+			t4.name as testName 
+		
+		from 
+			 app_test_record t2 
+			 left join app_test_resourse t4 on t2.resource_id=t4.id
+			 left join APP_HOP t3 on t4.hop_id=t3.HOP_ID
+		<where>
+		    <if test="pd.name != null and pd.name != ''">
+				and t4.name like CONCAT('%',#{pd.name},'%')
+			</if>	
+    		<if test="pd.hopId != null and pd.hopId != ''">
+				and t4.hop_id= #{pd.hopId}
+			</if>
+			<if test="pd.startDate != null and pd.startDate != ''">
+				and t2.date <![CDATA[ >= ]]> #{pd.startDate} 
+			</if>
+			<if test="pd.endDate != null and pd.endDate != ''">
+				and t2.date <![CDATA[ <= ]]> #{pd.endDate} 
+			</if>
+		</where>
+	</select>
+</mapper>

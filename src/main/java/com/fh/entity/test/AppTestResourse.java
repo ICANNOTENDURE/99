@@ -1,12 +1,13 @@
 package com.fh.entity.test;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-@Table(name="APP_TEST")
-public class AppTest implements Serializable{
+@Table(name="APP_TEST_RESOURSE")
+public class AppTestResourse implements Serializable{
 	
 	/**
 	 * 
@@ -16,19 +17,54 @@ public class AppTest implements Serializable{
 	private String id;
 	private String name;
 	private String status;
-	private String monday;
-	private String tuesday;
-	private String wednesday;
-	private String thursday;
-	private String friday;
-	private String saturday ;
-	private String sunday;
+
 	private String hopId;
+	//号数
+	private Integer qty;
+	private BigDecimal price;
 	@Transient
 	private String hopName;
+	@Transient
+	private String monday;
+	@Transient
+	private String tuesday;
+	@Transient
+	private String wednesday;
+	@Transient
+	private String thursday;
+	@Transient
+	private String friday;
+	@Transient
+	private String saturday ;
+	@Transient
+	private String sunday;
+	@Transient
+	private Integer mondayQty;
+	@Transient
+	private Integer tuesdayQty;
+	@Transient
+	private Integer wednesdayQty;
+	@Transient
+	private Integer thursdayQty;
+	@Transient
+	private Integer fridayQty;
+	@Transient
+	private Integer saturdayQty;
+	@Transient
+	private Integer sundayQty;
 	
-	
-	
+	public Integer getQty() {
+		return qty;
+	}
+	public void setQty(Integer qty) {
+		this.qty = qty;
+	}
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 	public String getHopName() {
 		return hopName;
 	}
@@ -100,6 +136,48 @@ public class AppTest implements Serializable{
 	}
 	public void setSunday(String sunday) {
 		this.sunday = sunday;
+	}
+	public Integer getMondayQty() {
+		return mondayQty;
+	}
+	public void setMondayQty(Integer mondayQty) {
+		this.mondayQty = mondayQty;
+	}
+	public Integer getTuesdayQty() {
+		return tuesdayQty;
+	}
+	public void setTuesdayQty(Integer tuesdayQty) {
+		this.tuesdayQty = tuesdayQty;
+	}
+	public Integer getWednesdayQty() {
+		return wednesdayQty;
+	}
+	public void setWednesdayQty(Integer wednesdayQty) {
+		this.wednesdayQty = wednesdayQty;
+	}
+	public Integer getThursdayQty() {
+		return thursdayQty;
+	}
+	public void setThursdayQty(Integer thursdayQty) {
+		this.thursdayQty = thursdayQty;
+	}
+	public Integer getFridayQty() {
+		return fridayQty;
+	}
+	public void setFridayQty(Integer fridayQty) {
+		this.fridayQty = fridayQty;
+	}
+	public Integer getSaturdayQty() {
+		return saturdayQty;
+	}
+	public void setSaturdayQty(Integer saturdayQty) {
+		this.saturdayQty = saturdayQty;
+	}
+	public Integer getSundayQty() {
+		return sundayQty;
+	}
+	public void setSundayQty(Integer sundayQty) {
+		this.sundayQty = sundayQty;
 	}
 	
 	
