@@ -1,11 +1,14 @@
 package com.fh.entity.test;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 @Table(name="APP_TEST_RESOURSE")
 public class AppTestResourse implements Serializable{
 	
@@ -15,42 +18,63 @@ public class AppTestResourse implements Serializable{
 	private static final long serialVersionUID = -2714259307417714269L;
 	@Id
 	private String id;
+	@ApiModelProperty(value = "体检名称")
 	private String name;
+	@ApiModelProperty(hidden=true)
 	private String status;
-
+	@ApiModelProperty(hidden=true)
 	private String hopId;
 	//号数
+	@ApiModelProperty(value = "可约号数")
 	private Integer qty;
+	@ApiModelProperty(value = "价格")
 	private BigDecimal price;
+	@ApiModelProperty(value = "体检项目介绍")
+	private String content;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String hopName;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String monday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String tuesday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String wednesday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String thursday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String friday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String saturday ;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private String sunday;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer mondayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer tuesdayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer wednesdayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer thursdayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer fridayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer saturdayQty;
 	@Transient
+	@ApiModelProperty(hidden=true)
 	private Integer sundayQty;
 	
 	public Integer getQty() {
@@ -178,6 +202,12 @@ public class AppTestResourse implements Serializable{
 	}
 	public void setSundayQty(Integer sundayQty) {
 		this.sundayQty = sundayQty;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 	

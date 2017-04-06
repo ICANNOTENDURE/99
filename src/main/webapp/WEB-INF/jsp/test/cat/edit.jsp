@@ -52,6 +52,12 @@
 									 -->
 								</tr>
 								<tr>
+									<td style="width:79px;text-align: right;padding-top: 13px;">介绍:</td>
+									<td colspan="3">
+										<input type="text" name="content" value="${pd.content}"  title="介绍" style="width:98%;" />
+									</td>
+								</tr>
+								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">周一:</td>
 									<td >
 										<label>

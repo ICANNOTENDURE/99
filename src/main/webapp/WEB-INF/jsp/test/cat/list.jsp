@@ -187,7 +187,7 @@
 			id=id==undefined?"":id;
 			commonLayer({ 
 					title: '体检分类信息',
-					area: ['600px', '480px'],
+					area: ['600px', '550px'],
 					content: '<%=basePath%>testcat/goSaveOrUpdate.do?id='+id,
 					end :function(){
 						searchs();

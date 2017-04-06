@@ -24,7 +24,7 @@ import com.fh.service.common.impl.CommonService;
  */
 @Controller
 @RequestMapping(value="/apptestcat")
-@Api(value = "体检预约")
+@Api(value = "体检预约",tags = "体检预约")
 public class AppTestCatController extends BaseController{
 
 	@Autowired
