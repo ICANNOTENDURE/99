@@ -24,6 +24,7 @@ import com.fh.entity.vo.Select;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.util.Constants;
+import com.fh.util.StringUtil;
 
 
 @Controller 
@@ -65,15 +66,20 @@ public class AppHopController extends BaseController{
 	 * 医院
 	 * @return
 	 */
-	@ApiOperation(notes = "根据医院级别获取 医院列表",  value = "医院级别")
+	@ApiOperation(value = "根据医院级别获取 医院列表")
 	@RequestMapping(value="/getAppHop",method = RequestMethod.GET)
 	@ResponseBody
-	public JsonResult<AppHop> getAppHop(@ApiParam(value = "医院级别id",name="level", required = true) @RequestParam String level){
+	public JsonResult<AppHop> getAppHop(
+			@ApiParam(value = "医院级别id",name="level") @RequestParam String level,
+			@ApiParam(value = "是否体检",name="test") @RequestParam String test){
 		JsonResult<AppHop> jsonResult=new JsonResult<AppHop>();
 		try {
 			Map<String, Object> conMapping=new HashMap<String, Object>();
-			if(!"".equals(level)){
+			if(StringUtil.trim(level)!=null){
 				conMapping.put("hop_Level", level);
+			}
+			if((StringUtil.trim(test)!=null)){
+				conMapping.put("hop_test", test);
 			}
 			conMapping.put("hop_Status", "Y");
 			List<AppHop> list=commonService.selectByEqCon(AppHop.class, conMapping);

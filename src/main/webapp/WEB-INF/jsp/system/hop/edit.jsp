@@ -44,6 +44,15 @@
 									</td>
 								</tr>
 								<tr>
+									<td style="width:79px;text-align: right;padding-top: 13px;">是否体检:</td>
+									<td>
+										<select name="hopTest" title="体检">
+										<option value="Y" <c:if test="${pd.hopTest == 'Y' }">selected</c:if> >是</option>
+										<option value="N" <c:if test="${pd.hopTest != 'Y' }">selected</c:if> >否</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">状态:</td>
 									<td>
 										<select name="hopStatus" title="状态">

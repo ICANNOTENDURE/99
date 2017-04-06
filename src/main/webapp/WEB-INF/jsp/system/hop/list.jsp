@@ -72,6 +72,7 @@
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">医院名称</th>
 									<th class="center">医疗机构级别</th>
+									<th class="center">是否体检</th>
 									<th class="center">状态</th>
 									<th class="center">操作</th>
 								</tr>
@@ -89,6 +90,10 @@
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class="center">${rd.hopName}</td>
 											<td class='center' >${rd.levelDesc}</td>
+											<td class="center" >
+												<c:if test="${rd.hopTest == 'Y' }"><span class="label label-success arrowed-in">是</span></c:if>
+												<c:if test="${rd.hopTest == 'N' }"><span class="label label-important arrowed">否</span></c:if>
+											</td>
 											<td class="center" >
 												<c:if test="${rd.hopStatus == 'Y' }"><span class="label label-success arrowed-in">正常</span></c:if>
 												<c:if test="${rd.hopStatus == 'N' }"><span class="label label-important arrowed">停用</span></c:if>
@@ -181,7 +186,7 @@
 			id=id==undefined?"":id;
 			commonLayer({ 
 					title: '医院信息',
-					area: ['600px', '280px'],
+					area: ['600px', '320px'],
 					content: '<%=basePath%>hop/goSaveOrUpdate.do?id='+id,
 					end :function(){
 						searchs();

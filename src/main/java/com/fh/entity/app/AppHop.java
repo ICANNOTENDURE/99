@@ -28,6 +28,7 @@ public class AppHop extends BaseEntity implements java.io.Serializable{
 	@Excel(name = "医院名称", orderNum = "1")
 	private String hopName;
 	private String hopLevel;
+	private String hopTest;
 	@ApiModelProperty(hidden=true)
 	@JSONField(serialize = false)
 	private String hopStatus;
@@ -68,6 +69,12 @@ public class AppHop extends BaseEntity implements java.io.Serializable{
 	}
 	public void setHopLevel(String hopLevel) {
 		this.hopLevel = hopLevel;
+	}
+	public String getHopTest() {
+		return hopTest;
+	}
+	public void setHopTest(String hopTest) {
+		this.hopTest = hopTest;
 	}
 	
 	

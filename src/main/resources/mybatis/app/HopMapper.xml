@@ -8,6 +8,7 @@
 		select
 			t1.HOP_ID as hopId,
 			t1.HOP_NAME as hopName,
+			t1.HOP_TEST as hopTest,
 			t2.NAME as levelDesc,
 			t1.HOP_STATUS as hopStatus
 		
