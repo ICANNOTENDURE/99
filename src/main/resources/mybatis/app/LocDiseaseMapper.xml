@@ -14,13 +14,13 @@
 			APP_LOC_DISEASE t1 
 			left join APP_LOC t2 on t1.LOC_ID=t2.LOC_ID
 			left join APP_DISEASE t3 on t1.DISEASE_ID=t3.DISEASE_ID
-		<where>
+		where 1=1
     		<if test="pd.LOC_ID != null and pd.LOC_ID !='' ">
-         		t1.LOC_ID = #{pd.LOC_ID}  
+         		and t1.LOC_ID = #{pd.LOC_ID}  
     		</if>
     		<if test="pd.DISEASE_ID != null and pd.DISEASE_ID !=''">
          		and t1.DISEASE_ID = #{pd.DISEASE_ID}
     		</if>
-		</where>
+		
 	</select>
 </mapper>

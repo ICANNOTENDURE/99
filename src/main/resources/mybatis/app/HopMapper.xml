@@ -9,17 +9,25 @@
 			t1.HOP_ID as hopId,
 			t1.HOP_NAME as hopName,
 			t1.HOP_TEST as hopTest,
+			t1.hop_Address as hopAddress,
+			t1.hop_Pic as hopPic,
 			t2.NAME as levelDesc,
 			t1.HOP_STATUS as hopStatus
 		
 		from APP_HOP t1 left join sys_dictionaries t2 on t1.HOP_LEVEL=t2.DICTIONARIES_ID
-		<where>
+		where 1=1
     		<if test="pd.keywords != null and pd.keywords !='' ">
-         		t1.HOP_NAME like CONCAT('%',#{pd.keywords},'%')  
+         		and		t1.HOP_NAME like CONCAT('%',#{pd.keywords},'%')  
+    		</if>
+    		<if test="pd.test != null and pd.test !='' ">
+         		and     t1.HOP_TEST = #{pd.test}  
     		</if>
     		<if test="pd.HOP_LEVEL != null and pd.HOP_LEVEL !=''">
-         		and t1.HOP_LEVEL = #{pd.HOP_LEVEL}
-    		</if>   
-		</where>
+         		and    t1.HOP_LEVEL = #{pd.HOP_LEVEL}
+    		</if>
+    		<if test="pd.HOP_STATUS != null and pd.HOP_STATUS !=''">
+         		and    t1.HOP_STATUS = #{pd.HOP_STATUS}
+    		</if>     
+		
 	</select>
 </mapper>

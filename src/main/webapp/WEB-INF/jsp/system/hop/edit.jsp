@@ -25,13 +25,13 @@
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
-						<form action="hop/saveOrUpdate.do" name="form" id="form" method="post">
+						<form action="hop/saveOrUpdate.do" name="form" id="form" method="post"  enctype="multipart/form-data">
 							<input type="hidden" name="hopId" id="id" value="${pd.hopId }"/>
 							<div id="zhongxin" style="padding-top: 13px;">
 							<table id="table_report" class="table table-striped table-bordered table-hover">
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">名称:</td>
-									<td><input type="text" name="hopName" id="name" value="${pd.hopName}" placeholder="这里输入账号" title="账号" style="width:98%;" /></td>
+									<td><input type="text" name="hopName" id="name" value="${pd.hopName}" placeholder="这里输入名称" title="名称" style="width:98%;" /></td>
 								</tr>
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">医疗机构级别:</td>
@@ -43,6 +43,22 @@
 										</select>
 									</td>
 								</tr>
+								<tr>
+									<td style="width:50px;text-align: right;padding-top: 13px;">图片:</td>
+									<td colspan="5">
+										<c:if test="${pd == null || pd.hopPic == '' || pd.hopPic == null }">
+										<input type="file" id="tp" name="tp" onchange="fileType(this)"/>
+										</c:if>
+										<c:if test="${pd != null && pd.hopPic != '' && pd.hopPic != null }">
+											<a href="<%=basePath%>uploadFiles/uploadImgs/${pd.hopPic}" target="_blank"><img src="<%=basePath%>uploadFiles/uploadImgs/${pd.hopPic}" width="210"/></a>
+											<input type="button" class="btn btn-mini btn-danger" value="删除" onclick="delP('${pd.hopId }');" />
+										</c:if>
+									</td>
+								</tr>
+								<tr>
+									<td style="width:79px;text-align: right;padding-top: 13px;">医院地址:</td>
+									<td><input type="text" name="hopAddress" id="name" value="${pd.hopAddress}" placeholder="这里输入地址" title="地址" style="width:98%;" /></td>
+								</tr>								
 								<tr>
 									<td style="width:79px;text-align: right;padding-top: 13px;">是否体检:</td>
 									<td>
@@ -92,9 +108,25 @@
 	<script src="static/ace/js/chosen.jquery.js"></script>
 	<!--提示框-->
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
+	<!-- 上传控件 -->
+	<script src="static/ace/js/ace/elements.fileinput.js"></script>
 </body>						
 <script type="text/javascript">
-
+$(function() {
+	//上传
+	$('#tp').ace_file_input({
+		no_file:'请选择图片 ...',
+		btn_choose:'选择',
+		btn_change:'更改',
+		droppable:false,
+		onchange:null,
+		thumbnail:false, //| true | large
+		whitelist:'gif|png|jpg|jpeg',
+		//blacklist:'gif|png|jpg|jpeg'
+		//onchange:''
+		//
+	});
+	});
 
 	//保存
 	function save(){
@@ -137,6 +169,18 @@
 				 }
 			}
 		});
+	}
+	//删除图片
+	function delP(id){
+		 if(confirm("确定要删除图片？")){
+			var url = "hop/delPic.do?id="+id;
+			$.get(url,function(data){
+				if(data.code==0){
+					alert("删除成功!");
+					document.location.reload();
+				}
+			});
+		} 
 	}
 
 </script>

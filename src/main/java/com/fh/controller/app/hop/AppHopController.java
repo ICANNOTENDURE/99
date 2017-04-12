@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
+import com.fh.entity.Page;
 import com.fh.entity.app.AppHop;
 import com.fh.entity.system.Dictionaries;
 import com.fh.entity.vo.Select;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.system.app.impl.HopService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.util.Constants;
 import com.fh.util.StringUtil;
@@ -37,6 +39,8 @@ public class AppHopController extends BaseController{
 	private CommonService commonService;
 	@Autowired
 	private DictionariesService dictionariesService;
+	@Autowired
+	private HopService hopService;
 	/**
 	 * 医院级别
 	 * @return
@@ -89,6 +93,28 @@ public class AppHopController extends BaseController{
 			jsonResult.setMessage(e.getMessage());
 			e.printStackTrace();
 		}
+		return jsonResult;
+	}
+	
+	/**
+	 * 医院
+	 * @return
+	 * @throws Exception 
+	 */
+	@ApiOperation(value = "查询体检医院，分页查询医院")
+	@RequestMapping(value="/getAppHopPage",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<AppHop> getAppHopPage(
+			@ApiParam(value = "关键字",name="key") @RequestParam String key,
+			@ApiParam(value = "是否体检",name="test") @RequestParam String test,
+			@ApiParam(value="一页的显示条数,传空默认为10",name = "SHOW_COUNT") @RequestParam String SHOW_COUNT,
+			@ApiParam(value="当前页数,不传默认为1",name = "CURRENT_PAGE") @RequestParam String CURRENT_PAGE) throws Exception{
+		JsonResult<AppHop> jsonResult=new JsonResult<AppHop>();
+		Page page=getAppPage();
+		page.getPd().put("HOP_STATUS", 'Y');
+		page.getPd().put("keywords", StringUtil.trim(key));
+		page.getPd().put("test", StringUtil.trim(test));	
+		jsonResult.setDatas(hopService.listPage(page));
 		return jsonResult;
 	}
 }

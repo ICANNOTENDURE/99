@@ -30,7 +30,11 @@ import com.fh.service.common.impl.CommonService;
 import com.fh.service.system.app.impl.HopService;
 import com.fh.service.system.dictionaries.impl.DictionariesService;
 import com.fh.util.Constants;
+import com.fh.util.DateUtil;
+import com.fh.util.DelAllFile;
+import com.fh.util.FileUpload;
 import com.fh.util.PageData;
+import com.fh.util.PathUtil;
 
 @Controller
 @RequestMapping(value="/hop")
@@ -90,9 +94,13 @@ public class HopController extends BaseController{
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/saveOrUpdate")
-	public ModelAndView saveOrUpdate(AppHop appHop) throws Exception{
+	public ModelAndView saveOrUpdate(@RequestParam(value="tp",required=false) MultipartFile file,AppHop appHop) throws Exception{
 		
 		ModelAndView mv = this.getModelAndView();
+		if(file!=null){
+			String fileName = FileUpload.fileUp(file, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
+			appHop.setHopPic(fileName);	
+		}
 		commonService.saveOrUpdate(appHop);
 		mv.setViewName("save_result");
 		return mv;
@@ -104,10 +112,10 @@ public class HopController extends BaseController{
 	 */
 	@RequestMapping(value="/checkName")
 	@ResponseBody
-	public JsonResult checkName(String name) throws Exception{
+	public JsonResult<Object> checkName(String name) throws Exception{
 		
 		name = new String(name.getBytes("ISO-8859-1"),"UTF-8");
-		return new JsonResult(getByName(name).size(),"");
+		return new JsonResult<Object>(getByName(name).size(),"");
 	}
 	public List<AppHop> getByName(String name) throws Exception{
 		
@@ -205,5 +213,23 @@ public class HopController extends BaseController{
 			mv.add(new Select(mapping.get("HOP_ID").toString(), mapping.get("HOP_NAME").toString()));
 		}
 		return mv;
+	}
+	
+	
+	/**
+	 * 删除图片
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/delPic")
+	@ResponseBody
+	public JsonResult<Object> delPic(String id) throws Exception{
+		
+		AppHop appHop=commonService.selectByPrimaryKey(AppHop.class, id);
+		DelAllFile.delFolder(PathUtil.PicPath()+appHop.getHopPic());
+		appHop.setHopPic(null);
+		commonService.saveOrUpdate(appHop);
+		return new JsonResult<Object>(0,"");
 	}
 }

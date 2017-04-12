@@ -186,7 +186,7 @@
 			id=id==undefined?"":id;
 			commonLayer({ 
 					title: '医院信息',
-					area: ['600px', '320px'],
+					area: ['600px', '420px'],
 					content: '<%=basePath%>hop/goSaveOrUpdate.do?id='+id,
 					end :function(){
 						searchs();
