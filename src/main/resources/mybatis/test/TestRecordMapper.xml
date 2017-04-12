@@ -18,12 +18,15 @@
 			 app_test_record t2 
 			 left join app_test_resourse t4 on t2.resource_id=t4.id
 			 left join APP_HOP t3 on t4.hop_id=t3.HOP_ID
-		<where>
+		where 1=1
 		    <if test="pd.name != null and pd.name != ''">
 				and t4.name like CONCAT('%',#{pd.name},'%')
 			</if>	
-    		<if test="pd.hopId != null and pd.hopId != ''">
+	   		<if test="pd.hopId != null and pd.hopId != ''">
 				and t4.hop_id= #{pd.hopId}
+			</if>
+			<if test="pd.resourceId != null and pd.resourceId != ''">
+				and t2.resource_id= #{pd.resourceId}
 			</if>
 			<if test="pd.startDate != null and pd.startDate != ''">
 				and t2.date <![CDATA[ >= ]]> #{pd.startDate} 
@@ -31,6 +34,6 @@
 			<if test="pd.endDate != null and pd.endDate != ''">
 				and t2.date <![CDATA[ <= ]]> #{pd.endDate} 
 			</if>
-		</where>
+		order by t2.date
 	</select>
 </mapper>

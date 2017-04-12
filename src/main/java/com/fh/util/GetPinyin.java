@@ -69,14 +69,12 @@ public class GetPinyin {
 	public static String getPinYinHeadCharUper(String str) {
 
 		String convert = "";
-		for (int j = 0; j < str.length(); j++) {
-			char word = str.charAt(j);
-			String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
-			if (pinyinArray != null) {
-				convert += Character.toUpperCase(pinyinArray[0].charAt(0)) ;
-			} else {
-				convert += Character.toUpperCase(word);
-			}
+		char word = str.charAt(0);
+		String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+		if (pinyinArray != null) {
+			convert += Character.toUpperCase(pinyinArray[0].charAt(0)) ;
+		} else {
+			convert += Character.toUpperCase(word);
 		}
 		return convert;
 	}
@@ -100,6 +98,7 @@ public class GetPinyin {
 		String cnStr = "中国";
 		System.out.println(getPingYin(cnStr));
 		System.out.println(getPinYinHeadChar(cnStr));
+		System.out.println(getPinYinHeadCharUper(cnStr));
 	}
 
 }

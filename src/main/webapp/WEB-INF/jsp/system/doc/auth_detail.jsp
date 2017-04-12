@@ -97,7 +97,7 @@
 									<td style="width:50px;text-align: right;padding-top: 13px;">工牌照片:</td>
 									<td colspan="5">
 										<c:if test="${docInfo != null &&  docInfo.docWorkCardImg != null }">
-											<c:forEach items="${docInfo.docWorkCardImg}" var="rd" varStatus="vs">
+											<c:forEach items="${docInfo.docWorkCardImgList}" var="rd" varStatus="vs">
 												<a href="<%=basePath%>uploadFiles/uploadImgs/${rd}" target="_blank"><img src="<%=basePath%>uploadFiles/uploadImgs/${rd}" width="210"/></a>
 											</c:forEach>
 										</c:if>
@@ -107,7 +107,7 @@
 									<td style="width:50px;text-align: right;padding-top: 13px;">医师资格证照片:</td>
 									<td colspan="5">
 										<c:if test="${docInfo != null &&  docInfo.docQualificationImg != null }">
-											<c:forEach items="${docInfo.docQualificationImg}" var="rd" varStatus="vs">
+											<c:forEach items="${docInfo.docQualificationImgList}" var="rd" varStatus="vs">
 												<a href="<%=basePath%>uploadFiles/uploadImgs/${rd}" target="_blank"><img src="<%=basePath%>uploadFiles/uploadImgs/${rd}" width="210"/></a>
 											</c:forEach>
 										</c:if>
