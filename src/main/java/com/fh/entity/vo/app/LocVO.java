@@ -11,6 +11,8 @@ public class LocVO {
 	private String id;
 	@ApiModelProperty(value = "科室名称")
 	private String name;
+	@ApiModelProperty(value = "科室索引")
+	private String key;
 	@ApiModelProperty(value = "子科室")
 	private List<LocVO> nodes;
 	
@@ -51,6 +53,12 @@ public class LocVO {
 	}
 	public void setParent(String parent) {
 		this.parent = parent;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
 	
 	

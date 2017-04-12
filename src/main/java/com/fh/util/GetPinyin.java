@@ -65,7 +65,21 @@ public class GetPinyin {
 		}
 		return convert;
 	}
+	
+	public static String getPinYinHeadCharUper(String str) {
 
+		String convert = "";
+		for (int j = 0; j < str.length(); j++) {
+			char word = str.charAt(j);
+			String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+			if (pinyinArray != null) {
+				convert += Character.toUpperCase(pinyinArray[0].charAt(0)) ;
+			} else {
+				convert += Character.toUpperCase(word);
+			}
+		}
+		return convert;
+	}
 	/**
 	 * 将字符串转移为ASCII码
 	 * @param cnStr

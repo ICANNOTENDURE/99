@@ -19,6 +19,7 @@ import com.fh.entity.JsonResult;
 import com.fh.entity.app.AppLoc;
 import com.fh.entity.vo.app.LocVO;
 import com.fh.service.common.impl.CommonService;
+import com.fh.util.GetPinyin;
 
 
 @Controller 
@@ -48,7 +49,8 @@ public class ApplocController extends BaseController{
 			List<AppLoc> appLocs=commonService.selectByEqCon(AppLoc.class, conMapping); 
 			for(AppLoc loc:appLocs){
 				LocVO locVO=new LocVO(loc.getLocId(),loc.getLocName(),loc.getLocParent());
-					list.add(locVO);
+				locVO.setKey(GetPinyin.getPinYinHeadCharUper(locVO.getName()));
+				list.add(locVO);
 			}
 			
 		} catch (Exception e) {

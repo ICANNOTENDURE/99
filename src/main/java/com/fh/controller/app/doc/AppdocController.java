@@ -119,6 +119,31 @@ public class AppdocController extends BaseController{
 		return jsonResult;
 	}
 	
+	/**
+	 * 医生服务类型
+	 * @return
+	 */
+	@ApiOperation(notes = "医生职称",  value = "医生职称")
+	@RequestMapping(value="/getDocTitle",method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult<Select> getDocTitle(){
+		
+		JsonResult<Select> jsonResult=new JsonResult<Select>();
+		List<Select> list=new ArrayList<Select>();
+		jsonResult.setDatas(list);
+		try {
+			
+			List<Dictionaries> dictionaries=dictionariesService.listSubDictByParentId(Constants.DIC_DOC_TITLE);
+			for(Dictionaries dictionaries2:dictionaries){
+				list.add(new Select(dictionaries2.getDICTIONARIES_ID(), dictionaries2.getNAME()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonResult.setCode(10);
+			jsonResult.setMessage(e.getMessage());
+		}
+		return jsonResult;
+	}
 	
 	/**
 	 * 医生明细信息
