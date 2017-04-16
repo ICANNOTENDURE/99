@@ -57,20 +57,22 @@ public class AppTestCatController extends BaseController{
 	@RequestMapping(value="/listTestRecord",method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResult<AppTestRecord> listTestRecord(
-			@ApiParam(name = "resourceId",value="体检资源id") @RequestParam String resourceId
+			@ApiParam(name = "resourceId",value="体检资源id") @RequestParam String resourceId,
+			@ApiParam(name = "startDate",value="开始日期") @RequestParam Date startDate
 			) throws Exception{
 		JsonResult<AppTestRecord> jsonResult=new JsonResult<AppTestRecord>();
 		Page page=new Page();
-		page.setShowCount(30);
+		page.setShowCount(31);
 		page.setCurrentPage(1);
 		
-		Date start=new Date();
-		Calendar cal=Calendar.getInstance();
-		cal.setTime(start);	
-		cal.add(Calendar.DATE, 1);
-		page.getPd().put("startDate", start);
-		cal.add(Calendar.DATE, 27);
-		page.getPd().put("endDate", cal.getTime());
+
+		Calendar end=Calendar.getInstance();
+		end.setTime(startDate);
+		end.add(Calendar.MONTH, 1);
+		end.add(Calendar.DATE, -1);
+		
+		page.getPd().put("startDate", startDate);
+		page.getPd().put("endDate", end.getTime());
 		page.getPd().put("resourceId",StringUtil.trim(resourceId));
 		jsonResult.setDatas(testRecordService.list(page));
 		return jsonResult;

@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name="APP_TEST_RECORD")
 public class AppTestRecord implements Serializable{
 	
@@ -64,7 +66,8 @@ public class AppTestRecord implements Serializable{
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
 	}
-
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	public Date getDate() {
 		return date;
 	}
