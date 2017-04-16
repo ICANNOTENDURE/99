@@ -19,6 +19,7 @@ import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.test.AppTestRecord;
 import com.fh.entity.test.AppTestResourse;
+import com.fh.entity.vo.test.TestAppointVO;
 import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
 import com.fh.service.test.record.impl.TestAppointmentService;
@@ -87,9 +88,25 @@ public class AppTestCatController extends BaseController{
 	@ResponseBody
 	@AppToken
 	public JsonResult<Object> saveAppointment(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
 			@ApiParam(name = "recordId",value="排班记录id") @RequestParam String recordId
 			) throws Exception{
 		testAppointmentService.saveAppiont(recordId, this.getAppUserId());
 		return new JsonResult<Object>();
+	}
+	
+	@ApiOperation(value = "体检预约查询")
+	@RequestMapping(value="/getAppointment",method = RequestMethod.GET)
+	@ResponseBody
+	@AppToken
+	public JsonResult<TestAppointVO> getAppointment(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "一页的显示条数,传空默认为10",name="SHOW_COUNT") @RequestParam Long SHOW_COUNT,
+			@ApiParam(value = "当前页数,不传默认为",name="CURRENT_PAGE") @RequestParam Long CURRENT_PAGE) throws Exception{
+		JsonResult<TestAppointVO> jsonResult=new JsonResult<TestAppointVO>();
+		Page page=getAppPage();
+		page.getPd().put("patId", this.getAppUserId());
+		jsonResult.setDatas(testAppointmentService.list(page));
+		return jsonResult;
 	}
 }

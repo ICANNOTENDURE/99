@@ -22,6 +22,9 @@
 			 left join APP_HOP t3 on t4.hop_id=t3.HOP_ID
 			 left join pat_user t5 on t5.user_id=t2.pat_id
 		where 1=1
+			<if test="pd.patId != null and pd.patId != ''">
+				and t2.pat_id = #{pd.patId}
+			</if>
 		    <if test="pd.testName != null and pd.testName != ''">
 				and t4.name like CONCAT('%',#{pd.testname},'%')
 			</if>

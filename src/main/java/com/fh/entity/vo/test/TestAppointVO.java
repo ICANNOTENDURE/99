@@ -1,5 +1,7 @@
 package com.fh.entity.vo.test;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,20 +13,21 @@ public class TestAppointVO {
 	
 	private String appointId;
 	
+	@ApiModelProperty(value = "体检医院")
 	private String testHopName;
-	
+	@ApiModelProperty(value = "体检项目")
 	private String testCatName;
-	
+	@ApiModelProperty(value = "体检日期")
 	private Date testDate;
-	
+	@ApiModelProperty(value = "预约日期")
 	private Date appointDate;
-	
+	@ApiModelProperty(value = "评价价格")
 	private BigDecimal price;
-	
+	@ApiModelProperty(value = "评价序号")
 	private Integer seq;
-	
+	@ApiModelProperty(value = "预约电话")
 	private String patTel;
-	
+	@ApiModelProperty(value = "预约状态")
 	private String status;
 	
 	public String getAppointId() {
