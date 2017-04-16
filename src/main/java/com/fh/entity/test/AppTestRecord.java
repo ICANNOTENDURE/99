@@ -85,7 +85,7 @@ public class AppTestRecord implements Serializable{
 	}
 
 	public Integer getAppointentQty() {
-		return appointentQty;
+		return appointentQty==null?0:appointentQty;
 	}
 
 	public void setAppointentQty(Integer appointentQty) {

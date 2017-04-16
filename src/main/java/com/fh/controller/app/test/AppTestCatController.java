@@ -19,7 +19,9 @@ import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
 import com.fh.entity.test.AppTestRecord;
 import com.fh.entity.test.AppTestResourse;
+import com.fh.plugin.annotation.AppToken;
 import com.fh.service.common.impl.CommonService;
+import com.fh.service.test.record.impl.TestAppointmentService;
 import com.fh.service.test.record.impl.TestRecordService;
 import com.fh.util.StringUtil;
 
@@ -37,6 +39,8 @@ public class AppTestCatController extends BaseController{
 	private CommonService commonService;
 	@Autowired
 	private TestRecordService testRecordService;
+	@Autowired
+	private TestAppointmentService testAppointmentService;
 	
 	@ApiOperation(value = "显示体检分类")
 	@RequestMapping(value="/listTestCat",method = RequestMethod.GET)
@@ -76,5 +80,16 @@ public class AppTestCatController extends BaseController{
 		page.getPd().put("resourceId",StringUtil.trim(resourceId));
 		jsonResult.setDatas(testRecordService.list(page));
 		return jsonResult;
+	}
+	
+	@ApiOperation(value = "保存体检预约")
+	@RequestMapping(value="/saveAppointment",method = RequestMethod.POST)
+	@ResponseBody
+	@AppToken
+	public JsonResult<Object> saveAppointment(
+			@ApiParam(name = "recordId",value="排班记录id") @RequestParam String recordId
+			) throws Exception{
+		testAppointmentService.saveAppiont(recordId, this.getLoginInfoId());
+		return new JsonResult<Object>();
 	}
 }
