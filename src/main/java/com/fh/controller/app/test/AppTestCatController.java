@@ -89,7 +89,7 @@ public class AppTestCatController extends BaseController{
 	public JsonResult<Object> saveAppointment(
 			@ApiParam(name = "recordId",value="排班记录id") @RequestParam String recordId
 			) throws Exception{
-		testAppointmentService.saveAppiont(recordId, this.getLoginInfoId());
+		testAppointmentService.saveAppiont(recordId, this.getAppUserId());
 		return new JsonResult<Object>();
 	}
 }

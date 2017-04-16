@@ -53,4 +53,13 @@ public enum AppiontStatusEnum {
         return selects;
     }
 	
+    public static String getValueByKey(String key) {  
+    	AppiontStatusEnum[] enums = AppiontStatusEnum.values();  
+        for (int i = 0; i < enums.length; i++) {  
+            if (enums[i].getCode().equals(key)) {  
+                return enums[i].getDesc();  
+            }  
+        }  
+        return "";  
+    }  
 }

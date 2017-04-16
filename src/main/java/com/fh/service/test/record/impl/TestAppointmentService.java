@@ -1,6 +1,7 @@
 package com.fh.service.test.record.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.fh.dao.CrudSupport;
 import com.fh.dao.DaoSupport;
+import com.fh.entity.Page;
 import com.fh.entity.test.AppTestAppionment;
 import com.fh.entity.test.AppTestRecord;
+import com.fh.entity.vo.test.TestAppointVO;
 import com.fh.service.test.record.TestAppointmentManager;
 import com.fh.util.enums.AppiontStatusEnum;
 
@@ -44,8 +47,16 @@ public class TestAppointmentService implements TestAppointmentManager{
 		appionment.setResourseId(appTestRecord.getResourceId());
 		
 		appTestRecord.setAppointentQty(appiontQty.intValue()+1);
+		appionment.setSeq(appiontQty.intValue()+1);
 		crudSupport.saveOrUpdate(appTestRecord);
 		crudSupport.saveOrUpdate(appionment);
+	}
+
+	@Override
+	public List<TestAppointVO> list(Page pg) throws Exception {
+		@SuppressWarnings("unchecked")
+		List<TestAppointVO> findForList = (List<TestAppointVO>) dao.findForList("TestAppiontMapper.listPage", pg);
+		return findForList;
 	}
 
 

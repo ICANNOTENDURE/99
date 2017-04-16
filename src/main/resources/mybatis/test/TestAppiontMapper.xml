@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="TestAppiontMapper">
+
+	<!-- 体检预约记录 -->
+	<select id="listPage" parameterType="page" resultType="com.fh.entity.vo.test.TestAppointVO">
+		select
+			t2.id as appointId ,
+			t2.date as appointDate ,
+			t2.test_date as testDate ,
+			t2.status as status ,
+			t5.user_account as patTel ,
+			t2.price as price ,
+			t2.seq as seq ,
+			t3.HOP_NAME as testHopName ,
+			t4.name as testCatName 
+		
+		from 
+			 app_test_appiontment t2 
+			 left join app_test_resourse t4 on t2.resourse_id=t4.id
+			 left join APP_HOP t3 on t4.hop_id=t3.HOP_ID
+			 left join pat_user t5 on t5.user_id=t2.pat_id
+		where 1=1
+		    <if test="pd.testName != null and pd.testName != ''">
+				and t4.name like CONCAT('%',#{pd.testname},'%')
+			</if>
+			<if test="pd.patName != null and pd.patName != ''">
+				and t5.user_account like CONCAT('%',#{pd.patName},'%')
+			</if>	
+	   		<if test="pd.hopId != null and pd.hopId != ''">
+				and t4.hop_id= #{pd.hopId}
+			</if>
+			<if test="pd.resourceId != null and pd.resourceId != ''">
+				and t2.resource_id= #{pd.resourceId}
+			</if>
+			<if test="pd.testStartDate != null and pd.testStartDate != ''">
+				and t2.test_date <![CDATA[ >= ]]> #{pd.testStartDate} 
+			</if>
+			<if test="pd.testEndDate != null and pd.testEndDate != ''">
+				and t2.test_date <![CDATA[ <= ]]> #{pd.testEndDate} 
+			</if>
+			
+			<if test="pd.startDate != null and pd.startDate != ''">
+				and t2.date <![CDATA[ >= ]]> #{pd.startDate} 
+			</if>
+			<if test="pd.endDate != null and pd.endDate != ''">
+				and t2.date <![CDATA[ <= ]]> #{pd.endDate} 
+			</if>
+		order by t2.date
+	</select>
+</mapper>

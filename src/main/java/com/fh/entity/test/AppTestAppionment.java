@@ -54,6 +54,11 @@ public class AppTestAppionment implements Serializable{
 	 */
 	private String status;
 	
+	/**
+	 * 序号
+	 */
+	private Integer seq;
+	
 	public String getId() {
 		return id;
 	}
@@ -101,6 +106,12 @@ public class AppTestAppionment implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Integer getSeq() {
+		return seq;
+	}
+	public void setSeq(Integer seq) {
+		this.seq = seq;
 	}
 	
 	
