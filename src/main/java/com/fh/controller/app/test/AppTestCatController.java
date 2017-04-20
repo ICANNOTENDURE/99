@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiParam;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,8 +57,10 @@ public class AppTestCatController extends BaseController{
 			) throws Exception{
 		JsonResult<AppTestResourse> jsonResult=new JsonResult<AppTestResourse>();
 		Page page=this.getAppPage();
-		page.getPd().put("status", "Y");
-		page.getPd().put("hop_Id",StringUtil.trim(hopId));
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("status", "Y");
+		map.put("hop_Id",StringUtil.trim(hopId));
+		page.setEqParam(map);
 		jsonResult.setDatas(commonService.listPage(AppTestResourse.class, page));
 		return jsonResult;
 	}
