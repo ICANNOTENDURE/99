@@ -52,6 +52,7 @@
 										<c:if test="${pd != null && pd.hopPic != '' && pd.hopPic != null }">
 											<a href="<%=basePath%>uploadFiles/uploadImgs/${pd.hopPic}" target="_blank"><img src="<%=basePath%>uploadFiles/uploadImgs/${pd.hopPic}" width="210"/></a>
 											<input type="button" class="btn btn-mini btn-danger" value="删除" onclick="delP('${pd.hopId }');" />
+											<input type="hidden" name="hopPic"  value="${pd.hopPic }"/>
 										</c:if>
 									</td>
 								</tr>

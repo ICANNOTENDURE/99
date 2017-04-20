@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fh.controller.base.BaseController;
 import com.fh.entity.JsonResult;
 import com.fh.entity.Page;
+import com.fh.entity.test.AppTestAppionment;
 import com.fh.entity.test.AppTestRecord;
 import com.fh.entity.test.AppTestResourse;
 import com.fh.entity.vo.test.TestAppointVO;
@@ -25,6 +26,7 @@ import com.fh.service.common.impl.CommonService;
 import com.fh.service.test.record.impl.TestAppointmentService;
 import com.fh.service.test.record.impl.TestRecordService;
 import com.fh.util.StringUtil;
+import com.fh.util.enums.AppiontStatusEnum;
 
 /**
  * 体检预约 
@@ -54,6 +56,7 @@ public class AppTestCatController extends BaseController{
 		JsonResult<AppTestResourse> jsonResult=new JsonResult<AppTestResourse>();
 		Page page=this.getAppPage();
 		page.getPd().put("status", "Y");
+		page.getPd().put("hop_Id",StringUtil.trim(hopId));
 		jsonResult.setDatas(commonService.listPage(AppTestResourse.class, page));
 		return jsonResult;
 	}
@@ -108,5 +111,22 @@ public class AppTestCatController extends BaseController{
 		page.getPd().put("patId", this.getAppUserId());
 		jsonResult.setDatas(testAppointmentService.list(page));
 		return jsonResult;
+	}
+	
+	@ApiOperation(value = "取消体检预约")
+	@RequestMapping(value="/removeAppointment",method = RequestMethod.POST)
+	@ResponseBody
+	@AppToken
+	public JsonResult<Object> removeAppointment(
+			@ApiParam(value = "token",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "预约记录id",name="appointId") @RequestParam String appointId) throws Exception{
+		
+		AppTestAppionment appionment=commonService.selectByPrimaryKey(AppTestAppionment.class, appointId);
+		if(!AppiontStatusEnum.NORMAL.getCode().equals(appionment.getStatus())){
+			return new JsonResult<Object>(1,"状态不对");
+		}
+		appionment.setStatus(AppiontStatusEnum.CANCEL.getCode());
+		commonService.saveOrUpdate(appionment);
+		return new JsonResult<Object>();
 	}
 }
