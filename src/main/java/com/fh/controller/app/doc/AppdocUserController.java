@@ -327,4 +327,40 @@ public class AppdocUserController extends BaseController{
 		}
 		return docInfoStatusVO;
 	}
+	
+	
+	/**
+	 * 修改医生密码
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "修改医生密码",  value = "修改医生密码")
+	@RequestMapping(value="/updatePwd",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> updatePwd(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "code",name="验证码", required = true)	@RequestParam String code,
+			@ApiParam(value = "pwd",name="密码", required = true) @RequestParam String pwd) throws Exception{
+		
+		
+		if(StringUtils.isBlank(pwd)||StringUtils.isBlank(code)){
+			return new JsonResult<>(2, "密码或验证码不能为空");
+		}
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(3, "无效验证码,请重新获取验证码");
+		}
+		if(!code.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		delCookieValueByName(Const.COOKIE_Verification_Code);
+
+		DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, getAppUserId());
+		docUser.setDocLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		docUser.setDocPassword(MD5.md5(pwd));
+		commonService.saveOrUpdate(docUser);
+		return new JsonResult<Object>(0,TokenUtil.docToken(docUser,this.getLoginInfoId()));
+	
+		
+	}
 }

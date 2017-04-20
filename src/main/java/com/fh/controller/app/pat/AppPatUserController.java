@@ -39,6 +39,7 @@ import com.fh.util.DateUtil;
 import com.fh.util.MD5;
 import com.fh.util.SmsUtil;
 import com.fh.util.StringUtil;
+import com.fh.util.TokenUtil;
 import com.fh.util.Tools;
 import com.fh.util.enums.UserType;
 import com.fh.util.security.AESCoder;
@@ -331,6 +332,61 @@ public class AppPatUserController extends BaseController{
 			infoVO.setAccount(patUser.getUserAccount());
 			infoVO.setImg(patUser.getUserImg());
 			infoVO.setAmt(patUser.getAmt());
+		}
+		return result;
+	}
+	
+	@AppToken
+	@ApiOperation(notes = "修改密码",  value = "修改密码")
+	@RequestMapping(value="/updatePassword",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> updatePassword(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "code",name="验证码") @RequestParam String code,
+			@ApiParam(value = "password",name="新密码") @RequestParam String password
+			) throws Exception{
+		
+
+		if(!code.equals(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			return new JsonResult<>(4, "验证码错误");
+		}
+		delCookieValueByName(Const.COOKIE_Verification_Code);		
+		PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, getAppUserId());
+		patUser.setUserPassword(MD5.md5(password));
+		patUser.setUserLogindate(DateUtil.fomatTime(DateUtil.getTime()));
+		commonService.saveOrUpdate(patUser);
+		
+		return new JsonResult<Object>(0,TokenUtil.patToken(patUser));
+	}
+	
+	/**
+	 * 根据token获取验证码
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "根据token获取验证码",  value = "根据token获取验证码")
+	@RequestMapping(value="/getVerifByToken",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> getVerifByToken() throws Exception{
+		
+		JsonResult<Object> result=new JsonResult<Object>();
+		String account="";
+
+		if(StringUtils.isBlank(getCookieValueByName(Const.COOKIE_Verification_Code))){
+			if(UserType.PAT.getType().equals(this.getLoginType())){
+				PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, this.getAppUserId());
+				account=patUser.getUserAccount();
+			}else{
+				DocUser docUser=commonService.selectByPrimaryKey(DocUser.class, this.getAppUserId());
+				account=docUser.getDocAccount();
+			}
+			int code=Tools.getRandomNum();
+			addCookie(Const.COOKIE_Verification_Code, String.valueOf(code), 60);
+			SmsUtil.sendSmsAli(account, String.valueOf(code));
+		}else{
+			result.setCode(2);
+			result.setMessage("验证码已发");
 		}
 		return result;
 	}
