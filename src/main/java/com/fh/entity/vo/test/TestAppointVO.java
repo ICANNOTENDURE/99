@@ -54,7 +54,7 @@ public class TestAppointVO {
 	public void setTestCatName(String testCatName) {
 		this.testCatName = testCatName;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getTestDate() {
 		return testDate;
 	}
@@ -62,7 +62,7 @@ public class TestAppointVO {
 	public void setTestDate(Date testDate) {
 		this.testDate = testDate;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getAppointDate() {
 		return appointDate;
 	}

@@ -74,16 +74,12 @@ public class AppHopController extends BaseController{
 	@RequestMapping(value="/getAppHop",method = RequestMethod.GET)
 	@ResponseBody
 	public JsonResult<AppHop> getAppHop(
-			@ApiParam(value = "医院级别id",name="level") @RequestParam String level,
-			@ApiParam(value = "是否体检",name="test") @RequestParam String test){
+			@ApiParam(value = "医院级别id",name="level") @RequestParam String level){
 		JsonResult<AppHop> jsonResult=new JsonResult<AppHop>();
 		try {
 			Map<String, Object> conMapping=new HashMap<String, Object>();
 			if(StringUtil.trim(level)!=null){
 				conMapping.put("hop_Level", level);
-			}
-			if((StringUtil.trim(test)!=null)){
-				conMapping.put("hop_test", test);
 			}
 			conMapping.put("hop_Status", "Y");
 			List<AppHop> list=commonService.selectByEqCon(AppHop.class, conMapping);
