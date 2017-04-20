@@ -50,6 +50,6 @@
 			<if test="pd.endDate != null and pd.endDate != ''">
 				and t2.date <![CDATA[ <= ]]> #{pd.endDate} 
 			</if>
-		order by t2.date
+		order by t2.date desc
 	</select>
 </mapper>
