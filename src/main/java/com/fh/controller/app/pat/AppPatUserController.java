@@ -368,7 +368,9 @@ public class AppPatUserController extends BaseController{
 	@ApiOperation(notes = "根据token获取验证码",  value = "根据token获取验证码")
 	@RequestMapping(value="/getVerifByToken",method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult<Object> getVerifByToken() throws Exception{
+	public JsonResult<Object> getVerifByToken(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN
+		) throws Exception{
 		
 		JsonResult<Object> result=new JsonResult<Object>();
 		String account="";
@@ -389,5 +391,31 @@ public class AppPatUserController extends BaseController{
 			result.setMessage("验证码已发");
 		}
 		return result;
+	}
+	
+	/**
+	 * 根据登录用户头像
+	 * @return
+	 * @throws Exception 
+	 */
+	@AppToken
+	@ApiOperation(notes = "根据登录用户头像",  value = "根据登录用户头像")
+	@RequestMapping(value="/getVerifByToken",method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult<Object> updatePic(
+			@ApiParam(value = "APP_TOKEN",name="APP_TOKEN") @RequestParam String APP_TOKEN,
+			@ApiParam(value = "pic",name="pic") @RequestParam String pic
+			) throws Exception{
+		
+		if(UserType.PAT.getType().equals(this.getLoginType())){
+			PatUser patUser=commonService.selectByPrimaryKey(PatUser.class, this.getAppUserId());
+			patUser.setUserImg(pic);
+			commonService.saveOrUpdate(patUser);
+		}else{
+			DocInfo docInfo=commonService.selectByPrimaryKey(DocInfo.class, this.getLoginInfoId());
+			docInfo.setDocPic(pic);
+			commonService.saveOrUpdate(docInfo);
+		}
+		return new JsonResult<Object>();
 	}
 }
