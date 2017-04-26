@@ -49,10 +49,16 @@ public class PicController extends BaseController{
 		Iterator<String> fileNames = multipartRequest.getFileNames();
 	    MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
 		String fileName = FileUpload.fileUp(multipartFile, PathUtil.PicPath(), DateUtil.getDays()+get32UUID());//执行上传
-		
-		Thumbnails.of(PathUtil.PicPath()+fileName)
-        .size(200, 200)
-        .toFile(PathUtil.PicPath()+"thumbnail."+fileName);
+		String ext="";
+		if (multipartFile.getOriginalFilename().lastIndexOf(".") >= 0) {
+			ext = multipartFile.getOriginalFilename().substring(
+					multipartFile.getOriginalFilename().lastIndexOf("."));
+		}
+		if(!"amr".equals(ext)){
+			Thumbnails.of(PathUtil.PicPath()+fileName)
+	        .size(200, 200)
+	        .toFile(PathUtil.PicPath()+"thumbnail."+fileName);
+		}
 		return new JsonResult<Object>(0,fileName);
 	}
 	
